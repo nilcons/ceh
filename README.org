@@ -1,0 +1,36 @@
+* klao, baldvin es errge ceh-e
++ Közös megállapodások és repositoryk a linuxos fejlesztői környezeteinkről.
++ Hogy könnyű legyen mindenkinél működő programokat írni.
+  - Pl. haskell header lehessen `#!/opt/ceh/bin/runhaskell' bonyolítás helyett.
++ Hogyha a hasznos csomagok mindenkinél fel legyenek telepítve.
+  - Pl. ghc.
++ A megállapodások szándékosan minél egyszerűbb unifikációra
+  törekszenek, nem absztrakcióra.
++ nix-et használunk package managementre, mert úgy tűnik, hogy meg
+  lehet vele oldani egyszerűen bináris csomagok pontos repródukálását
+  vegyes linuxok között.
++ a nix-ünk i686 és azt ajánljuk, hogy a gépeinken is i686 legyen a
+  debian.  Ez nem követelmény és továbbá ajánlott az i686 debiant
+  amd64 kernellel használni (ami tökéletesen működik), hogy lehetővé
+  váljon esetenként amd64 kódok futtatása, ha a performance igényli.
+
+
+* Requirements
++ Valamilyen értelmes linux (gubuntu, debian, ubuntu).
++ Intel architektúra (i686 vagy amd64, no arm please).
++ `sudo parancs' rootként futtat parancsot (tehát debianosoknak
+  telepíteni kell a sudo-t)
+
+
+* Inicializálás
+sudo mkdir /opt/ceh
+sudo chown $USER /opt/ceh
+sudo chmod 0700 /opt/ceh
+cd /opt/ceh
+git clone stock@ib.risko.hu:ceh.git .
+ln -s $HOME home
+ln -s home/trading trading
+
+
+* Nix Telepítés
+/opt/ceh/scripts/nix-init.sh
