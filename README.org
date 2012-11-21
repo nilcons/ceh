@@ -24,8 +24,8 @@
 
 * Inicializálás
 sudo mkdir /opt/ceh
-sudo chown $USER /opt/ceh
-sudo chmod 0700 /opt/ceh
+sudo chown $USER. /opt/ceh
+chmod 0700 /opt/ceh
 cd /opt/ceh
 git clone stock@ib.risko.hu:ceh.git .
 ln -s $HOME home
