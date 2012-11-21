@@ -29,8 +29,40 @@ sudo chmod 0700 /opt/ceh
 cd /opt/ceh
 git clone stock@ib.risko.hu:ceh.git .
 ln -s $HOME home
-ln -s home/trading trading
 
 
-* Nix Telepítés
+* Nix telepítés
 /opt/ceh/scripts/nix-init.sh
+
+
+* Nix használat
+** Az /opt/ceh/bin-ben levő binárisok beszerzése új gépen
+A /opt/ceh/bin-ben symlinkek vannak kizárólag a /nix/store/...-ra.
+Egy új gépen természetesen ezek törött symlinkek, azonban a nix be
+tudja szerezni őket a hashük alapján, ennek a módja:
+
+nix-env -i /opt/ceh/bin/emacs
+
+Avagy ha nagyon magabiztosak vagyunk:
+nix-env -i /opt/ceh/bin/*
+
+
+* TODO-k
+Csinálni egy nix-env.sh-t, ami minden szükséges beállítást elvégez az
+environmentben, kultúrált módon, hogy senki ne féljen besourceolni a
+.bashrc-jéből és így shared lehessen, elsőre ezek jutnak eszembe:
+  - LOCPATH=/usr/lib/locale
+  - PATH=/opt/ceh/bin:$PATH
+  - MANPATH
+  - INFOPATH (van ilyen?)
+  - PKG_CONFIG_PATH (librarykhez)
+
+Eldönteni, hogy valóban ez a jó út, vagy pedig a man és info pageket,
+meg .pc-ket is erősen kézben kellene tartanunk git-ben, mint a
+binárisokat.  Az erős kézben tartásnak az az előnye, hogy csak az
+jelenik meg, amit akarunk, nem fog véletlenül megjelenni egy olyan
+manpage a nix-ből, amihez tartozó binárist igazából a debianból
+használjuk.  Hátránya, hogy sok munka és mindig el fogjuk felejteni.
+
+Hogy terjesztjük az olyan cuccokat, amikhez nem tartozik bináris,
+legfőképp kipróbálni, hogy a cabal-t mennyire tudja ez kiváltani...

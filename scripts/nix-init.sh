@@ -6,7 +6,7 @@
 export LANG=C
 
 cd /tmp
-# wget http://hydra.nixos.org/build/2860047/download/1/nix-1.1-i686-linux.tar.bz2
+wget http://hydra.nixos.org/build/2860047/download/1/nix-1.1-i686-linux.tar.bz2
 sudo bash -c "mkdir /nix && chown $USER /nix && chmod 0700 /nix"
 ( cd / && tar xfj /tmp/nix-1.1-i686-linux.tar.bz2 /nix )
 
