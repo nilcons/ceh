@@ -35,6 +35,7 @@ variables are set, please add the lines
 
   export PATH=/opt/ceh/bin:\$PATH
   export LOCPATH=/usr/lib/locale
+  export FONTCONFIG_FILE=/etc/fonts/fonts.conf
 
 to your shell profile (e.g. ~/.profile).
 EOF
