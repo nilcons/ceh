@@ -3,7 +3,7 @@
 # PREREQ: /nix nem letezik
 # PREREQ: ~/.nix-* nem letezik
 
-export LANG=C
+export LANG=C LC_ALL=C
 
 cd /tmp
 wget http://hydra.nixos.org/build/2860047/download/1/nix-1.1-i686-linux.tar.bz2
