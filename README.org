@@ -1,4 +1,4 @@
-* klao, baldvin es errge ceh-e
+* Nix szeretok cehe
 + Közös megállapodások és repositoryk a linuxos fejlesztői környezeteinkről.
 + Hogy könnyű legyen mindenkinél működő programokat írni.
   - Pl. haskell header lehessen `#!/opt/ceh/bin/runhaskell' bonyolítás helyett.
@@ -27,7 +27,8 @@ sudo mkdir /opt/ceh
 sudo chown $USER. /opt/ceh
 chmod 0700 /opt/ceh
 cd /opt/ceh
-git clone stock@ib.risko.hu:ceh.git .
+git clone git://github.com/errge/ceh.git .
+#  (if you want to contribute and you have a github user: git@github.com:errge/ceh.git)
 ln -s $HOME home
 
 
