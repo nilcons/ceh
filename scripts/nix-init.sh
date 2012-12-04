@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 # ellenorzesek TODO(errge):
 #  - nincs rossz kornyezetvaltozo jelenleg az env-ben ( | grep -i nix)
