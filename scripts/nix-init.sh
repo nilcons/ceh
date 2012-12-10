@@ -1,16 +1,39 @@
 #!/bin/bash -ex
 
 # ellenorzesek TODO(errge):
-#  - nincs rossz kornyezetvaltozo jelenleg az env-ben ( | grep -i nix)
-#  - nincs /nix
-#  - nincs ~/.nix*
-#  - grep ^$USER: /etc/passwd
 #  - locpath-ban megvannak a szukseges locale-ok
 
-# PREREQ: /nix nem letezik
-# PREREQ: ~/.nix-* nem letezik
-
 export LANG=C LC_ALL=C
+
+if [ -e /nix ]
+then
+    echo "/nix exists, unsinstall first. Suggested commands:" >&2
+    echo "$ sudo dpkg --purge nix" >&2
+    echo "$ sudo chattr -i /nix/store" >&2
+    echo "$ sudo -rf /nix" >&2
+    exit 1
+fi
+
+if test -n "$(find {/root,~}  -maxdepth 1 -name '.nix*' -print)"
+then
+    echo "~/.nix* or /root/.nix* directories found, remove them first." >&2
+    exit 1
+fi
+
+if env | grep -iq ^nix_
+then
+    echo "Nix variables in env. Please remove those from bashrc." >&2
+    echo "\"env | grep -i ^nix_\" should have no results" >&2
+    exit 1
+fi
+
+if ! grep -q ^$USER: /etc/passwd
+then
+    echo "$USER not found in /etc/passwd . This might work to fix it:" >&2
+    echo "$ getent passwd $USER" >&2
+    echo "$ getent passwd $USER | sudo tee -a /etc/passwd" >&2
+    exit 1
+fi
 
 cd /tmp
 wget -c http://hydra.nixos.org/build/2860047/download/1/nix-1.1-i686-linux.tar.bz2
