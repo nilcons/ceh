@@ -23,7 +23,7 @@ fi
 if env | grep -iq ^nix_
 then
     echo "Nix variables in env. Please remove those from bashrc." >&2
-    echo "\"env | grep -i nix_\" should have no results" >&2
+    echo "\"env | grep -i ^nix_\" should have no results" >&2
     exit 1
 fi
 
