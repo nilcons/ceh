@@ -20,7 +20,7 @@ then
     exit 1
 fi
 
-if env | grep -iq nix_
+if env | grep -iq ^nix_
 then
     echo "Nix variables in env. Please remove those from bashrc." >&2
     echo "\"env | grep -i nix_\" should have no results" >&2
@@ -30,8 +30,8 @@ fi
 if ! grep -q ^$USER: /etc/passwd
 then
     echo "$USER not found in /etc/passwd . This might work to fix it:" >&2
-    echo "$ grep $USER /etc/passwd.cache" >&2
-    echo "$ grep $USER /etc/passwd.cache | sudo tee -a /etc/passwd" >&2
+    echo "$ getent passwd $USER" >&2
+    echo "$ getent passwd $USER | sudo tee -a /etc/passwd" >&2
     exit 1
 fi
 
