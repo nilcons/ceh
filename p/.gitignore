@@ -1,0 +1,4 @@
+# This directory is for symlinks to projects.
+# So if you're working on a project called foobar with your friends,
+# you can create a symlink /opt/ceh/p/foobar -> real-path-for-foobar.
+*
