@@ -63,9 +63,7 @@ $nix/bin/nix-channel --update
 Installation finished.  To ensure that the necessary environment
 variables are set, please add the lines
 
-  export PATH=/opt/ceh/bin:\$PATH
-  export LOCPATH=/usr/lib/locale
-  export FONTCONFIG_FILE=/etc/fonts/fonts.conf
+  source /opt/ceh/scripts/nix-profile.sh
 
 to your shell profile (e.g. ~/.profile).
 EOF
