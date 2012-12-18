@@ -14,9 +14,9 @@ then
     exit 1
 fi
 
-if test -n "$(find {/root,~}  -maxdepth 1 -name '.nix*' -print)"
+if sudo find /root ~ -maxdepth 1 -name '.nix*' | grep -q .
 then
-    echo "~/.nix* or /root/.nix* directories found, remove them first." >&2
+    echo "~/.nix* or /root/.nix* found, remove them first." >&2
     exit 1
 fi
 
