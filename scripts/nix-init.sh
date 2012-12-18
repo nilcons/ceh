@@ -36,12 +36,12 @@ then
 fi
 
 cd /tmp
-wget -c http://hydra.nixos.org/build/2860047/download/1/nix-1.1-i686-linux.tar.bz2
+wget -c http://hydra.nixos.org/build/3455278/download/1/nix-1.2-i686-linux.tar.bz2
 sudo bash -c "mkdir /nix && chown $USER. /nix && chmod 0700 /nix"
-( cd / && tar xfj /tmp/nix-1.1-i686-linux.tar.bz2 /nix )
+( cd / && tar xfj /tmp/nix-1.2-i686-linux.tar.bz2 /nix )
 
 # Stolen from /usr/bin/nix-finish-install & /etc/profile.d/nix.sh
-nix=/nix/store/j2310a3rankswi9g8gwx2lh0yjmdy1bg-nix-1.1
+nix=/nix/store/rab7ylyjhc6cly6gf1h7dpybyi7z9758-nix-1.2
 regInfo=/nix/store/reginfo
 
 $nix/bin/nix-store --load-db < $regInfo
@@ -58,6 +58,9 @@ $nix/bin/nix-env -i $nix
 # Add channels
 $nix/bin/nix-channel --add http://nixos.org/releases/nixpkgs/channels/nixpkgs-unstable
 $nix/bin/nix-channel --update
+
+# binary-cache is only used from the root profile...
+( cd /nix/var/nix/profiles/per-user ; ln -s $USER root )
 
     cat <<EOF
 Installation finished.  To ensure that the necessary environment
