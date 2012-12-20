@@ -62,72 +62,25 @@ Eloszor allitsuk be, hogy kerunk library profiling-ot:
   vi ~/.cabal/config (es engedelyezni a library-profiling-ot)
 
 Mivel a nix (i386) architekturaja elterhet a gep (amd64)
-architekturajatol, meg kell kernunk a nix-et, hogy most adjon egy
-olyan shell-t, amiben a linker a PATH-ben elorebb van, mint az ubuntu
-linkere:
+architekturajatol, az egesz toolchainbol a nix-et akarjuk hasznalni,
+nem csak ghc-bol.  Tehat ld, gcc, g++, minden.  Ezt erik el a
+/opt/ceh/bin-ben levo kis wrapper scriptek, ami cabal, ghci, ghc,
+stb. futtatasa eseten megmachinaljak a PATH-t, CFLAGS-t, LDFLAGS-t oly
+modon, hogy ne a distrib binutils-a legyen hasznalva, hanem a nix-e.
 
-nix-build --run-env /nix/store/ww7bd2iqrxlib5jbjq3jkglsx7fp97bk-nixpkgs-1.0pre22969_d068aa9/nixpkgs -A haskellPackages_ghc761.X11
-  cabal update
-  cabal install monad-loop
-  cabal install X11
-  exit
+Ez azt jelenti, hogy egyszeru, FFI mentes haskell csomagok telepitese
+egyszeruen out-of-the-box mukodik (cabal install whatever).
 
-A fenti parancs lenyege, hogy a nixpkgs-ben szereplo
-haskellPackages_ghc761.X11 csomagnak elkeri a build kornyezetet.  Ez
-tartalmazza a szukseges ghc-t, ld-t, gcc-t es a libX11-et is (X11
-binding forditashoz).
+FFI csomagok eseten termeszetesen szukseges elotte feltelpiteni a
+~/.nix-profile-unkba a "-dev csomagokat", pl.:
+  nix-env -i nixpkgs.xlibs.libX11
+
+Nehezseget okoz, hogy megtudjuk ezeket a neveket, ebben
+tamaszkodhatunk a nix mar meglevo csomaggyujtemenyere es
+kiturkalhatjuk onnan.  Mindenesetre ez meg tovabbi kutatast igenyel,
+hogy igazan kenyelmes legyen.
 
 * TODO-k
-** cabal kerdesek
-Mivel lehet kivaltani a csunya /nix/store/ww7... stuffot a nix-build
---run-env mogott?  '<nixpkgs>' valami miatt nem mukodott.
-
-Tudunk-e mi magunk kesziteni egy default.nix-et valahova, ami a
-standard haskell env-et tartalmazza csak, mert a
-haskellPackages_ghc761.X11-re hivatkozni kicsit gany.
-
-Valamint azert is meg kell ismerni a nix nyelvet, hogyha valami olyan
-bindinget akarunk forditani, ami a nix-ben nincs, azzal is
-elboldoguljunk.
-
-** haskell FFI libek
-Az X11 binding az alabbi modon feltelepul, de kilepve az
-environmentbol, ha akarunk egy X-es teszt programot forditani, akkor
-nem talalja a libeket:
-
-/tmp $ ghc --make test
-[1 of 1] Compiling Main             ( test.hs, test.o )
-Linking test ...
-/nix/store/3mni8w684pn8rkfywf1xwa3nmb62wwz4-binutils-2.21.1a/bin/ld: cannot find -lXinerama
-/nix/store/3mni8w684pn8rkfywf1xwa3nmb62wwz4-binutils-2.21.1a/bin/ld: cannot find -lXext
-/nix/store/3mni8w684pn8rkfywf1xwa3nmb62wwz4-binutils-2.21.1a/bin/ld: cannot find -lX11
-/nix/store/3mni8w684pn8rkfywf1xwa3nmb62wwz4-binutils-2.21.1a/bin/ld: cannot find -lXrandr
-/nix/store/3mni8w684pn8rkfywf1xwa3nmb62wwz4-binutils-2.21.1a/bin/ld: cannot find -lXext
-collect2: ld returned 1 exit status
-
-A megoldas, hogy el kell lopni a `nix-build --run-env'-tol a NIX_LDFLAGS valtozot.
-
-Ezt valahogy meg kellene hackelni, hogy a "megjegyezze", hogy milyen
-LDFLAGS-ekkel forditottak, de mindenesetre az elkeszult binaris mar jo:
-
-/tmp $ ldd ./test
-	linux-gate.so.1 =>  (0xf779e000)
-	libXinerama.so.1 => /nix/store/6068s591whmlhnm77gipgqgm62kihf65-libXinerama-1.1.2/lib/libXinerama.so.1 (0xf7798000)
-	libXext.so.6 => /nix/store/sr2biv2d1w51dshp94dmjzdavqd1ygcy-libXext-1.3.1/lib/libXext.so.6 (0xf7787000)
-	libX11.so.6 => /nix/store/6rax44dp3ysirkwv28104grhckwrzn4c-libX11-1.5.0/lib/libX11.so.6 (0xf7651000)
-	libXrandr.so.2 => /nix/store/val536d5wkdcyf1ysvkrwz9lihyaqhwm-libXrandr-1.4.0/lib/libXrandr.so.2 (0xf7647000)
-	libgmp.so.10 => /nix/store/01d61sgqavjph83c9qx9n05yjv1qblcl-gmp-5.0.5/lib/libgmp.so.10 (0xf75cc000)
-	libm.so.6 => /nix/store/7dvylm5crlc0sfafcc0n46mb5ch67q0j-glibc-2.13/lib/libm.so.6 (0xf75a5000)
-	librt.so.1 => /nix/store/7dvylm5crlc0sfafcc0n46mb5ch67q0j-glibc-2.13/lib/librt.so.1 (0xf7590000)
-	libdl.so.2 => /nix/store/7dvylm5crlc0sfafcc0n46mb5ch67q0j-glibc-2.13/lib/libdl.so.2 (0xf758c000)
-	libc.so.6 => /nix/store/7dvylm5crlc0sfafcc0n46mb5ch67q0j-glibc-2.13/lib/libc.so.6 (0xf7429000)
-	libxcb.so.1 => /nix/store/iyf31qs8l3dylipicpk01861vwb2mj5i-libxcb-1.9/lib/libxcb.so.1 (0xf7407000)
-	libXau.so.6 => /nix/store/bn9fp9plyays1041jpf9543mqbh8c0i6-libXau-1.0.7/lib/libXau.so.6 (0xf7404000)
-	libXdmcp.so.6 => /nix/store/30bzns7kf76qpj071vkjmpsw2fpairvb-libXdmcp-1.1.1/lib/libXdmcp.so.6 (0xf73fe000)
-	libXrender.so.1 => /nix/store/gsv3hy7y8gm0lzq8ickh3yrjm9kfw7gc-libXrender-0.9.7/lib/libXrender.so.1 (0xf73f4000)
-	/nix/store/7dvylm5crlc0sfafcc0n46mb5ch67q0j-glibc-2.13/lib/ld-linux.so.2 => /lib/ld-linux.so.2 (0xf779f000)
-	libpthread.so.0 => /lib/i386-linux-gnu/libpthread.so.0 (0xf73c6000)
-
 ** README.org formazas githubbal
 Kitalalni, hogy hogyan kell org mode-ot es github readmet egyutt
 hasznalni, hogy a formazasa a kod szegmenseknek <pre> legyen...
