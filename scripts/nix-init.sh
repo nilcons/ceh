@@ -12,14 +12,14 @@ then
   exit 1
 fi
 
-if [ $USER != `stat -c %U /nix` ]
+if [ -O  /nix ]
 then
   echo "/nix should be owned by the user. Try:" >&2
   echo "$ sudo chown $USER. /nix" >&2
   exit 1
 fi
 
-if [ "$(ls -A /nix)" ]
+if [ -n "$(ls -A /nix)" ]
 then
     echo "/nix is not empty. Try running the nix-purge.sh." >&2
     exit 1
