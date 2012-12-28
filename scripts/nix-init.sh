@@ -5,18 +5,29 @@
 
 export LANG=C LC_ALL=C
 
-if [ -e /nix ]
+if [ ! -d /nix ]
 then
-    echo "/nix exists, unsinstall first. Suggested commands:" >&2
-    echo "$ sudo dpkg --purge nix" >&2
-    echo "$ sudo chattr -i /nix/store" >&2
-    echo "$ sudo -rf /nix" >&2
+  echo "/nix doesn't exist. To create it do:" >&2
+  echo '$ sudo bash -c "mkdir /nix && chown $USER. /nix "' >&2
+  exit 1
+fi
+
+if [ $USER != `stat -c %U /nix` ]
+then
+  echo "/nix should be owned by the user. Try:" >&2
+  echo "$ sudo chown $USER. /nix" >&2
+  exit 1
+fi
+
+if [ "$(ls -A /nix)" ]
+then
+    echo "/nix is not empty. Try running the nix-purge.sh." >&2
     exit 1
 fi
 
-if sudo find /root ~ -maxdepth 1 -name '.nix*' | grep -q .
+if find ~ -maxdepth 1 -name '.nix*' | grep -q .
 then
-    echo "~/.nix* or /root/.nix* found, remove them first." >&2
+    echo "~/.nix* found. Try running the nix-purge.sh." >&2
     exit 1
 fi
 
@@ -37,7 +48,7 @@ fi
 
 cd /tmp
 wget -c http://hydra.nixos.org/build/3455278/download/1/nix-1.2-i686-linux.tar.bz2
-sudo bash -c "mkdir /nix && chown $USER. /nix && chmod 0700 /nix"
+chmod 0700 /nix
 ( cd / && tar xfj /tmp/nix-1.2-i686-linux.tar.bz2 /nix )
 
 # Stolen from /usr/bin/nix-finish-install & /etc/profile.d/nix.sh
