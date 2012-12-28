@@ -1,3 +1,7 @@
+# Please note that these functions only work in bash, not in dash,
+# so in shell scripts that use these functions, you have to use
+# #!/bin/bash as the she-bang line, not #!/bin/sh.
+
 # Prepends $1 to the front of $2 (which should be a colon separated
 # list).  If $1 is already contained in $2, deletes the old occurrence
 # first.  $2 defaults to PATH.  No-op if $1 is not a directory.
@@ -18,7 +22,7 @@ ceh_gcc_wrapper() {
     if [ -z "$CEH_GCC_WRAPPER_FLAGS_SET" ]; then
 	export NIX_LDFLAGS="-L /opt/ceh/home/.nix-profile/lib $NIX_LDFLAGS"
 	export NIX_CFLAGS_COMPILE="-idirafter /opt/ceh/home/.nix-profile/include $NIX_CFLAGS_COMPILE"
-	ceh_path_prepend "/opt/ceh/home/.nix-profile/lib/pkgconfig" PKG_CONFIG_PATH
+	ceh_path_prepend "/opt/ceh/home/.nix-profile/lib/pkgconfig" PKG_CONFIG_PATH || true
 	ceh_path_prepend /nix/store/knyqmizvmpi8bm745zbmalksplxd10sq-gcc-wrapper-4.6.3/bin
 
 	CEH_GCC_WRAPPER_FLAGS_SET=1
