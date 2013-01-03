@@ -83,6 +83,7 @@ tamaszkodhatunk a nix mar meglevo csomaggyujtemenyere es
 kiturkalhatjuk onnan.  Mindenesetre ez meg tovabbi kutatast igenyel,
 hogy igazan kenyelmes legyen.
 
+
 * TODO-k
 ** README.org formazas githubbal
 Kitalalni, hogy hogyan kell org mode-ot es github readmet egyutt
