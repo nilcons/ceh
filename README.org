@@ -40,15 +40,11 @@ ln -s $HOME home
 
 
 * Nix használat
-** Az /opt/ceh/bin-ben levő binárisok beszerzése új gépen
-A /opt/ceh/bin-ben symlinkek vannak kizárólag a /nix/store/...-ra.
-Egy új gépen természetesen ezek törött symlinkek, azonban a nix be
-tudja szerezni őket a hashük alapján, ennek a módja:
-
-nix-env -i /opt/ceh/bin/emacs
-
-Avagy ha nagyon magabiztosak vagyunk:
-for i in /opt/ceh/bin/* ; do nix-env -i $i ; done
+Az /opt/ceh/bin/-ben kis wrapper scriptek vannak, amik ha valami még
+nincs feltelepítve, amit a user elindított, akkor feltelepítik.  Tehát
+nincs semmi tennivaló, amennyiben a PATH-ben benne van az
+/opt/ceh/bin/, akkor onnan ezeken a kis wrappereken keresztül a
+programoknak működniük kell.
 
 
 * Haskell csomagok forditasa cabal-lal

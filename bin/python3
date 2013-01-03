@@ -1,1 +1,5 @@
-/nix/store/zp5pdk2hskaz1jl2wgfyv39j44vaqhh2-python3-3.2.3/bin/python3
+#!/bin/bash -e
+
+. /opt/ceh/scripts/common-functions.sh
+
+ceh_nix_exec /nix/store/zp5pdk2hskaz1jl2wgfyv39j44vaqhh2-python3-3.2.3/bin/python3 "$@"
