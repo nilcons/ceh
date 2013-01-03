@@ -1,4 +1,4 @@
-* klao, baldvin es errge ceh-e
+* Nix szeretok cehe
 + Közös megállapodások és repositoryk a linuxos fejlesztői környezeteinkről.
 + Hogy könnyű legyen mindenkinél működő programokat írni.
   - Pl. haskell header lehessen `#!/opt/ceh/bin/runhaskell' bonyolítás helyett.
@@ -30,7 +30,8 @@ sudo mkdir /opt/ceh
 sudo chown $USER. /opt/ceh
 chmod 0700 /opt/ceh
 cd /opt/ceh
-git clone stock@ib.risko.hu:ceh.git .
+git clone git://github.com/errge/ceh.git .
+#  (if you want to contribute and you have a github user: git@github.com:errge/ceh.git)
 ln -s $HOME home
 
 
@@ -47,25 +48,42 @@ tudja szerezni őket a hashük alapján, ennek a módja:
 nix-env -i /opt/ceh/bin/emacs
 
 Avagy ha nagyon magabiztosak vagyunk:
-nix-env -i /opt/ceh/bin/*
+for i in /opt/ceh/bin/* ; do nix-env -i $i ; done
 
+
+* Haskell csomagok forditasa cabal-lal
+Van a nix-nek technologiaja a ghc meghackelesere, hogy a cabal
+csomagokat is o kezelje, de ehhez karbantartanak config fileokat, amik
+a cabal csomagokat irjak le egyesevel.  Ez azt jelenti, hogy
+laggolnank a hackagehez kepest es plusz bonyolitasokat kellene
+felvallalnunk.  Az ut, amit megprobalunk az inkabb az, hogy a cabal-t
+onmagaban hasznaljuk haskell libek feltelepitesehez, nem a nix-en
+keresztul.
+
+Eloszor allitsuk be, hogy kerunk library profiling-ot:
+  cabal
+  vi ~/.cabal/config (es engedelyezni a library-profiling-ot)
+
+Mivel a nix (i386) architekturaja elterhet a gep (amd64)
+architekturajatol, az egesz toolchainbol a nix-et akarjuk hasznalni,
+nem csak ghc-bol.  Tehat ld, gcc, g++, minden.  Ezt erik el a
+/opt/ceh/bin-ben levo kis wrapper scriptek, ami cabal, ghci, ghc,
+stb. futtatasa eseten megmachinaljak a PATH-t, CFLAGS-t, LDFLAGS-t oly
+modon, hogy ne a distrib binutils-a legyen hasznalva, hanem a nix-e.
+
+Ez azt jelenti, hogy egyszeru, FFI mentes haskell csomagok telepitese
+egyszeruen out-of-the-box mukodik (cabal install whatever).
+
+FFI csomagok eseten termeszetesen szukseges elotte feltelpiteni a
+~/.nix-profile-unkba a "-dev csomagokat", pl.:
+  nix-env -i nixpkgs.xlibs.libX11
+
+Nehezseget okoz, hogy megtudjuk ezeket a neveket, ebben
+tamaszkodhatunk a nix mar meglevo csomaggyujtemenyere es
+kiturkalhatjuk onnan.  Mindenesetre ez meg tovabbi kutatast igenyel,
+hogy igazan kenyelmes legyen.
 
 * TODO-k
-Csinálni egy nix-env.sh-t, ami minden szükséges beállítást elvégez az
-environmentben, kultúrált módon, hogy senki ne féljen besourceolni a
-.bashrc-jéből és így shared lehessen, elsőre ezek jutnak eszembe:
-  - LOCPATH=/usr/lib/locale
-  - PATH=/opt/ceh/bin:$PATH
-  - MANPATH
-  - INFOPATH (van ilyen?)
-  - PKG_CONFIG_PATH (librarykhez)
-
-Eldönteni, hogy valóban ez a jó út, vagy pedig a man és info pageket,
-meg .pc-ket is erősen kézben kellene tartanunk git-ben, mint a
-binárisokat.  Az erős kézben tartásnak az az előnye, hogy csak az
-jelenik meg, amit akarunk, nem fog véletlenül megjelenni egy olyan
-manpage a nix-ből, amihez tartozó binárist igazából a debianból
-használjuk.  Hátránya, hogy sok munka és mindig el fogjuk felejteni.
-
-Hogy terjesztjük az olyan cuccokat, amikhez nem tartozik bináris,
-legfőképp kipróbálni, hogy a cabal-t mennyire tudja ez kiváltani...
+** README.org formazas githubbal
+Kitalalni, hogy hogyan kell org mode-ot es github readmet egyutt
+hasznalni, hogy a formazasa a kod szegmenseknek <pre> legyen...

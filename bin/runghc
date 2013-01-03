@@ -1,1 +1,5 @@
-/nix/store/mgl2y8s7kimxc61z8c537fi93ndg1khw-ghc-7.6.1-wrapper/bin/runghc
+#!/bin/bash -e
+
+. /opt/ceh/scripts/common-functions.sh
+
+ceh_gcc_wrapper /nix/store/mgl2y8s7kimxc61z8c537fi93ndg1khw-ghc-7.6.1-wrapper/bin/runghc "$@"
