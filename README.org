@@ -19,7 +19,10 @@
 + Valamilyen értelmes linux (gubuntu, debian, ubuntu).
 + Intel architektúra (i686 vagy amd64, no arm please).
 + `sudo parancs' rootként futtat parancsot (tehát debianosoknak
-  telepíteni kell a sudo-t)
+  telepíteni kell a sudo-t).
++ A nix elboldoguljon az NSS-sel.  Azaz no libnss_cache és no
+  libnss_ldap.  A googlen belül az egyszerű workaround:
+    cat /etc/passwd.cache | grep "^$USER:" | sudo tee -a /etc/passwd
 
 
 * Inicializálás
