@@ -12,7 +12,7 @@ then
   exit 1
 fi
 
-if [ -O  /nix ]
+if [ ! -O  /nix ]
 then
   echo "/nix should be owned by the user. Try:" >&2
   echo "$ sudo chown $USER. /nix" >&2
