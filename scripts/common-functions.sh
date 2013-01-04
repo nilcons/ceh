@@ -1,3 +1,5 @@
+# -*- mode: shell-script; sh-basic-offset: 2; -*-
+
 # Please note that these functions only work in bash, not in dash,
 # so in shell scripts that use these functions, you have to use
 # #!/bin/bash as the she-bang line, not #!/bin/sh.
@@ -16,19 +18,39 @@ ceh_path_prepend() {
     export $list=$new:$trimright
 }
 
+# This creates a cache to make it cheaper to check if a derivation is
+# installed in the current user profile.  The idea is that user
+# profiles are immutable, so we can create an installed_derivations
+# top-level dir in them with one file touched for each package.
+ceh_nix_updatedb() {
+  [ -e /opt/ceh/home/.nix-profile/installed_derivations/done ] && return
+
+  chmod u+w /opt/ceh/home/.nix-profile/
+  mkdir -p /opt/ceh/home/.nix-profile/installed_derivations
+  chmod u-w /opt/ceh/home/.nix-profile/
+  for i in $(nix-env --no-name --out-path -q '*'); do
+    touch /opt/ceh/home/.nix-profile/installed_derivations/${i#/nix/store/}
+  done
+  touch /opt/ceh/home/.nix-profile/installed_derivations/done
+}
+
 # Checks if $1 is a nix path (/nix/store/whatever/*).  If not, returns.
 # If the nix path is already installed, returns.
 # Otherwise installs it with `nix-env -i'.
 ceh_nix_install() {
+  ceh_nix_updatedb
+
   # Start a new shell with every normal output directed to stderr, so
   # pipelines don't get confused.
   (
     exec >&2
 
-    local nix_postfix=${1#/nix/store/}
+    local nix_real=$(readlink -f $1)
+    local nix_postfix=${nix_real#/nix/store/}
     [ "$nix_postfix" = "$1" ] && return   # this is not a /nix/store path
     local nix_dir=${nix_postfix%%/*}
-    [ -d "/nix/store/$nix_dir" ] || nix-env -i "/nix/store/$nix_dir"
+    [ -e "/opt/ceh/home/.nix-profile/installed_derivations/$nix_dir" ] || \
+      nix-env -i "/nix/store/$nix_dir"
   )
 }
 
