@@ -54,10 +54,11 @@ a cabal csomagokat irjak le egyesevel.  Ez azt jelenti, hogy
 laggolnank a hackagehez kepest es plusz bonyolitasokat kellene
 felvallalnunk.  Az ut, amit megprobalunk az inkabb az, hogy a cabal-t
 onmagaban hasznaljuk haskell libek feltelepitesehez, nem a nix-en
-keresztul.
+keresztul.  A nix csupan a haskell libek leforditasahoz szukseges c
+libeket fogja adni.
 
 Eloszor allitsuk be, hogy kerunk library profiling-ot:
-  cabal
+  cabal update
   vi ~/.cabal/config (es engedelyezni a library-profiling-ot)
 
 Mivel a nix (i386) architekturaja elterhet a gep (amd64)
@@ -66,18 +67,15 @@ nem csak ghc-bol.  Tehat ld, gcc, g++, minden.  Ezt erik el a
 /opt/ceh/bin-ben levo kis wrapper scriptek, ami cabal, ghci, ghc,
 stb. futtatasa eseten megmachinaljak a PATH-t, CFLAGS-t, LDFLAGS-t oly
 modon, hogy ne a distrib binutils-a legyen hasznalva, hanem a nix-e.
+Valamint ezek a wrapperek azt is elintezik, hogy a clibeket a FFI
+libraryk a /nix/var/nix/profiles/ceh/ghc-libs/ prefix alatt keressek.
 
 Ez azt jelenti, hogy egyszeru, FFI mentes haskell csomagok telepitese
 egyszeruen out-of-the-box mukodik (cabal install whatever).
 
 FFI csomagok eseten termeszetesen szukseges elotte feltelpiteni a
-~/.nix-profile-unkba a "-dev csomagokat", pl.:
-  nix-env -i nixpkgs.xlibs.libX11
-
-Nehezseget okoz, hogy megtudjuk ezeket a neveket, ebben
-tamaszkodhatunk a nix mar meglevo csomaggyujtemenyere es
-kiturkalhatjuk onnan.  Mindenesetre ez meg tovabbi kutatast igenyel,
-hogy igazan kenyelmes legyen.
+ceh/ghc-libs nix profileba a "-dev csomagokat", pl.:
+  ceh_nix_install_for_ghc /nix/store/9pn5796z6nz827inhq560zdispvkpzr8-openssl-1.0.0i
 
 
 * TODO-k

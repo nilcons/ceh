@@ -22,23 +22,30 @@ ceh_path_prepend() {
 # installed in the current user profile.  The idea is that user
 # profiles are immutable, so we can create an installed_derivations
 # top-level dir in them with one file touched for each package.
-ceh_nix_updatedb() {
-  [ -e /opt/ceh/home/.nix-profile/installed_derivations/done ] && return
+# $2 is the profile path (defaults to /opt/ceh/home/.nix-profile).
+ceh_nix_update_cache() {
+  local profile=${1-$(readlink /opt/ceh/home/.nix-profile)}
+  [ -e $profile/installed_derivations/done ] && return
 
-  chmod u+w /opt/ceh/home/.nix-profile/
-  mkdir -p /opt/ceh/home/.nix-profile/installed_derivations
-  chmod u-w /opt/ceh/home/.nix-profile/
-  for i in $(nix-env --no-name --out-path -q '*'); do
-    touch /opt/ceh/home/.nix-profile/installed_derivations/${i#/nix/store/}
+  # If the profile doesn't exist, the cache can't be created.
+  [ -L $profile ] || return 0
+
+  chmod u+w $profile/
+  mkdir $profile/installed_derivations
+  chmod u-w $profile/
+  for i in $(nix-env -p $profile --no-name --out-path -q '*'); do
+    touch $profile/installed_derivations/${i#/nix/store/}
   done
-  touch /opt/ceh/home/.nix-profile/installed_derivations/done
+  touch $profile/installed_derivations/done
 }
 
 # Checks if $1 is a nix path (/nix/store/whatever/*).  If not, returns.
 # If the nix path is already installed, returns.
 # Otherwise installs it with `nix-env -i'.
+# $2 is the profile path (defaults to /opt/ceh/home/.nix-profile).
 ceh_nix_install() {
-  ceh_nix_updatedb
+  local profile=${2-$(readlink /opt/ceh/home/.nix-profile)}
+  ceh_nix_update_cache $2
 
   # Start a new shell with every normal output directed to stderr, so
   # pipelines don't get confused.
@@ -49,8 +56,11 @@ ceh_nix_install() {
     local nix_postfix=${nix_real#/nix/store/}
     [ "$nix_postfix" = "$1" ] && return   # this is not a /nix/store path
     local nix_dir=${nix_postfix%%/*}
-    [ -e "/opt/ceh/home/.nix-profile/installed_derivations/$nix_dir" ] || \
-      nix-env -i "/nix/store/$nix_dir"
+    [ -e $profile/installed_derivations/$nix_dir ] || {
+      mkdir -p $(dirname $profile)
+      nix-env -p $profile -i "/nix/store/$nix_dir"
+      ceh_nix_update_cache $2
+    }
   )
 }
 
@@ -60,13 +70,17 @@ ceh_nix_exec() {
   exec "$@"
 }
 
+ceh_nix_install_for_ghc() {
+  ceh_nix_install $1 /nix/var/nix/profiles/ceh/ghc-libs
+}
+
 # Executes "$@" with Nix's gcc prepended to PATH and envvars hacked to
-# include libs installed to ~/.nix-profile.
-ceh_gcc_wrapper() {
+# include libs installed into the /nix/var/nix/profiles/ceh/ghc-libs profile.
+ceh_gcc_wrapper_for_ghc() {
   if [ -z "$CEH_GCC_WRAPPER_FLAGS_SET" ]; then
-    export NIX_LDFLAGS="-L /opt/ceh/home/.nix-profile/lib $NIX_LDFLAGS"
-    export NIX_CFLAGS_COMPILE="-idirafter /opt/ceh/home/.nix-profile/include $NIX_CFLAGS_COMPILE"
-    ceh_path_prepend "/opt/ceh/home/.nix-profile/lib/pkgconfig" PKG_CONFIG_PATH || true
+    export NIX_LDFLAGS="-L /nix/var/nix/profiles/ceh/ghc-libs/lib $NIX_LDFLAGS"
+    export NIX_CFLAGS_COMPILE="-idirafter /nix/var/nix/profiles/ceh/ghc-libs/include $NIX_CFLAGS_COMPILE"
+    ceh_path_prepend "/nix/var/nix/profiles/ceh/ghc-libs/lib/pkgconfig" PKG_CONFIG_PATH || true
     ceh_nix_install /nix/store/knyqmizvmpi8bm745zbmalksplxd10sq-gcc-wrapper-4.6.3/bin
     ceh_path_prepend /nix/store/knyqmizvmpi8bm745zbmalksplxd10sq-gcc-wrapper-4.6.3/bin || {
       echo >&2 "/nix/store/knyqmizvmpi8bm745zbmalksplxd10sq-gcc-wrapper-4.6.3/bin is not installed"

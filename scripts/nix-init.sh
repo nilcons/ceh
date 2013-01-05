@@ -60,6 +60,7 @@ $nix/bin/nix-store --load-db < $regInfo
 # Set up the symlinks
 mkdir -m 0755 -p /nix/var/nix/profiles/per-user/$USER
 ln -s /nix/var/nix/profiles/per-user/$USER/profile $HOME/.nix-profile
+# TODO(errge): is this gcroot needed at all?
 mkdir -m 0755 -p /nix/var/nix/gcroots/per-user/$USER
 mkdir $HOME/.nix-defexpr
 
