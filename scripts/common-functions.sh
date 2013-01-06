@@ -39,7 +39,7 @@ ceh_nix_update_cache() {
   touch $profile/installed_derivations/done
 }
 
-# Checks if $1 is a nix path (/nix/store/whatever/*).  If not, returns.
+# Checks if $1 is a nix path (/nix/store/hashxxx-pkg-0.1/whatever).  If not, returns.
 # If the nix path is already installed, returns.
 # Otherwise installs it with `nix-env -i'.
 # $2 is the profile path (defaults to /opt/ceh/home/.nix-profile).
@@ -52,7 +52,16 @@ ceh_nix_install() {
   (
     exec >&2
 
-    local nix_real=$(readlink -f $1)
+    # This used to read "nix_real=$(readlink -f $1)", so it was
+    # possible to use this function with symlinks that eventually
+    # point to a nix store.  This doesn't work, because
+    # e.g. ghc-7.6.1-wrapper/bin/hpc is a symlink to ghc-7.6.1/bin/hpc
+    # in nix.  In that case we used to install ghc-7.6.1 instead of
+    # the wrapper that the user has requested.  So if we ever want to
+    # support symlinks as $1, we need a tool that canonalizes _UNTIL_
+    # it reaches the first /nix/store/... path and stops there (even if
+    # that is a symlink).
+    local nix_real=$1
     local nix_postfix=${nix_real#/nix/store/}
     [ "$nix_postfix" = "$1" ] && return   # this is not a /nix/store path
     local nix_dir=${nix_postfix%%/*}
