@@ -4,12 +4,9 @@
 
 # firefox17Wrapper (because of flash), googletalkplugin and java are
 # not free software, so they are not distributed in the binary cache
-# of nix.  Therefore we can't install them from there.  The best we
-# can do is to try to install via derivations and fail if the hash
-# value of the end result is incorrect.  Unfortunately this means that
-# when we upgrade ceh to newer versions of nixpkgs, we have to
-# remember to update here, otherwise new users can't install firefox.
-
+# of nix.  Therefore we can't install them from there, so we use the
+# ceh_nix_instantiate_with stuff to build them.
+#
 # This is a 32-bit FF install (working on both amd64 and i686) with
 # all the 3 required plugins:
 #  - google talk,
@@ -21,21 +18,19 @@
 # To make sure everything is OK, use all 3 plugins while running
 # firefox from a terminal and watch stderr.
 #
-# Do not ever mix 64-bit plugins with this firefox!
+# Do not ever mix 64-bit plugins with this 32-bit firefox!
 
-NIX=/nix/store/rab7ylyjhc6cly6gf1h7dpybyi7z9758-nix-1.2
-
-[ -e /nix/store/vgdrl7bj4aqwmdkvdbpa0y8mlch1ai6n-google-talk-plugin-3.10.2.0.drv ] || {
-    $NIX/bin/nix-instantiate /nix/var/nix/profiles/per-user/root/channels/nixpkgs -A firefox17Wrapper
-    $NIX/bin/nix-store -r /nix/store/byzd8468l3pq9y7x0dxlfrzg92n5h8mx-firefox-17.0.1-with-plugins.drv
+[ -e /nix/store/byzd8468l3pq9y7x0dxlfrzg92n5h8mx-firefox-17.0.1-with-plugins.drv ] || {
+    ceh_nix_instantiate_with firefox17Wrapper 1.0pre22969_d068aa9
+    $CEH_NIX/bin/nix-store -r /nix/store/byzd8468l3pq9y7x0dxlfrzg92n5h8mx-firefox-17.0.1-with-plugins.drv
 }
 [ -e /nix/store/vgdrl7bj4aqwmdkvdbpa0y8mlch1ai6n-google-talk-plugin-3.10.2.0.drv ] || {
-    $NIX/bin/nix-instantiate /nix/var/nix/profiles/per-user/root/channels/nixpkgs -A google_talk_plugin
-    $NIX/bin/nix-store -r /nix/store/vgdrl7bj4aqwmdkvdbpa0y8mlch1ai6n-google-talk-plugin-3.10.2.0.drv
+    ceh_nix_instantiate_with google_talk_plugin 1.0pre22969_d068aa9
+    $CEH_NIX/bin/nix-store -r /nix/store/vgdrl7bj4aqwmdkvdbpa0y8mlch1ai6n-google-talk-plugin-3.10.2.0.drv
 }
 [ -e /nix/store/zsa9p8c0iap8lyncrq29a07gjfggaps5-jdk-1.6.0_38b04.drv ] || {
-    $NIX/bin/nix-instantiate /nix/var/nix/profiles/per-user/root/channels/nixpkgs -A jrePlugin
-    $NIX/bin/nix-store -r /nix/store/zsa9p8c0iap8lyncrq29a07gjfggaps5-jdk-1.6.0_38b04.drv
+    ceh_nix_instantiate_with jrePlugin 1.0pre22969_d068aa9
+    $CEH_NIX/bin/nix-store -r /nix/store/zsa9p8c0iap8lyncrq29a07gjfggaps5-jdk-1.6.0_38b04.drv
 }
 
 ceh_nix_install /nix/store/x6wd4c166565dx4w9a1dds2vzsq9z5za-firefox-17.0.1-with-plugins

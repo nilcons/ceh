@@ -4,6 +4,8 @@
 # so in shell scripts that use these functions, you have to use
 # #!/bin/bash as the she-bang line, not #!/bin/sh.
 
+export CEH_NIX=/nix/store/rab7ylyjhc6cly6gf1h7dpybyi7z9758-nix-1.2
+
 # Prepends $1 to the front of $2 (which should be a colon separated
 # list).  If $1 is already contained in $2, deletes the old occurrence
 # first.  $2 defaults to PATH.  No-op if $1 is not a directory.
@@ -100,4 +102,41 @@ ceh_gcc_wrapper_for_ghc() {
   fi
 
   ceh_nix_exec "$@"
+}
+
+# Some software is not in the nix binary cache (mainly for legal reasons).
+#
+# So those can't be installed by their hash value, but they have to be
+# built.  Unfortunately, there is no "source cache" for Nix.  So there
+# is no (binary_hash -> build_instructions) mapping.  You can only
+# build packages that you have the nixpkgs entry for.  As nixpkgs is
+# constantly updated (through their channel), build output is random.
+#
+# With this function you can specify a concrete nixpkgs version to use
+# to instantiate the derivation and use `nix-store -r' to build stuff.
+#
+# Downloaded nixpkgs versions are stored in the profile
+# /nix/var/nix/profiles/ceh/nixpkgs.
+#
+# For a usage example, see bin/firefox.
+#
+# $1: attribute path inside nixpkgs to instantiate (WHATEVER in nixpkgs.WHATEVER)
+# $2: nixpkgs VERSION from http://nixos.org/releases/nixpkgs/nixpkgs-VERSION
+ceh_nix_instantiate_with() {
+  local attr=$1
+  local version=$2
+  # we say that everything is version 1.0, so we can have multiple
+  # versions of different nixpkgs; usual Debian trick: version is part
+  # of the package name :)
+  local cname=ceh_nixpkgs_$version-1.0
+  local nixpkgs=/nix/var/nix/profiles/ceh/nixpkgs/$cname
+
+  [ -L $nixpkgs ] || {
+    mkdir -p /nix/var/nix/profiles/ceh
+    local path=$(PRINT_PATH=1 $CEH_NIX/bin/nix-prefetch-url "http://nixos.org/releases/nixpkgs/nixpkgs-$version/nixexprs.tar.bz2" | tail -n +2)
+    $CEH_NIX/bin/nix-env -p /nix/var/nix/profiles/ceh/nixpkgs -f '<nix/unpack-channel.nix>' -i \
+      -E "f: f { name = \"$cname\"; channelName = \"$cname\"; src = builtins.storePath \"$path\"; binaryCacheURL = \"http://nixos.org/binary-cache/\"; }"
+  }
+
+  $CEH_NIX/bin/nix-instantiate $nixpkgs -A $attr
 }
