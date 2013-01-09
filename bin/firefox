@@ -20,15 +20,15 @@
 #
 # Do not ever mix 64-bit plugins with this 32-bit firefox!
 
-[ -e /nix/store/byzd8468l3pq9y7x0dxlfrzg92n5h8mx-firefox-17.0.1-with-plugins.drv ] || {
+[ -d /nix/store/x6wd4c166565dx4w9a1dds2vzsq9z5za-firefox-17.0.1-with-plugins ] || {
     ceh_nix_instantiate_with firefox17Wrapper 1.0pre22969_d068aa9
     $CEH_NIX/bin/nix-store -r /nix/store/byzd8468l3pq9y7x0dxlfrzg92n5h8mx-firefox-17.0.1-with-plugins.drv
 }
-[ -e /nix/store/vgdrl7bj4aqwmdkvdbpa0y8mlch1ai6n-google-talk-plugin-3.10.2.0.drv ] || {
+[ -d /nix/store/xl95pvsjynnswx570vws6k3lw3vhc6n0-google-talk-plugin-3.10.2.0 ] || {
     ceh_nix_instantiate_with google_talk_plugin 1.0pre22969_d068aa9
     $CEH_NIX/bin/nix-store -r /nix/store/vgdrl7bj4aqwmdkvdbpa0y8mlch1ai6n-google-talk-plugin-3.10.2.0.drv
 }
-[ -e /nix/store/zsa9p8c0iap8lyncrq29a07gjfggaps5-jdk-1.6.0_38b04.drv ] || {
+[ -d /nix/store/x36ww9lfnszi0jiy1f8w8w5q9q3bi9rf-jdk-1.6.0_38b04 ] || {
     ceh_nix_instantiate_with jrePlugin 1.0pre22969_d068aa9
     $CEH_NIX/bin/nix-store -r /nix/store/zsa9p8c0iap8lyncrq29a07gjfggaps5-jdk-1.6.0_38b04.drv
 }
