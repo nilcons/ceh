@@ -49,7 +49,7 @@ fi
 cd /tmp
 wget -c http://hydra.nixos.org/build/3455278/download/1/nix-1.2-i686-linux.tar.bz2
 chmod 0700 /nix
-( cd / && tar xfj /tmp/nix-1.2-i686-linux.tar.bz2 /nix )
+( cd / && tar -x --delay-directory-restore -j -f /tmp/nix-1.2-i686-linux.tar.bz2 /nix )
 
 # Stolen from /usr/bin/nix-finish-install & /etc/profile.d/nix.sh
 nix=/nix/store/rab7ylyjhc6cly6gf1h7dpybyi7z9758-nix-1.2
