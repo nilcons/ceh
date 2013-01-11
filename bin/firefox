@@ -2,11 +2,6 @@
 
 . /opt/ceh/scripts/common-functions.sh
 
-# firefox17Wrapper (because of flash), googletalkplugin and java are
-# not free software, so they are not distributed in the binary cache
-# of nix.  Therefore we can't install them from there, so we use the
-# ceh_nix_instantiate_with stuff to build them.
-#
 # This is a 32-bit FF install (working on both amd64 and i686) with
 # all the 3 required plugins:
 #  - google talk,
@@ -23,9 +18,8 @@
 # To enable google talk plugin and jre plugin.
 export NIXPKGS_CONFIG=/opt/ceh/nix-configs/firefox.nix
 
-[ -d /nix/store/m35rh488kzb2cdcak89pqnmwl4rqsq53-firefox-17.0.1-with-plugins ] || {
-    ceh_nix_instantiate_with firefox17Wrapper 1.0pre22969_d068aa9
-    $CEH_NIX/bin/nix-store -r /nix/store/wc2lqwvbrycmjzj8ycw72sc8k9g80468-firefox-17.0.1-with-plugins.drv
-}
+ceh_nixpkgs_install firefox17Wrapper 1.0pre22969_d068aa9 \
+    wc2lqwvbrycmjzj8ycw72sc8k9g80468-firefox-17.0.1-with-plugins.drv \
+    m35rh488kzb2cdcak89pqnmwl4rqsq53-firefox-17.0.1-with-plugins
 
-ceh_nix_exec /nix/store/m35rh488kzb2cdcak89pqnmwl4rqsq53-firefox-17.0.1-with-plugins/bin/firefox "$@"
+exec /nix/store/m35rh488kzb2cdcak89pqnmwl4rqsq53-firefox-17.0.1-with-plugins/bin/firefox "$@"

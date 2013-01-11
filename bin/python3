@@ -2,4 +2,8 @@
 
 . /opt/ceh/scripts/common-functions.sh
 
-ceh_nix_exec /nix/store/zp5pdk2hskaz1jl2wgfyv39j44vaqhh2-python3-3.2.3/bin/python3 "$@"
+ceh_nixpkgs_install python3 1.0pre23034_4cd591f \
+    1mh1r9v18kmhl27zbif2h2sdash7divy-python3-3.2.3.drv \
+    zp5pdk2hskaz1jl2wgfyv39j44vaqhh2-python3-3.2.3
+
+exec /nix/store/zp5pdk2hskaz1jl2wgfyv39j44vaqhh2-python3-3.2.3/bin/python3 "$@"

@@ -6,6 +6,152 @@
 
 export CEH_NIX=/nix/store/rab7ylyjhc6cly6gf1h7dpybyi7z9758-nix-1.2
 
+# This creates a cache to make it cheaper to check if a derivation is
+# installed in a profile.  The idea is that profiles are immutable, so
+# we can create an installed_derivations top-level dir in them with
+# one file touched for each package.
+#
+# $1 is the profile path (defaults to /opt/ceh/home/.nix-profile).
+ceh_nix_update_cache() {
+  local profile=${1-$(readlink /opt/ceh/home/.nix-profile)}
+  [ -e $profile/installed_derivations/done ] && return 0
+
+  # If the profile doesn't exist, the cache can't be created.
+  [ -L $profile ] || return 0
+
+  chmod u+w $profile/
+  mkdir $profile/installed_derivations
+  chmod u-w $profile/
+  for i in $(nix-env -p $profile --no-name --out-path -q '*'); do
+    touch $profile/installed_derivations/${i#/nix/store/}
+  done
+  touch $profile/installed_derivations/done
+}
+
+# Downloads and initializes a specific nixpkgs version into the
+# /nix/var/nix/profiles/ceh/nixpkgs profile, so it can be used for
+# builds later.
+#
+# This is needed instead of simply using channels and the newest
+# version only, because we want to reproduce specific blessed versions
+# of binaries and not the newest version in nixpkgs.
+#
+# $1: the nixpkgs version to initialize, e.g. 1.0pre23266_7e1d0c1
+#
+# It sets NIX_PATH up, so '<ceh_nixpkgs>' points to the initialized
+# version in nix commands.
+ceh_nixpkgs_init_version () {
+  local version=$1
+
+  # we say that everything is version 1.0, so we can have multiple
+  # versions of different nixpkgs; usual Debian trick: version is part
+  # of the package name :)
+  local cname=ceh_nixpkgs_$version-1.0
+  local nixpkgs=/nix/var/nix/profiles/ceh/nixpkgs/$cname
+
+  [ -L $nixpkgs ] || {
+    mkdir -p /nix/var/nix/profiles/ceh
+    local path=$(PRINT_PATH=1 $CEH_NIX/bin/nix-prefetch-url "http://nixos.org/releases/nixpkgs/nixpkgs-$version/nixexprs.tar.bz2" | tail -n +2)
+    $CEH_NIX/bin/nix-env -p /nix/var/nix/profiles/ceh/nixpkgs -f '<nix/unpack-channel.nix>' -i \
+      -E "f: f { name = \"$cname\"; channelName = \"$cname\"; src = builtins.storePath \"$path\"; binaryCacheURL = \"http://nixos.org/binary-cache/\"; }"
+  }
+
+  export NIX_PATH=ceh_nixpkgs=$nixpkgs
+}
+
+# Used in wrapper scripts in bin/*.
+#
+# If $1 is an already installed package, returns immediately.
+# Otherwise builds and installs it.
+#
+# Nix internally uses a binary cache, so may not necessarily build.
+#
+# To identify a package to install, you have to specify:
+#   - $1: package name (attribute path),
+#   - $2: nixpkgs version the package is specified in,
+#   - $3: the derivation produced in /nix/store,
+#   - $4: the output path in /nix/store.
+#
+# $3 and $4 is a function of $1 and $2; you only need specify them, so
+# we can verify and rest assured that everything went correctly.
+#
+# Although all the four arguments are mandatory, the last three is
+# optional in a sense.  If you run the function with less than 4
+# arguments, it will figure out the next and print you the correct
+# command line to use.  This is an easy way to write new wrapper
+# scripts.
+#
+# $5 is an optional target profile (defaults to /opt/ceh/home/.nix-profile).
+ceh_nixpkgs_install () {
+  local pkgattr=$1
+  local nixpkgs_version=$2
+  local derivation=$3
+  local out=$4
+  local profile=${5-$(readlink /opt/ceh/home/.nix-profile)}
+  ceh_nix_update_cache $profile
+
+  # Start a new shell with every normal output directed to stderr, so
+  # pipelines don't get confused.
+  (
+    exec >&2
+
+    # quick return if the package is already installed in the profile
+    if [ -n "$out" ]; then
+      if [ -e $profile/installed_derivations/$out ]; then
+	return 0
+      fi
+    fi
+
+    [ -n "$pkgattr" ] || {
+      echo >&2 "ceh_nixpkgs_install called without package attr path"
+      echo >&2 "use 'nix-env -qaP \\*' to list packages and drop the nixpkgs. prefix"
+      return 1
+    }
+
+    [ -n "$nixpkgs_version" ] || {
+      echo >&2 "didn't specify what nixpkgs version to use, rerun like this:"
+      echo >&2 "ceh_nixpkgs_install $pkgattr $(cat /nix/var/nix/profiles/per-user/root/channels/nixpkgs/relname | sed 's/^nixpkgs-//')"
+      return 1
+    }
+
+    ceh_nixpkgs_init_version $nixpkgs_version
+
+    echo $NIX_PATH
+    local current_derivation=$($CEH_NIX/bin/nix-instantiate '<ceh_nixpkgs>' -A $pkgattr)
+    [ "${current_derivation#/nix/store/}" != "$current_derivation" ] || {
+      echo >&2 "failed to derive nixpkgs.$pkgattr in nixpkgs-$nixpkgs_version"
+      return 1
+    }
+
+    [ "/nix/store/$derivation" = "$current_derivation" ] || {
+      echo >&2 "derivation was unspecified or incorrect, rerun like this:"
+      echo >&2 "ceh_nixpkgs_install $pkgattr $nixpkgs_version ${current_derivation#/nix/store/}"
+      return 1
+    }
+
+    [ "$(nix-store -q $current_derivation | wc -l)" = 1 ] || {
+      echo >&2 "derivations with multiple outputs are not supported"
+      return 1
+    }
+
+    local outpath=$(nix-store -q $current_derivation)
+    [ "/nix/store/$out" = "$outpath" ] || {
+      echo >&2 "nix out dir was unspecified or incorrect, rerun like this:"
+      echo >&2 "ceh_nixpkgs_install $pkgattr $nixpkgs_version $derivation ${outpath#/nix/store/}"
+      return 1
+    }
+
+    nix-store -r $current_derivation
+    mkdir -p $(dirname $profile)
+    nix-env -p $profile -i $outpath
+    ceh_nix_update_cache $profile
+  )
+}
+
+ceh_nixpkgs_install_for_ghc() {
+  ceh_nixpkgs_install $1 $2 $3 $4 /nix/var/nix/profiles/ceh/ghc-libs
+}
+
 # Prepends $1 to the front of $2 (which should be a colon separated
 # list).  If $1 is already contained in $2, deletes the old occurrence
 # first.  $2 defaults to PATH.  No-op if $1 is not a directory.
@@ -20,79 +166,20 @@ ceh_path_prepend() {
     export $list=$new:$trimright
 }
 
-# This creates a cache to make it cheaper to check if a derivation is
-# installed in the current user profile.  The idea is that user
-# profiles are immutable, so we can create an installed_derivations
-# top-level dir in them with one file touched for each package.
-# $2 is the profile path (defaults to /opt/ceh/home/.nix-profile).
-ceh_nix_update_cache() {
-  local profile=${1-$(readlink /opt/ceh/home/.nix-profile)}
-  [ -e $profile/installed_derivations/done ] && return
-
-  # If the profile doesn't exist, the cache can't be created.
-  [ -L $profile ] || return 0
-
-  chmod u+w $profile/
-  mkdir $profile/installed_derivations
-  chmod u-w $profile/
-  for i in $(nix-env -p $profile --no-name --out-path -q '*'); do
-    touch $profile/installed_derivations/${i#/nix/store/}
-  done
-  touch $profile/installed_derivations/done
-}
-
-# Checks if $1 is a nix path (/nix/store/hashxxx-pkg-0.1/whatever).  If not, returns.
-# If the nix path is already installed, returns.
-# Otherwise installs it with `nix-env -i'.
-# $2 is the profile path (defaults to /opt/ceh/home/.nix-profile).
-ceh_nix_install() {
-  local profile=${2-$(readlink /opt/ceh/home/.nix-profile)}
-  ceh_nix_update_cache $2
-
-  # Start a new shell with every normal output directed to stderr, so
-  # pipelines don't get confused.
-  (
-    exec >&2
-
-    # This used to read "nix_real=$(readlink -f $1)", so it was
-    # possible to use this function with symlinks that eventually
-    # point to a nix store.  This doesn't work, because
-    # e.g. ghc-7.6.1-wrapper/bin/hpc is a symlink to ghc-7.6.1/bin/hpc
-    # in nix.  In that case we used to install ghc-7.6.1 instead of
-    # the wrapper that the user has requested.  So if we ever want to
-    # support symlinks as $1, we need a tool that canonalizes _UNTIL_
-    # it reaches the first /nix/store/... path and stops there (even if
-    # that is a symlink).
-    local nix_real=$1
-    local nix_postfix=${nix_real#/nix/store/}
-    [ "$nix_postfix" = "$1" ] && return   # this is not a /nix/store path
-    local nix_dir=${nix_postfix%%/*}
-    [ -e $profile/installed_derivations/$nix_dir ] || {
-      mkdir -p $(dirname $profile)
-      nix-env -p $profile -i "/nix/store/$nix_dir"
-      ceh_nix_update_cache $2
-    }
-  )
-}
-
-# Used to exec a command line by first installing $1.
-ceh_nix_exec() {
-  ceh_nix_install "$1"
-  exec "$@"
-}
-
-ceh_nix_install_for_ghc() {
-  ceh_nix_install $1 /nix/var/nix/profiles/ceh/ghc-libs
-}
-
 # Executes "$@" with Nix's gcc prepended to PATH and envvars hacked to
 # include libs installed into the /nix/var/nix/profiles/ceh/ghc-libs profile.
 ceh_gcc_wrapper_for_ghc() {
+  ceh_nixpkgs_install haskellPackages_ghc761.ghc 1.0pre23266_7e1d0c1 \
+    mpsq07qhlpbik9h2fan947amm5bicplf-ghc-7.6.1-wrapper.drv \
+    mgl2y8s7kimxc61z8c537fi93ndg1khw-ghc-7.6.1-wrapper
+
   if [ -z "$CEH_GCC_WRAPPER_FLAGS_SET" ]; then
     export NIX_LDFLAGS="-L /nix/var/nix/profiles/ceh/ghc-libs/lib $NIX_LDFLAGS"
     export NIX_CFLAGS_COMPILE="-idirafter /nix/var/nix/profiles/ceh/ghc-libs/include $NIX_CFLAGS_COMPILE"
     ceh_path_prepend "/nix/var/nix/profiles/ceh/ghc-libs/lib/pkgconfig" PKG_CONFIG_PATH || true
-    ceh_nix_install /nix/store/knyqmizvmpi8bm745zbmalksplxd10sq-gcc-wrapper-4.6.3/bin
+    ceh_nixpkgs_install gcc 1.0pre22121_e2e1526 \
+      hg62ihjzhzs5rrxigqv312hkg6jc31dr-gcc-wrapper-4.6.3.drv \
+      knyqmizvmpi8bm745zbmalksplxd10sq-gcc-wrapper-4.6.3
     ceh_path_prepend /nix/store/knyqmizvmpi8bm745zbmalksplxd10sq-gcc-wrapper-4.6.3/bin || {
       echo >&2 "/nix/store/knyqmizvmpi8bm745zbmalksplxd10sq-gcc-wrapper-4.6.3/bin is not installed"
       exit 1
@@ -101,42 +188,5 @@ ceh_gcc_wrapper_for_ghc() {
     CEH_GCC_WRAPPER_FLAGS_SET=1
   fi
 
-  ceh_nix_exec "$@"
-}
-
-# Some software is not in the nix binary cache (mainly for legal reasons).
-#
-# So those can't be installed by their hash value, but they have to be
-# built.  Unfortunately, there is no "source cache" for Nix.  So there
-# is no (binary_hash -> build_instructions) mapping.  You can only
-# build packages that you have the nixpkgs entry for.  As nixpkgs is
-# constantly updated (through their channel), build output is random.
-#
-# With this function you can specify a concrete nixpkgs version to use
-# to instantiate the derivation and use `nix-store -r' to build stuff.
-#
-# Downloaded nixpkgs versions are stored in the profile
-# /nix/var/nix/profiles/ceh/nixpkgs.
-#
-# For a usage example, see bin/firefox.
-#
-# $1: attribute path inside nixpkgs to instantiate (WHATEVER in nixpkgs.WHATEVER)
-# $2: nixpkgs VERSION from http://nixos.org/releases/nixpkgs/nixpkgs-VERSION
-ceh_nix_instantiate_with() {
-  local attr=$1
-  local version=$2
-  # we say that everything is version 1.0, so we can have multiple
-  # versions of different nixpkgs; usual Debian trick: version is part
-  # of the package name :)
-  local cname=ceh_nixpkgs_$version-1.0
-  local nixpkgs=/nix/var/nix/profiles/ceh/nixpkgs/$cname
-
-  [ -L $nixpkgs ] || {
-    mkdir -p /nix/var/nix/profiles/ceh
-    local path=$(PRINT_PATH=1 $CEH_NIX/bin/nix-prefetch-url "http://nixos.org/releases/nixpkgs/nixpkgs-$version/nixexprs.tar.bz2" | tail -n +2)
-    $CEH_NIX/bin/nix-env -p /nix/var/nix/profiles/ceh/nixpkgs -f '<nix/unpack-channel.nix>' -i \
-      -E "f: f { name = \"$cname\"; channelName = \"$cname\"; src = builtins.storePath \"$path\"; binaryCacheURL = \"http://nixos.org/binary-cache/\"; }"
-  }
-
-  $CEH_NIX/bin/nix-instantiate $nixpkgs -A $attr
+  exec "$@"
 }
