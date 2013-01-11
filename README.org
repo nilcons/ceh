@@ -82,3 +82,7 @@ ceh/ghc-libs nix profileba a "-dev csomagokat", pl.:
 ** README.org formazas githubbal
 Kitalalni, hogy hogyan kell org mode-ot es github readmet egyutt
 hasznalni, hogy a formazasa a kod szegmenseknek <pre> legyen...
+
+** /usr/lib/mozilla/plugins elrejtese LD_PRELOAD-dal a firefox elol
+
+** exclusion mechanizmus /opt/ceh/bin-user, ceh_exclude script
