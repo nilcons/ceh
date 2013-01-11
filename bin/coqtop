@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+. /opt/ceh/scripts/common-functions.sh
+
+ceh_nixpkgs_install coq 1.0pre23270_6f1aad7 \
+    kqiq8w1dkwnn1pw0ddwin8rxg1r3bppr-coq-8.4.drv 0cwwiyz9wkhansy0irz9yh096cdpzwwk-coq-8.4
+    
+exec /nix/store/0cwwiyz9wkhansy0irz9yh096cdpzwwk-coq-8.4/bin/coqtop "$@"
