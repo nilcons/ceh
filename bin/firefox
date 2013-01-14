@@ -22,4 +22,12 @@ ceh_nixpkgs_install firefox17Wrapper 1.0pre22969_d068aa9 \
     wc2lqwvbrycmjzj8ycw72sc8k9g80468-firefox-17.0.1-with-plugins.drv \
     m35rh488kzb2cdcak89pqnmwl4rqsq53-firefox-17.0.1-with-plugins
 
+# TODO(errge): maybe general alsa support in common-functions.sh?
+# This is needed for cases when the user has a ~/.asoundrc that uses
+# modules (e.g. redirects everything through pulseaudio).
+ceh_nixpkgs_install alsaPlugins 1.0pre22969_d068aa9 \
+    raz8xvrrmnb8whj05h7x0sj2vjqi8f2g-alsa-plugins-1.0.26.drv \
+    gd2g1g0znz3kqsvjlamandg6lx99i0xc-alsa-plugins-1.0.26
+export ALSA_PLUGIN_DIRS=/nix/store/gd2g1g0znz3kqsvjlamandg6lx99i0xc-alsa-plugins-1.0.26/lib/alsa-lib
+
 exec /nix/store/m35rh488kzb2cdcak89pqnmwl4rqsq53-firefox-17.0.1-with-plugins/bin/firefox "$@"
