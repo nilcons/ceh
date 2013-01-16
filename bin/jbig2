@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+. /opt/ceh/scripts/common-functions.sh
+
+export NIXPKGS_CONFIG=/opt/ceh/nix-configs/jbig2enc.nix
+
+ceh_nixpkgs_install jbig2enc 1.0pre23218_eda055d \
+    fbazzkfrb1b8i2cxk117lyr6s4diw4pw-jbig2enc-0.28.drv \
+    p5rybidkzqy8hhakfnnyfczhglqyyfhq-jbig2enc-0.28
+
+exec /nix/store/p5rybidkzqy8hhakfnnyfczhglqyyfhq-jbig2enc-0.28/bin/jbig2 "$@"
