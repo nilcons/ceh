@@ -86,3 +86,30 @@ hasznalni, hogy a formazasa a kod szegmenseknek <pre> legyen...
 ** /usr/lib/mozilla/plugins elrejtese LD_PRELOAD-dal a firefox elol
 
 ** exclusion mechanizmus /opt/ceh/bin-user, ceh_exclude script
+
+* Techtalk
+Title: Nix & ceh: reproducible power-user environment
+Abstract:
+
+It's common for engineers to use multiple GNU/Linux based computers
+daily, however it's not easy to achieve the same working environment
+on each of them.
+
+Computers owned by the company may run the company's linux variant,
+while computers at home run some common distribution.  Some of the
+running variants are already 64-bit, some are not.  Some of them is 2
+years old, some of them is fresh.
+
+On top of this mixture, it's hard to imagine to run exactly the same
+version of GNU Emacs or Mozilla Firefox (with all the hard to install
+plugins: flash, googletalk, java), without installing a common base
+operating system.
+
+This is the problem that I wanted a solution for, when I looked into
+the Nix package manager and the Nixpkgs package collection.  After a
+month of exploration I now have a working setup (called ceh), that I
+run on all of my computers to synchronize (via Git) the choice of
+software between them.
+
+In the techtalk I will present the fundamentals of Nix and show ceh,
+my setup around Nix.
