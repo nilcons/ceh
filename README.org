@@ -1,91 +1,73 @@
-* Nix szeretok cehe
-+ Közös megállapodások és repositoryk a linuxos fejlesztői környezeteinkről.
-+ Hogy könnyű legyen mindenkinél működő programokat írni.
-  - Pl. haskell header lehessen `#!/opt/ceh/bin/runhaskell' bonyolítás helyett.
-+ Hogyha a hasznos csomagok mindenkinél fel legyenek telepítve.
-  - Pl. ghc.
-+ A megállapodások szándékosan minél egyszerűbb unifikációra
-  törekszenek, nem absztrakcióra.
-+ nix-et használunk package managementre, mert úgy tűnik, hogy meg
-  lehet vele oldani egyszerűen bináris csomagok pontos repródukálását
-  vegyes linuxok között.
-+ a nix-ünk i686 és azt ajánljuk, hogy a gépeinken is i686 legyen a
-  debian.  Ez nem követelmény és továbbá ajánlott az i686 debiant
-  amd64 kernellel használni (ami tökéletesen működik), hogy lehetővé
-  váljon esetenként amd64 kódok futtatása, ha a performance igényli.
+* Guild for people who likes Nix
++ Agreements and repositories for a shared GNU/Linux power-user environment.
++ So that it's easy to work on shared project that work for everyone.
+  - E.g. the haskell header can be #!/opt/ceh/bin/runhaskell, instead
+    of some complicated perl one-liner.
++ So that the packages are available with the same version on our machines. 
+  - E.g. emacs and ghc.
++ These agreements are intentionally based on simple unifications instead of
+  abstractions.
++ We use i686 Nix for package management and if you can decide the
+  distribution that you use as a base system, we recommend i686 Debian
+  (maybe with amd64 kernel, if you sometimes need the extra registers
+  and stuff for your own programs).  But the point is that this should
+  work on any modern GNU/Linux, we also tested Ubuntu lucid and precise.
 
 
 * Requirements
-+ Valamilyen értelmes linux (gubuntu, debian, ubuntu).
-+ Intel architektúra (i686 vagy amd64, no arm please).
-+ `sudo parancs' rootként futtat parancsot (tehát debianosoknak
-  telepíteni kell a sudo-t).
-+ A nix elboldoguljon az NSS-sel.  Azaz no libnss_cache és no
-  libnss_ldap.  A googlen belül az egyszerű workaround:
-    cat /etc/passwd.cache | grep "^$USER:" | sudo tee -a /etc/passwd
++ Modern GNU/Linux distro (ubuntu, debian, etc.).
++ Intel architecture (i686 or amd64, no arm).
++ `sudo command' runs a command as root (so Debian guys will have to
+  install sudo, Ubuntu guys are all set).
++ /etc/passwd contains your user.
 
 
-* Inicializálás
+* Installation instructions
 sudo mkdir /opt/ceh
 sudo chown $USER. /opt/ceh
 chmod 0700 /opt/ceh
 cd /opt/ceh
 git clone git://github.com/errge/ceh.git .
-#  (if you want to contribute and you have a github user: git@github.com:errge/ceh.git)
 ln -s $HOME home
-
-
-* Nix telepítés
 /opt/ceh/scripts/nix-init.sh
 
 
-* Nix használat
-Az /opt/ceh/bin/-ben kis wrapper scriptek vannak, amik ha valami még
-nincs feltelepítve, amit a user elindított, akkor feltelepítik.  Tehát
-nincs semmi tennivaló, amennyiben a PATH-ben benne van az
-/opt/ceh/bin/, akkor onnan ezeken a kis wrappereken keresztül a
-programoknak működniük kell.
+* Everyday usage
+In the /opt/ceh/bin/ directory there are small wrapper scripts.  Those
+install the required pacakages for the wrapped binaries on first run.
+
+/opt/ceh/bin is put into $PATH by /opt/ceh/scripts/nix-profile.sh,
+that you're supposed to source from your bashrc.
 
 
-* Haskell csomagok forditasa cabal-lal
-Van a nix-nek technologiaja a ghc meghackelesere, hogy a cabal
-csomagokat is o kezelje, de ehhez karbantartanak config fileokat, amik
-a cabal csomagokat irjak le egyesevel.  Ez azt jelenti, hogy
-laggolnank a hackagehez kepest es plusz bonyolitasokat kellene
-felvallalnunk.  Az ut, amit megprobalunk az inkabb az, hogy a cabal-t
-onmagaban hasznaljuk haskell libek feltelepitesehez, nem a nix-en
-keresztul.  A nix csupan a haskell libek leforditasahoz szukseges c
-libeket fogja adni.
+* Installation of haskell packages with cabal
+** Pure haskell, non-FFI packages
+The /opt/ceh/bin/ghc and /opt/ceh/bin/cabal scripts are wrapped in a
+way that the whole toolchain (ghc, gcc, ld) is used from Nix.
 
-Eloszor allitsuk be, hogy kerunk library profiling-ot:
+This means that simple, non-FFI packages should just work out-of-the-box:
   cabal update
-  vi ~/.cabal/config (es engedelyezni a library-profiling-ot)
+  vi ~/.cabal/config    (enable library-profiling if you want)
+  cabal install hflags
 
-Mivel a nix (i386) architekturaja elterhet a gep (amd64)
-architekturajatol, az egesz toolchainbol a nix-et akarjuk hasznalni,
-nem csak ghc-bol.  Tehat ld, gcc, g++, minden.  Ezt erik el a
-/opt/ceh/bin-ben levo kis wrapper scriptek, ami cabal, ghci, ghc,
-stb. futtatasa eseten megmachinaljak a PATH-t, CFLAGS-t, LDFLAGS-t oly
-modon, hogy ne a distrib binutils-a legyen hasznalva, hanem a nix-e.
-Valamint ezek a wrapperek azt is elintezik, hogy a clibeket a FFI
-libraryk a /nix/var/nix/profiles/ceh/ghc-libs/ prefix alatt keressek.
-
-Ez azt jelenti, hogy egyszeru, FFI mentes haskell csomagok telepitese
-egyszeruen out-of-the-box mukodik (cabal install whatever).
-
-FFI csomagok eseten termeszetesen szukseges elotte feltelpiteni a
-ceh/ghc-libs nix profileba a "-dev csomagokat", pl.:
-  ceh_nix_install_for_ghc /nix/store/9pn5796z6nz827inhq560zdispvkpzr8-openssl-1.0.0i
+** FFI packages
+For FFI packages to work, you of course need to have the required
+clibs installed, so the package can FFI against it.  There is a
+special nix profile where we keep all the clibs nix packages needed
+for haskell compilations.  To install a new package to this profile
+and then install the haskell package, do something like this:
+  ceh_nixpkgs_install_for_ghc openssl 1.0pre23270_6f1aad7 4zvxbx66y0dsfil57ixgwzrvpxfcx8dg-openssl-1.0.0i.drv 9pn5796z6nz827inhq560zdispvkpzr8-openssl-1.0.0i
+  cabal install HsOpenSSL
 
 
-* TODO-k
-** README.org formazas githubbal
-Kitalalni, hogy hogyan kell org mode-ot es github readmet egyutt
-hasznalni, hogy a formazasa a kod szegmenseknek <pre> legyen...
+* TODOs
+** README.org formatting with github
+Figure out how to format the README.org so that it works with org-mode and github.
 
-** /usr/lib/mozilla/plugins elrejtese LD_PRELOAD-dal a firefox elol
+** Have an LD_PRELOAD that hides /usr/lib/mozilla/plugins from Firefox's view.
 
-** exclusion mechanizmus /opt/ceh/bin-user, ceh_exclude script
+** Exclusion mechanism via /opt/ceh/bin-user and a ceh_exclude script.
+
 
 * Techtalk
 Title: Nix & ceh: reproducible power-user environment

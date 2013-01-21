@@ -1,8 +1,5 @@
 #!/bin/bash -ex
 
-# ellenorzesek TODO(errge):
-#  - locpath-ban megvannak a szukseges locale-ok
-
 export LANG=C LC_ALL=C
 
 if [ ! -d /nix ]
