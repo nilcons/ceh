@@ -1,12 +1,12 @@
-* Guild for people who likes Nix
+* Guild for people who like Nix
 + Agreements and repositories for a shared GNU/Linux power-user environment.
-+ So that it's easy to work on shared project that work for everyone.
-  - E.g. the haskell header can be #!/opt/ceh/bin/runhaskell, instead
-    of some complicated perl one-liner.
-+ So that the packages are available with the same version on our machines. 
-  - E.g. emacs and ghc.
-+ These agreements are intentionally based on simple unifications instead of
-  abstractions.
++ So that it's easy to work on shared projects (e.g. the haskell
+  header can be =#!/opt/ceh/bin/runhaskell=, instead of some
+  complicated perl one-liner).
++ So that the packages are available with the same version on our
+  machines (e.g. =emacs= and =ghc=).
++ These agreements are intentionally based on simple unifications
+  instead of abstractions.
 + We use i686 Nix for package management and if you can decide the
   distribution that you use as a base system, we recommend i686 Debian
   (maybe with amd64 kernel, if you sometimes need the extra registers
@@ -17,81 +17,84 @@
 * Requirements
 + Modern GNU/Linux distro (ubuntu, debian, etc.).
 + Intel architecture (i686 or amd64, no arm).
-+ `sudo command' runs a command as root (so Debian guys will have to
-  install sudo, Ubuntu guys are all set).
-+ /etc/passwd contains your user.
++ =sudo command= runs a command as root (so Debian guys will have to
+  install sudo, Ubuntu guys are all set).  Root privileges is only
+  used for initial installation to create the =/opt/ceh= and =/nix=
+  directory and change the ownership of those to the user.  Root
+  privileges are not needed for everyday usage and package
+  installations.
++ =/etc/passwd= contains your user, so nix doesn't have to use any
+  fancy NSS modules.
 
 
 * Installation instructions
-sudo mkdir /opt/ceh
-sudo chown $USER. /opt/ceh
-chmod 0700 /opt/ceh
-cd /opt/ceh
-git clone git://github.com/errge/ceh.git .
-ln -s $HOME home
-/opt/ceh/scripts/nix-init.sh
+: sudo mkdir /opt/ceh
+: sudo chown $USER. /opt/ceh
+: chmod 0700 /opt/ceh
+: cd /opt/ceh
+: git clone git://github.com/errge/ceh.git .
+: ln -s $HOME home
+: /opt/ceh/scripts/nix-init.sh
 
 
 * Everyday usage
-In the /opt/ceh/bin/ directory there are small wrapper scripts.  Those
+In the =/opt/ceh/bin= directory there are small wrapper scripts.  Those
 install the required pacakages for the wrapped binaries on first run.
 
-/opt/ceh/bin is put into $PATH by /opt/ceh/scripts/nix-profile.sh,
-that you're supposed to source from your bashrc.
+=/opt/ceh/bin= is put into =$PATH= by =/opt/ceh/scripts/nix-profile.sh=,
+that you're supposed to source from your =~/.bashrc=.
 
 
 * Installation of haskell packages with cabal
-** Pure haskell, non-FFI packages
+*** Pure haskell, non-FFI packages
+
 The /opt/ceh/bin/ghc and /opt/ceh/bin/cabal scripts are wrapped in a
 way that the whole toolchain (ghc, gcc, ld) is used from Nix.
 
 This means that simple, non-FFI packages should just work out-of-the-box:
-  cabal update
-  vi ~/.cabal/config    (enable library-profiling if you want)
-  cabal install hflags
+: cabal update
+: vi ~/.cabal/config    (enable library-profiling if you want)
+: cabal install hflags
 
-** FFI packages
+*** FFI packages
 For FFI packages to work, you of course need to have the required
 clibs installed, so the package can FFI against it.  There is a
 special nix profile where we keep all the clibs nix packages needed
 for haskell compilations.  To install a new package to this profile
 and then install the haskell package, do something like this:
-  ceh_nixpkgs_install_for_ghc openssl 1.0pre23270_6f1aad7 4zvxbx66y0dsfil57ixgwzrvpxfcx8dg-openssl-1.0.0i.drv 9pn5796z6nz827inhq560zdispvkpzr8-openssl-1.0.0i
-  cabal install HsOpenSSL
+: ceh_nixpkgs_install_for_ghc openssl 1.0pre23270_6f1aad7 4zvxbx66y0dsfil57ixgwzrvpxfcx8dg-openssl-1.0.0i.drv 9pn5796z6nz827inhq560zdispvkpzr8-openssl-1.0.0i
+: cabal install HsOpenSSL
 
 
 * TODOs
-** README.org formatting with github
-Figure out how to format the README.org so that it works with org-mode and github.
-
-** Have an LD_PRELOAD that hides /usr/lib/mozilla/plugins from Firefox's view.
-
-** Exclusion mechanism via /opt/ceh/bin-user and a ceh_exclude script.
++ Have an LD_PRELOAD library that hides =/usr/lib/mozilla/plugins= from Firefox's view.
++ Exclusion mechanism via =/opt/ceh/bin-user= and a =ceh_exclude= script.
 
 
 * Techtalk
-Title: Nix & ceh: reproducible power-user environment
-Abstract:
-
-It's common for engineers to use multiple GNU/Linux based computers
-daily, however it's not easy to achieve the same working environment
-on each of them.
-
-Computers owned by the company may run the company's linux variant,
-while computers at home run some common distribution.  Some of the
-running variants are already 64-bit, some are not.  Some of them is 2
-years old, some of them is fresh.
-
-On top of this mixture, it's hard to imagine to run exactly the same
-version of GNU Emacs or Mozilla Firefox (with all the hard to install
-plugins: flash, googletalk, java), without installing a common base
-operating system.
-
-This is the problem that I wanted a solution for, when I looked into
-the Nix package manager and the Nixpkgs package collection.  After a
-month of exploration I now have a working setup (called ceh), that I
-run on all of my computers to synchronize (via Git) the choice of
-software between them.
-
-In the techtalk I will present the fundamentals of Nix and show ceh,
-my setup around Nix.
+: Title: Nix & ceh: reproducible power-user environment
+:
+: Abstract:
+:
+: It's common for engineers to use multiple GNU/Linux based computers
+: daily, however it's not easy to achieve the same working environment
+: on each of them.
+:
+: Computers owned by the company may run the company's linux variant,
+: while computers at home run some common distribution.  Some of the
+: running variants are already 64-bit, some are not.  Some of them is 2
+: years old, some of them is fresh.
+:
+: On top of this mixture, it's hard to imagine to run exactly the same
+: version of GNU Emacs or Mozilla Firefox (with all the hard to install
+: plugins: flash, googletalk, java), without installing a common base
+: operating system.
+:
+: This is the problem that I wanted a solution for, when I looked into
+: the Nix package manager and the Nixpkgs package collection.  After a
+: month of exploration I now have a working setup (called ceh), that I
+: run on all of my computers to synchronize (via Git) the choice of
+: software between them.
+:
+: In the techtalk I will present the fundamentals of Nix and show ceh,
+: my setup around Nix.
