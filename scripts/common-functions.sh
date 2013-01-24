@@ -158,6 +158,11 @@ ceh_nixpkgs_install_tools() {
   ceh_nixpkgs_install "$1" "$2" "$3" "$4" /nix/var/nix/profiles/ceh/tools
 }
 
+# Use this profile when you're installing packages for emacs.
+ceh_nixpkgs_install_for_emacs() {
+  ceh_nixpkgs_install "$1" "$2" "$3" "$4" /nix/var/nix/profiles/ceh/emacs
+}
+
 ceh_exclude() {
   [ -n "$1" ] || {
     echo >&2 "Usage: ceh_exclude <executable-to-exclude-from-ceh>"
