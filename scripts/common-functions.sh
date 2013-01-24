@@ -149,7 +149,7 @@ ceh_nixpkgs_install () {
 }
 
 ceh_nixpkgs_install_for_ghc() {
-  ceh_nixpkgs_install $1 $2 $3 $4 /nix/var/nix/profiles/ceh/ghc-libs
+  ceh_nixpkgs_install "$1" "$2" "$3" "$4" /nix/var/nix/profiles/ceh/ghc-libs
 }
 
 # Prepends $1 to the front of $2 (which should be a colon separated

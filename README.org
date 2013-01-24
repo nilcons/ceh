@@ -25,6 +25,9 @@
   installations.
 + =/etc/passwd= contains your user, so nix doesn't have to use any
   fancy NSS modules.
++ The user uses bash or zsh.  This is because he has to source
+  /opt/ceh/scripts/nix-profile.sh which supports these two shells.
+  Patches are welcome for other shells.
 
 
 * Installation instructions
