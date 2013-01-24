@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+. /opt/ceh/scripts/common-functions.sh
+
+ceh_exclude "$@"

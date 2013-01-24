@@ -47,6 +47,13 @@ install the required pacakages for the wrapped binaries on first run.
 =/opt/ceh/bin= is put into =$PATH= by =/opt/ceh/scripts/nix-profile.sh=,
 that you're supposed to source from your =~/.bashrc=.
 
+*** Exclusions: ignoring programs provided by ceh
+If for any reason you prefer to ignore one of our provided binaries,
+you can use the =ceh_exclude= script to create a symlink from
+=/opt/ceh/bin-user/= to the other version of the binary in your PATH.
+
+If you don't want the exclusion anymore, just delete the symlink.
+
 
 * Installation of haskell packages with cabal
 *** Pure haskell, non-FFI packages

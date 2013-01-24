@@ -1,0 +1,10 @@
+# This directory is for exclusions.
+#
+# Let's assume that you favor to use the system's tmux over ceh's
+# tmux.  In that case, you can simply run `ceh_exclude tmux'.
+#
+# This will create the symlink: /opt/ceh/bin-user/tmux -> /usr/bin/tmux.
+#
+# Since /opt/ceh/bin-user prepends /opt/ceh/bin in $PATH, this will
+# exclude the ceh provided tmux from being used.
+*

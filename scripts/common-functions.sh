@@ -152,6 +152,43 @@ ceh_nixpkgs_install_for_ghc() {
   ceh_nixpkgs_install "$1" "$2" "$3" "$4" /nix/var/nix/profiles/ceh/ghc-libs
 }
 
+# Use this profile when you're installing packages used only by the
+# functions in these files.  E.g. the which package for ceh_exclude.
+ceh_nixpkgs_install_tools() {
+  ceh_nixpkgs_install "$1" "$2" "$3" "$4" /nix/var/nix/profiles/ceh/tools
+}
+
+ceh_exclude() {
+  [ -n "$1" ] || {
+    echo >&2 "Usage: ceh_exclude <executable-to-exclude-from-ceh>"
+    return 1
+  }
+
+  [ -e "/opt/ceh/bin-user/$1" ] && {
+    echo >&2 "Already excluded, /opt/ceh/bin-user/$1 already exists"
+    return 1
+  }
+
+  [ -x "/opt/ceh/bin/$1" ] || {
+    echo >&2 "/opt/ceh/bin/$1 is not an executable, can't be excluded"
+    return 1
+  }
+
+  ceh_nixpkgs_install_tools which 1.0pre23218_eda055d \
+    q2bl85vvnvsdrcfbjxjizg0yvlip94bj-which-2.20.drv \
+    s3ilf7fffhkydmcl7ccrb0sq6808lyan-which-2.20
+
+  REALBIN=$(/nix/store/s3ilf7fffhkydmcl7ccrb0sq6808lyan-which-2.20/bin/which -a "$1" | grep -v ^/opt/ceh/bin | head -n1)
+
+  [ -n "$REALBIN" ] || {
+    echo >&2 "No non-ceh binary found in your PATH for $1"
+    return 1
+  }
+
+  echo >&2 "Excluding $1: creating symlink from /opt/ceh/bin-user/$1 -> $REALBIN"
+  ln -s "$REALBIN" "/opt/ceh/bin-user/$1"
+}
+
 # Prepends $1 to the front of $2 (which should be a colon separated
 # list).  If $1 is already contained in $2, deletes the old occurrence
 # first.  $2 defaults to PATH.  No-op if $1 is not a directory.
