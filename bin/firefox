@@ -15,19 +15,17 @@
 #
 # Do not ever mix 64-bit plugins with this 32-bit firefox!
 
-# To enable google talk plugin and jre plugin.
-export NIXPKGS_CONFIG=/opt/ceh/nix-configs/firefox.nix
-
-ceh_nixpkgs_install firefox17Wrapper 1.0pre22969_d068aa9 \
-    wc2lqwvbrycmjzj8ycw72sc8k9g80468-firefox-17.0.1-with-plugins.drv \
-    m35rh488kzb2cdcak89pqnmwl4rqsq53-firefox-17.0.1-with-plugins
-
 # TODO(errge): maybe general alsa support in common-functions.sh?
 # This is needed for cases when the user has a ~/.asoundrc that uses
 # modules (e.g. redirects everything through pulseaudio).
-ceh_nixpkgs_install alsaPlugins 1.0pre22969_d068aa9 \
-    raz8xvrrmnb8whj05h7x0sj2vjqi8f2g-alsa-plugins-1.0.26.drv \
-    gd2g1g0znz3kqsvjlamandg6lx99i0xc-alsa-plugins-1.0.26
-export ALSA_PLUGIN_DIRS=/nix/store/gd2g1g0znz3kqsvjlamandg6lx99i0xc-alsa-plugins-1.0.26/lib/alsa-lib
+ceh_nixpkgs_install alsaPlugins 1.0pre23438_a72c9d7 \
+    gqqmq4c5p3ky30d66fyfcwlcrq3rrify-alsa-plugins-1.0.26.drv \
+    zz0mm65zr6ji1d542mr0nx68dn5gsmnk-alsa-plugins-1.0.26
+export ALSA_PLUGIN_DIRS=$ceh_nix_install_root/lib/alsa-lib
 
-exec /nix/store/m35rh488kzb2cdcak89pqnmwl4rqsq53-firefox-17.0.1-with-plugins/bin/firefox "$@"
+# To enable google talk plugin and jre plugin.
+export NIXPKGS_CONFIG=/opt/ceh/nix-configs/firefox.nix
+ceh_nixpkgs_install firefox18Wrapper 1.0pre23438_a72c9d7 \
+    zlsqzxhsflgfmv7mzymb47hnq3py4hhq-firefox-18.0-with-plugins.drv \
+    bgcsk212dwnqqz18qhvc3j2d3blh69ss-firefox-18.0-with-plugins
+exec $ceh_nix_install_root/bin/firefox "$@"

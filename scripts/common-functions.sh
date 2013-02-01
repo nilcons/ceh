@@ -62,7 +62,9 @@ ceh_nixpkgs_init_version () {
 # Used in wrapper scripts in bin/*.
 #
 # If $1 is an already installed package, returns immediately.
-# Otherwise builds and installs it.
+# Otherwise builds and installs it.  In case of success, sets
+# ceh_nix_install_root to /nix/store/$4, so you don't have to repeat
+# yourself in wrapper scripts.
 #
 # Nix internally uses a binary cache, so may not necessarily build.
 #
@@ -146,6 +148,14 @@ ceh_nixpkgs_install () {
     nix-env -p $profile -i $outpath
     ceh_nix_update_cache $profile
   )
+
+  if [ "$?" -eq 0 ]; then
+    ceh_nix_install_root=/nix/store/$out
+    return 0
+  else
+    ceh_nix_install_root=
+    return $?
+  fi
 }
 
 ceh_nixpkgs_install_for_ghc() {
