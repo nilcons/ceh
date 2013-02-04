@@ -2,8 +2,10 @@
 
 . /opt/ceh/scripts/common-functions.sh
 
+ceh_init_gcc_env_for_ghc
+
 ceh_nixpkgs_install haskellPackages_ghc761.cabalInstall 1.0pre22447_b155a18 \
     fy9zhmcqd1k15nm9nn846a6n77xm6haw-cabal-install-1.16.0.2.drv \
     1rwm3rqflvzvrg67xz1ds2jwh8hvavql-cabal-install-1.16.0.2
 
-ceh_gcc_wrapper_for_ghc /nix/store/1rwm3rqflvzvrg67xz1ds2jwh8hvavql-cabal-install-1.16.0.2/bin/cabal "$@"
+exec $ceh_nix_install_root/bin/cabal "$@"

@@ -51,7 +51,11 @@ ceh_nixpkgs_init_version () {
 
   [ -L $nixpkgs ] || {
     mkdir -p /nix/var/nix/profiles/ceh
+    # TODO(errge): figure out a more "sane" way to do this.
     local path=$(PRINT_PATH=1 $CEH_NIX/bin/nix-prefetch-url "http://nixos.org/releases/nixpkgs/nixpkgs-$version/nixexprs.tar.bz2" | tail -n +2)
+    if [[ -z $path ]]; then
+      path=$(PRINT_PATH=1 $CEH_NIX/bin/nix-prefetch-url "http://nixos.org/releases/nixpkgs/nixpkgs-$version/nixexprs.tar.xz" | tail -n +2)
+    fi
     $CEH_NIX/bin/nix-env -p /nix/var/nix/profiles/ceh/nixpkgs -f '<nix/unpack-channel.nix>' -i \
       -E "f: f { name = \"$cname\"; channelName = \"$cname\"; src = builtins.storePath \"$path\"; binaryCacheURL = \"http://nixos.org/binary-cache/\"; }"
   }
@@ -149,12 +153,13 @@ ceh_nixpkgs_install () {
     ceh_nix_update_cache $profile
   )
 
-  if [ "$?" -eq 0 ]; then
+  local retval=$?
+  if [ "$retval" -eq 0 ]; then
     ceh_nix_install_root=/nix/store/$out
     return 0
   else
     ceh_nix_install_root=
-    return $?
+    return $retval
   fi
 }
 
@@ -218,13 +223,11 @@ ceh_path_prepend() {
     export $list=$new:$trimright
 }
 
-# Executes "$@" with Nix's gcc prepended to PATH and envvars hacked to
+# Initializes Nix's GCC environment for ghc: sets PATH and envvars hacked to
 # include libs installed into the /nix/var/nix/profiles/ceh/ghc-libs profile.
-ceh_gcc_wrapper_for_ghc() {
-  ceh_nixpkgs_install haskellPackages_ghc761.ghc 1.0pre23266_7e1d0c1 \
-    mpsq07qhlpbik9h2fan947amm5bicplf-ghc-7.6.1-wrapper.drv \
-    mgl2y8s7kimxc61z8c537fi93ndg1khw-ghc-7.6.1-wrapper
-
+# Ensures that the appropriate ghc package is installed and exports its path in
+# $ceh_ghc_root.
+ceh_init_gcc_env_for_ghc() {
   if [ -z "$CEH_GCC_WRAPPER_FLAGS_SET" ]; then
     export NIX_LDFLAGS="-L /nix/var/nix/profiles/ceh/ghc-libs/lib $NIX_LDFLAGS"
     export NIX_CFLAGS_COMPILE="-idirafter /nix/var/nix/profiles/ceh/ghc-libs/include $NIX_CFLAGS_COMPILE"
@@ -240,5 +243,8 @@ ceh_gcc_wrapper_for_ghc() {
     CEH_GCC_WRAPPER_FLAGS_SET=1
   fi
 
-  exec "$@"
+  ceh_nixpkgs_install haskellPackages_ghc761.ghc 1.0pre23266_7e1d0c1 \
+    mpsq07qhlpbik9h2fan947amm5bicplf-ghc-7.6.1-wrapper.drv \
+    mgl2y8s7kimxc61z8c537fi93ndg1khw-ghc-7.6.1-wrapper
+  ceh_ghc_root=$ceh_nix_install_root
 }
