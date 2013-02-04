@@ -4,8 +4,8 @@
 
 ceh_init_gcc_env_for_ghc
 
-ceh_nixpkgs_install haskellPackages_ghc761.cabalInstall 1.0pre22447_b155a18 \
-    fy9zhmcqd1k15nm9nn846a6n77xm6haw-cabal-install-1.16.0.2.drv \
-    1rwm3rqflvzvrg67xz1ds2jwh8hvavql-cabal-install-1.16.0.2
+ceh_nixpkgs_install haskellPackages_ghc762.cabalInstall 1.0pre23717_789154b \
+    iw9cp9adf1i59qsn08qbwz40ysh3l9aq-cabal-install-1.16.0.2.drv \
+    id4rbqa5jhw3fcvn06lqanilaaa3w2cg-cabal-install-1.16.0.2
 
 exec $ceh_nix_install_root/bin/cabal "$@"

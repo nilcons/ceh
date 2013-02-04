@@ -243,8 +243,8 @@ ceh_init_gcc_env_for_ghc() {
     CEH_GCC_WRAPPER_FLAGS_SET=1
   fi
 
-  ceh_nixpkgs_install haskellPackages_ghc761.ghc 1.0pre23266_7e1d0c1 \
-    mpsq07qhlpbik9h2fan947amm5bicplf-ghc-7.6.1-wrapper.drv \
-    mgl2y8s7kimxc61z8c537fi93ndg1khw-ghc-7.6.1-wrapper
+  ceh_nixpkgs_install haskellPackages_ghc762.ghc 1.0pre23717_789154b \
+    w2hdx6392d6hyy6hpmk76ss85wfzh2x3-ghc-7.6.2-wrapper.drv \
+    mbwh1yyq5vzrslns8l2a6bz6ph4w0xaz-ghc-7.6.2-wrapper
   ceh_ghc_root=$ceh_nix_install_root
 }
