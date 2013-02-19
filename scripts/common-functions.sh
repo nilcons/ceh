@@ -51,10 +51,21 @@ ceh_nixpkgs_init_version () {
 
   [ -L $nixpkgs ] || {
     mkdir -p /nix/var/nix/profiles/ceh
-    # TODO(errge): figure out a more "sane" way to do this.
-    local path=$(PRINT_PATH=1 $CEH_NIX/bin/nix-prefetch-url "http://nixos.org/releases/nixpkgs/nixpkgs-$version/nixexprs.tar.bz2" | tail -n +2)
-    if [[ -z $path ]]; then
-      path=$(PRINT_PATH=1 $CEH_NIX/bin/nix-prefetch-url "http://nixos.org/releases/nixpkgs/nixpkgs-$version/nixexprs.tar.xz" | tail -n +2)
+    if [[ "$version" =~ ^1.0pre[0-9]*_([0-9a-f]*)$ ]]; then
+      # Standard nixpkgs 1.0pre release from git, let's use github
+      # instead, so we don't depend on nixos.org/releases being
+      # available and on "obsolete" stuff not being deleted.
+      local githash=${BASH_REMATCH[1]}
+
+      local gzpath=$(CURL_CA_BUNDLE=/opt/ceh/ca-bundle.crt PRINT_PATH=1 $CEH_NIX/bin/nix-prefetch-url "https://github.com/NixOS/nixpkgs/archive/$githash.tar.gz" | tail -n +2)
+      local bzpath=${gzpath%.gz}.bz2
+      zcat $gzpath | bzip2 -1zc >$bzpath
+      local path=$(PRINT_PATH=1 $CEH_NIX/bin/nix-prefetch-url "file://$bzpath" | tail -n +2)
+    else
+      local path=$(PRINT_PATH=1 $CEH_NIX/bin/nix-prefetch-url "http://nixos.org/releases/nixpkgs/nixpkgs-$version/nixexprs.tar.bz2" | tail -n +2)
+      if [[ -z $path ]]; then
+	path=$(PRINT_PATH=1 $CEH_NIX/bin/nix-prefetch-url "http://nixos.org/releases/nixpkgs/nixpkgs-$version/nixexprs.tar.xz" | tail -n +2)
+      fi
     fi
     $CEH_NIX/bin/nix-env -p /nix/var/nix/profiles/ceh/nixpkgs -f '<nix/unpack-channel.nix>' -i \
       -E "f: f { name = \"$cname\"; channelName = \"$cname\"; src = builtins.storePath \"$path\"; binaryCacheURL = \"http://nixos.org/binary-cache/\"; }"
