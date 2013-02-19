@@ -6,4 +6,4 @@ ceh_nixpkgs_install tmux 1.0pre23266_7e1d0c1 \
     xvjwbd3cakc8yv2j5vvkcwb2bd4nak51-tmux-1.5.drv \
     g172xfs84slh4hxg4fi1xwr7pllrvzvn-tmux-1.5
 
-exec /nix/store/g172xfs84slh4hxg4fi1xwr7pllrvzvn-tmux-1.5/bin/tmux "$@"
+exec $ceh_nix_install_root/bin/tmux "$@"
