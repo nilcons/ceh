@@ -1,7 +1,5 @@
 #!/bin/bash -e
 
-. /opt/ceh/scripts/common-functions.sh
-
-ceh_init_gcc_env_for_ghc
+. /opt/ceh/packages/ghc.sh
 
 exec $ceh_ghc_root/bin/ghc "$@"

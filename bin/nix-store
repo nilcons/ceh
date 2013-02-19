@@ -1,1 +1,5 @@
-/nix/store/rab7ylyjhc6cly6gf1h7dpybyi7z9758-nix-1.2/bin/nix-store
+#!/bin/bash -e
+
+. /opt/ceh/scripts/common-functions.sh
+
+exec $CEH_NIX/bin/nix-store "$@"
