@@ -5,12 +5,12 @@
     {
       vboot_reference = pkgs.callPackage (
 	{stdenv, fetchgit, pkgconfig, libuuid, openssl, libyaml, lzma}: stdenv.mkDerivation {
-	  name = "vboot_reference-R263701B";
+	  name = "vboot_reference-37.43837.2";
 
 	  src = fetchgit {
 	    url = "http://git.chromium.org/git/chromiumos/platform/vboot_reference.git";
-	    rev = "refs/heads/release-R26-3701.B";
-	    sha256 = "89520e6810d0900a94a74ce77ca872a42cd7c2782f38189bdafc23433f02fd91";
+	    rev = "refs/changes/37/43837/2";
+	    sha256 = "0f2ll8gxr7ws8bz97vlpkmvk29i3imj3d00gf2h5b7v0yb0sq5bw";
 	  };
 
 	  buildInputs = [ pkgconfig
@@ -19,8 +19,8 @@
 	                  openssl libyaml lzma ];
 
 	  buildPhase = ''
-	    make cgpt
-	    make `pwd`/build/utility/vbutil_kernel
+	    make ARCH=x86 cgpt
+	    make ARCH=x86 `pwd`/build/utility/vbutil_kernel
 	  '';
 
 	  installPhase = ''
