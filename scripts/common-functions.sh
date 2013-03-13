@@ -140,6 +140,11 @@ ceh_nixpkgs_install () {
       return 1
     }
 
+    [ "$CEH_INSTALL_AUTOHASH" = 1 -a -z "$derivation" ] && {
+      derivation=${current_derivation#/nix/store/}
+      echo >&2 "*** Autoguessed derivation: $derivation"
+    }
+
     [ "/nix/store/$derivation" = "$current_derivation" ] || {
       echo >&2 "derivation was unspecified or incorrect, rerun like this:"
       echo >&2 "ceh_nixpkgs_install $pkgattr $nixpkgs_version ${current_derivation#/nix/store/}"
@@ -152,6 +157,11 @@ ceh_nixpkgs_install () {
     }
 
     local outpath=$(nix-store -q $current_derivation)
+    [ "$CEH_INSTALL_AUTOHASH" = 1 -a -z "$out" ] && {
+      out=${outpath#/nix/store/}
+      echo >&2 "*** Autoguessed    outpath: $out"
+    }
+
     [ "/nix/store/$out" = "$outpath" ] || {
       echo >&2 "nix out dir was unspecified or incorrect, rerun like this:"
       echo >&2 "ceh_nixpkgs_install $pkgattr $nixpkgs_version $derivation ${outpath#/nix/store/}"
