@@ -4,7 +4,7 @@
 
 export NIXPKGS_CONFIG=/opt/ceh/packages/coursera.nix
 ceh_nixpkgs_install coursera-dl 1.0pre25022_470a015 \
-    q2vrl0nnhh9dk9y4v08p81jgic47mjfb-coursera-dl-20130318.drv \
-    0blvzw174jg2fkkv7s1i462ry1nvssfi-coursera-dl-20130318
+    8vl3bqrcxarw37d3527lf3qzvv01nby9-coursera-dl-20130407.drv \
+    j4ifhcbnnb4cp8v3fsxmwrqj4dfy23y9-coursera-dl-20130407
 
 exec $ceh_nix_install_root/bin/coursera-dl "$@"
