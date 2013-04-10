@@ -12,6 +12,9 @@
 # firefox from a terminal and watch stderr.
 #
 # Do not ever mix 64-bit plugins with this 32-bit firefox!
+# TODO(errge): an ld_preload hack that purifies this plugin issue, by
+# hiding /usr/lib/mozilla, ~/.mozilla/plugins and whatever else that
+# is needed.
 
 # TODO(errge): maybe general alsa support in common-functions.sh?
 # This is needed for cases when the user has a ~/.asoundrc that uses
@@ -23,6 +26,6 @@ export ALSA_PLUGIN_DIRS=$ceh_nix_install_root/lib/alsa-lib
 
 # To enable google talk plugin and jre plugin.
 export NIXPKGS_CONFIG=/opt/ceh/packages/firefox.nix
-ceh_nixpkgs_install firefox18Wrapper 1.0pre23438_a72c9d7 \
-    zlsqzxhsflgfmv7mzymb47hnq3py4hhq-firefox-18.0-with-plugins.drv \
-    bgcsk212dwnqqz18qhvc3j2d3blh69ss-firefox-18.0-with-plugins
+ceh_nixpkgs_install firefox20Wrapper 1.0pre25551_bfa358c \
+    k4vdbd0sba15n477jm55ynklwai4i1g7-firefox-20.0-with-plugins.drv \
+    mibbyizczh0wc8ly7x1s0pisjv83a8x6-firefox-20.0-with-plugins
