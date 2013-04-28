@@ -78,7 +78,6 @@ and then install the haskell package, do something like this:
 
 * TODOs
 + Have an LD_PRELOAD library that hides =/usr/lib/mozilla/plugins= from Firefox's view.
-+ Exclusion mechanism via =/opt/ceh/bin-user= and a =ceh_exclude= script.
 
 
 * Techtalk
@@ -108,3 +107,70 @@ and then install the haskell package, do something like this:
 :
 : In the techtalk I will present the fundamentals of Nix and show ceh,
 : my setup around Nix.
+
+* Design ideas for V2
+** What issues do we have
+*** More consistent nixpkgs version for different packages
+Currently ceh_nixpkgs_install supports using different nixpkgs
+versions for every executable.  It's so efficient in what it does,
+that we don't care at all about using the same nixpkgs in different
+packages.
+
+This seems to be working alright, but it's definitely responsible for
+the pretty big usage of disk space in /nix/store.
+
+It'd be nice to have some baseline nixpkgs version that all the easy
+packages use: emacs, coq, androidsdk, ghc, python3, tmux, etc.  And
+we'd only use newer nixpkgs version for packages that have to be new:
+e.g. firefox, coursera-dl.  Of course we'd move the baseline quite
+frequently, so we keep ourselves generally fresh (e.g. every 3
+months?).
+
+*** All these hashes are a bit painful to have
+We know, that nixpkgs_version+package_name+$NIXPKGS_CONFIG determines
+the derivation and the output hash, so we only include those hashes to
+catch an inconsistency when the result of this mapping is not
+consistent with previous results on other machines.
+
+This never have actually happened to anyone, I know.
+
+Therefore maybe it's a bit too much work we do to achieve this
+unneeded extra safety.  We definitely don't need both hashes, having
+the derivation hash is totally superfluous.
+
+If we decide to get rid of both hashes, then we still should have a
+log file with the installations done or maybe a command to list all
+the ceh installed packages with hashes, so users can compare there
+machines to debug issues.
+
+** Missing features
+*** Easy upgradability for packages
+Let's assume that I'm willing to spend 2 minutes now to try out if
+tmux works even with a newer nixpkgs (the next baseline, or whatever).
+It'd be nice to have some environment variable that the user can
+switch and will result in all installations trying to use some new
+nixpkgs version.  After the user tests that everything works, she
+should see the needed {hash, nixpkgs version, etc.} changes in
+git status /opt/ceh.  So if everything works she would just have to
+git commit.
+
+Since some packages have version in their name (e.g. firefox20Wrapper
+or haskellPackages_ghc762.ghc), this won't be ever totally automatic,
+but in those cases at least the user will notice when ceh is using
+some packages that are not even there in newer nixpkgs.
+
+*** Install world
+Installation of all the packages currently found anywhere in /opt/ceh.
+Without starting the installed programs of course.
+
+I see two use cases for this.
+
+First, on demand installs are very cool, but if you are going out to
+have dinner anyways, than installing everything now and just using
+your new machine when you come back is even better.
+
+Second, we would have a way to test the whole system to see if stuff
+can still get installed.  We could run this on a server every day or
+so (and export the resulting hashes if we decide to get rid of those
+on normal usage, so users will have something to compare their
+machines to).
