@@ -2,8 +2,8 @@
 
 . /opt/ceh/scripts/common-functions.sh
 
-ceh_nixpkgs_install ack 1.0pre25656_f118491 \
-    jdgx8zdisnv51r1qvb6sm9ipqwkdjgd7-perl-ack-2.02.drv \
+ceh_nixpkgs_install ack 1.0pre25931_1073187 \
+    s3crzkpqjbqf7qn7sz6f3snvcg1n1rb1-perl-ack-2.02.drv \
     vvchyvmy7a9ynq0anw959szv2yp3y433-perl-ack-2.02
 
 exec $ceh_nix_install_root/bin/ack "$@"

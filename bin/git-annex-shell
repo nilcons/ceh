@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+. /opt/ceh/packages/git-annex.sh
+
+exec $ceh_nix_install_root/bin/git-anex-shell "$@"
