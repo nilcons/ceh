@@ -4,7 +4,7 @@
 # so in shell scripts that use these functions, you have to use
 # #!/bin/bash as the she-bang line, not #!/bin/sh.
 
-export CEH_NIX=/nix/store/rab7ylyjhc6cly6gf1h7dpybyi7z9758-nix-1.2
+export CEH_NIX=/nix/store/k0ksg8yjwz026vwivcnkjwfmv4jbkqyl-nix-1.5.1
 
 # This creates a cache to make it cheaper to check if a derivation is
 # installed in a profile.  The idea is that profiles are immutable, so

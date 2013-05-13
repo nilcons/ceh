@@ -44,12 +44,12 @@ then
 fi
 
 cd /tmp
-wget -c http://hydra.nixos.org/build/3455278/download/1/nix-1.2-i686-linux.tar.bz2
+wget -c http://hydra.nixos.org/build/4253993/download/1/nix-1.5.1-i686-linux.tar.bz2
 chmod 0700 /nix
-( cd / && tar -x --delay-directory-restore -j -f /tmp/nix-1.2-i686-linux.tar.bz2 /nix )
+( cd / && tar -x --delay-directory-restore -j -f /tmp/nix-1.5.1-i686-linux.tar.bz2 /nix )
 
 # Stolen from /usr/bin/nix-finish-install & /etc/profile.d/nix.sh
-nix=/nix/store/rab7ylyjhc6cly6gf1h7dpybyi7z9758-nix-1.2
+nix=/nix/store/k0ksg8yjwz026vwivcnkjwfmv4jbkqyl-nix-1.5.1
 regInfo=/nix/store/reginfo
 
 $nix/bin/nix-store --load-db < $regInfo
@@ -57,8 +57,6 @@ $nix/bin/nix-store --load-db < $regInfo
 # Set up the symlinks
 mkdir -m 0755 -p /nix/var/nix/profiles/per-user/$USER
 ln -s /nix/var/nix/profiles/per-user/$USER/profile $HOME/.nix-profile
-# TODO(errge): is this gcroot needed at all?
-mkdir -m 0755 -p /nix/var/nix/gcroots/per-user/$USER
 mkdir $HOME/.nix-defexpr
 
 # Create the first user environment
@@ -73,7 +71,7 @@ $nix/bin/nix-channel --update
 
     cat <<EOF
 Installation finished.  To ensure that the necessary environment
-variables are set, please add the lines
+variables are set, please add the line
 
   source /opt/ceh/scripts/nix-profile.sh
 
