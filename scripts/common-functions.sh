@@ -6,28 +6,6 @@
 # so in shell scripts that use these functions, you have to use
 # #!/bin/bash as the she-bang line, not #!/bin/sh.
 
-# This creates a cache to make it cheaper to check if a derivation is
-# installed in a profile.  The idea is that profiles are immutable, so
-# we can create an installed_derivations top-level dir in them with
-# one file touched for each package.
-#
-# $1 is the profile path (defaults to /opt/ceh/home/.nix-profile).
-ceh_nix_update_cache() {
-  local profile=${1-$(readlink /opt/ceh/home/.nix-profile)}
-  [ -e $profile/installed_derivations/done ] && return 0
-
-  # If the profile doesn't exist, the cache can't be created.
-  [ -L $profile ] || return 0
-
-  chmod u+w $profile/
-  mkdir $profile/installed_derivations
-  chmod u-w $profile/
-  for i in $($CEH_NIX/bin/nix-env -p $profile --no-name --out-path -q '*'); do
-    touch $profile/installed_derivations/${i#/nix/store/}
-  done
-  touch $profile/installed_derivations/done
-}
-
 # Downloads and initializes a specific nixpkgs version into the
 # /nix/var/nix/profiles/ceh/nixpkgs profile, so it can be used for
 # builds later.
@@ -72,6 +50,28 @@ ceh_nixpkgs_init_version () {
   }
 
   export NIX_PATH=ceh_nixpkgs=$nixpkgs
+}
+
+# This creates a cache to make it cheaper to check if a derivation is
+# installed in a profile.  The idea is that profiles are immutable, so
+# we can create an installed_derivations top-level dir in them with
+# one file touched for each package.
+#
+# $1 is the profile path (defaults to /opt/ceh/home/.nix-profile).
+ceh_nix_update_cache() {
+  local profile=${1-$(readlink /opt/ceh/home/.nix-profile)}
+  [ -e $profile/installed_derivations/done ] && return 0
+
+  # If the profile doesn't exist, the cache can't be created.
+  [ -L $profile ] || return 0
+
+  chmod u+w $profile/
+  mkdir $profile/installed_derivations
+  chmod u-w $profile/
+  for i in $($CEH_NIX/bin/nix-env -p $profile --no-name --out-path -q '*'); do
+    touch $profile/installed_derivations/${i#/nix/store/}
+  done
+  touch $profile/installed_derivations/done
 }
 
 # Used in wrapper scripts in bin/*.
@@ -199,38 +199,7 @@ ceh_nixpkgs_install_for_emacs() {
   ceh_nixpkgs_install "$1" "$2" "$3" "$4" /nix/var/nix/profiles/ceh/emacs
 }
 
-ceh_exclude() {
-  [ -n "$1" ] || {
-    echo >&2 "Usage: ceh_exclude <executable-to-exclude-from-ceh>"
-    return 1
-  }
-
-  [ -e "/opt/ceh/bin-user/$1" ] && {
-    echo >&2 "Already excluded, /opt/ceh/bin-user/$1 already exists"
-    return 1
-  }
-
-  [ -x "/opt/ceh/bin/$1" ] || {
-    echo >&2 "/opt/ceh/bin/$1 is not an executable, can't be excluded"
-    return 1
-  }
-
-  ceh_nixpkgs_install_tools which 1.0pre23218_eda055d \
-    q2bl85vvnvsdrcfbjxjizg0yvlip94bj-which-2.20.drv \
-    s3ilf7fffhkydmcl7ccrb0sq6808lyan-which-2.20
-
-  REALBIN=$(/nix/store/s3ilf7fffhkydmcl7ccrb0sq6808lyan-which-2.20/bin/which -a "$1" | grep -v ^/opt/ceh/bin | head -n1)
-
-  [ -n "$REALBIN" ] || {
-    echo >&2 "No non-ceh binary found in your PATH for $1"
-    return 1
-  }
-
-  echo >&2 "Excluding $1: creating symlink from /opt/ceh/bin-user/$1 -> $REALBIN"
-  ln -s "$REALBIN" "/opt/ceh/bin-user/$1"
-}
-
-# Initializes Nix's GCC environment for ghc: sets PATH and envvars hacked to
+# Initializes Nix's GCC environment for GHC: sets PATH and envvars hacked to
 # include libs installed into the /nix/var/nix/profiles/ceh/ghc-libs profile.
 # Ensures that the appropriate ghc package is installed and exports its path in
 # $ceh_ghc_root.
