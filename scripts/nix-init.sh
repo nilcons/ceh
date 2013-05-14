@@ -43,16 +43,17 @@ then
     exit 1
 fi
 
+. /opt/ceh/scripts/base.sh
+
 cd /tmp
-wget -c http://hydra.nixos.org/build/4253993/download/1/nix-1.5.1-i686-linux.tar.bz2
+wget -c $CEH_NIX_DOWNLOAD
 chmod 0700 /nix
-( cd / && tar -x --delay-directory-restore -j -f /tmp/nix-1.5.1-i686-linux.tar.bz2 /nix )
+( cd / && tar -x --delay-directory-restore -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix )
 
 # Stolen from /usr/bin/nix-finish-install & /etc/profile.d/nix.sh
-nix=/nix/store/k0ksg8yjwz026vwivcnkjwfmv4jbkqyl-nix-1.5.1
 regInfo=/nix/store/reginfo
 
-$nix/bin/nix-store --load-db < $regInfo
+$CEH_NIX/bin/nix-store --load-db < $regInfo
 
 # Set up the symlinks
 mkdir -m 0755 -p /nix/var/nix/profiles/per-user/$USER
@@ -60,11 +61,11 @@ ln -s /nix/var/nix/profiles/per-user/$USER/profile $HOME/.nix-profile
 mkdir $HOME/.nix-defexpr
 
 # Create the first user environment
-$nix/bin/nix-env -i $nix
+$CEH_NIX/bin/nix-env -i $CEH_NIX
 
 # Add channels
-$nix/bin/nix-channel --add http://nixos.org/releases/nixpkgs/channels/nixpkgs-unstable
-$nix/bin/nix-channel --update
+$CEH_NIX/bin/nix-channel --add http://nixos.org/releases/nixpkgs/channels/nixpkgs-unstable
+$CEH_NIX/bin/nix-channel --update
 
 # binary-cache is only used from the root profile...
 ( cd /nix/var/nix/profiles/per-user ; ln -s $USER root )

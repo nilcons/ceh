@@ -1,10 +1,10 @@
 # -*- mode: shell-script; sh-basic-offset: 2; -*-
 
+. /opt/ceh/scripts/base.sh
+
 # Please note that these functions only work in bash, not in dash,
 # so in shell scripts that use these functions, you have to use
 # #!/bin/bash as the she-bang line, not #!/bin/sh.
-
-export CEH_NIX=/nix/store/k0ksg8yjwz026vwivcnkjwfmv4jbkqyl-nix-1.5.1
 
 # This creates a cache to make it cheaper to check if a derivation is
 # installed in a profile.  The idea is that profiles are immutable, so
@@ -228,20 +228,6 @@ ceh_exclude() {
 
   echo >&2 "Excluding $1: creating symlink from /opt/ceh/bin-user/$1 -> $REALBIN"
   ln -s "$REALBIN" "/opt/ceh/bin-user/$1"
-}
-
-# Prepends $1 to the front of $2 (which should be a colon separated
-# list).  If $1 is already contained in $2, deletes the old occurrence
-# first.  $2 defaults to PATH.  No-op if $1 is not a directory.
-ceh_path_prepend() {
-    new=$1
-    list=${2-PATH}
-    [ -d "$new" ] || return
-    eval "local fenced=:\$$list:"
-    local removed=${fenced/:$1:/:}
-    local trimleft=${removed#:}
-    local trimright=${trimleft%:}
-    export $list=$new:$trimright
 }
 
 # Initializes Nix's GCC environment for ghc: sets PATH and envvars hacked to
