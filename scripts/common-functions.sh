@@ -22,7 +22,7 @@ ceh_nix_update_cache() {
   chmod u+w $profile/
   mkdir $profile/installed_derivations
   chmod u-w $profile/
-  for i in $(nix-env -p $profile --no-name --out-path -q '*'); do
+  for i in $($CEH_NIX/bin/nix-env -p $profile --no-name --out-path -q '*'); do
     touch $profile/installed_derivations/${i#/nix/store/}
   done
   touch $profile/installed_derivations/done
