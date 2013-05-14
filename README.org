@@ -17,12 +17,11 @@
 * Requirements
 + Modern GNU/Linux distro (ubuntu, debian, etc.).
 + Intel architecture (i686 or amd64, no arm).
-+ =sudo command= runs a command as root (so Debian guys will have to
-  install sudo, Ubuntu guys are all set).  Root privileges is only
-  used for initial installation to create the =/opt/ceh= and =/nix=
-  directory and change the ownership of those to the user.  Root
-  privileges are not needed for everyday usage and package
-  installations.
++ The machine only has one user who wants to use ceh and nix and she
+  will be the owner of the files in =/opt/ceh= and =/nix=.
++ Root privileges for the installation.  Actually only needed for the
+  creation of =/opt/ceh= and =/nix=, not needed for everyday usage and
+  package installation.
 + =/etc/passwd= contains your user, so nix doesn't have to use any
   fancy NSS modules.
 + The user uses bash or zsh.  This is because he has to source
@@ -31,9 +30,9 @@
 
 
 * Installation instructions
-: sudo mkdir /opt/ceh
-: sudo chown $USER. /opt/ceh
-: chmod 0700 /opt/ceh
+: sudo mkdir /opt/ceh /nix
+: sudo chown $USER. /opt/ceh /nix
+: chmod 0700 /opt/ceh /nix
 : cd /opt/ceh
 : git clone git://github.com/errge/ceh.git .
 : ln -s $HOME home
@@ -107,6 +106,7 @@ and then install the haskell package, do something like this:
 :
 : In the techtalk I will present the fundamentals of Nix and show ceh,
 : my setup around Nix.
+
 
 * Design ideas for V2
 ** What issues do we have
