@@ -22,6 +22,13 @@ then
     exit 1
 fi
 
+if [ "$(readlink -f /opt/ceh/home)" != "$(readlink -f $HOME)" ]
+then
+    echo "/opt/ceh/home should be a symlink pointing to the user's home." >&2
+    echo 'Use "ln -s $HOME /opt/ceh/home" to create it.' >&2
+    exit 1
+fi
+
 if find ~ -maxdepth 1 -name '.nix*' | grep -q .
 then
     echo "~/.nix* found. Try running the nix-purge.sh." >&2
