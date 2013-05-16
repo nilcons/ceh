@@ -1,5 +1,9 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/packages/git-annex.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use Packages::GitAnnex;
 
-exec $ceh_nix_install_root/bin/git-annex-shell "$@"
+exec "$ceh_nix_install_root/bin/git-annex-shell", @ARGV;

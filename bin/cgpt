@@ -1,5 +1,9 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/packages/vboot_reference.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use Packages::VBootReference;
 
-exec $ceh_nix_install_root/bin/cgpt "$@"
+exec "$ceh_nix_install_root/bin/cgpt", @ARGV;

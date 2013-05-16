@@ -8,7 +8,7 @@ use Carp;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(AUTOINIT ceh_nixpkgs_install ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_for_emacs ceh_init_gcc_env_for_ghc $ceh_nix_install_root $ceh_ghc_root);
+our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_for_emacs ceh_init_gcc_env_for_ghc $ceh_nix_install_root $ceh_ghc_root);
 
 use CehBase;
 use Cache;

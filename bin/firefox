@@ -1,5 +1,36 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/packages/firefox.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
 
-exec $ceh_nix_install_root/bin/firefox "$@"
+# This is a 32-bit FF install (working on both amd64 and i686) with
+# all the 3 required plugins:
+#  - google talk,
+#  - java,
+#  - flash,
+# please make sure to remove all the conflicting plugins from your
+# system (~/.mozilla/firefox/plugins, /usr/lib/mozilla, etc.).
+#
+# To make sure everything is OK, use all 3 plugins while running
+# firefox from a terminal and watch stderr.
+#
+# Do not ever mix 64-bit plugins with this 32-bit firefox!
+# TODO(errge): an ld_preload hack that purifies this plugin issue, by
+# hiding /usr/lib/mozilla, ~/.mozilla/plugins and whatever else that
+# is needed.
+
+# This is needed for cases when the user has a ~/.asoundrc that uses
+# modules (e.g. redirects everything through pulseaudio).
+ceh_nixpkgs_install('alsaPlugins', nixpkgs_version => 'bfa358c', derivation => 'gszn8j6vf1dc9x12na0jxc2i2nl7xack-alsa-plugins-1.0.26.drv', out => '0lb2kwwlsgib8nabcygw5y0s3zv95fd3-alsa-plugins-1.0.26');
+$ENV{ALSA_PLUGIN_DIRS}="$ceh_nix_install_root/lib/alsa-lib";
+
+# To enable google talk plugin and jre plugin.
+$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/firefox.nix";
+ceh_nixpkgs_install('firefox20Wrapper', nixpkgs_version => 'bfa358c', derivation => 'k4vdbd0sba15n477jm55ynklwai4i1g7-firefox-20.0-with-plugins.drv', out => 'mibbyizczh0wc8ly7x1s0pisjv83a8x6-firefox-20.0-with-plugins');
+
+exec "$ceh_nix_install_root/bin/firefox", @ARGV;
+
+

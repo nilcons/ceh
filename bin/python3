@@ -1,9 +1,11 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/scripts/common-functions.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
 
-ceh_nixpkgs_install python3 1.0pre23034_4cd591f \
-    1mh1r9v18kmhl27zbif2h2sdash7divy-python3-3.2.3.drv \
-    zp5pdk2hskaz1jl2wgfyv39j44vaqhh2-python3-3.2.3
+ceh_nixpkgs_install('python3', nixpkgs_version => '008bb6935cddd3708ac4caf3360afb603ee5b4fa', derivation => '2wf7fs41kp6b8a9017s5pm4a6ing49zn-python3-3.3.1.drv', out => '66f2l4r4p50np0xddsyqxc8nvvcis3fs-python3-3.3.1');
 
-exec $ceh_nix_install_root/bin/python3 "$@"
+exec "$ceh_nix_install_root/bin/python3", @ARGV;

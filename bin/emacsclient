@@ -1,5 +1,9 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/packages/emacs.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use Packages::Emacs;
 
-exec $ceh_nix_install_root/bin/emacsclient "$@"
+exec "$ceh_nix_install_root/bin/emacsclient", @ARGV;

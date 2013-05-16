@@ -1,9 +1,11 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/scripts/common-functions.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
 
-ceh_nixpkgs_install tmux 1.0pre23266_7e1d0c1 \
-    xvjwbd3cakc8yv2j5vvkcwb2bd4nak51-tmux-1.5.drv \
-    g172xfs84slh4hxg4fi1xwr7pllrvzvn-tmux-1.5
+ceh_nixpkgs_install('tmux', nixpkgs_version => '008bb6935cddd3708ac4caf3360afb603ee5b4fa', derivation => 'a0nk26x8dygwskfvm6cb8szwhpl93wrx-tmux-1.8.drv', out => 'vr9mgjwcsi5q3hx2xryb966vba18y5cm-tmux-1.8');
 
-exec $ceh_nix_install_root/bin/tmux "$@"
+exec "$ceh_nix_install_root/bin/tmux", @ARGV;

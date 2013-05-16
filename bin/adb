@@ -1,5 +1,9 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/packages/androidsdk.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use Packages::AndroidSDK;
 
-exec $ceh_nix_install_root/bin/adb "$@"
+exec "$ceh_nix_install_root/bin/adb", @ARGV;

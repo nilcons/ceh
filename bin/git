@@ -1,5 +1,9 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/packages/git.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use Packages::Git;
 
-exec $ceh_nix_install_root/bin/git "$@"
+exec "$ceh_nix_install_root/bin/git", @ARGV;

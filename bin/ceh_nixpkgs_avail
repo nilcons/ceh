@@ -8,16 +8,16 @@
 # executables through ~/.nix-profile/bin, so good for quick
 # experimentation.
 #
+# Available packages can be listed  with: ceh_nixpkgs_avail
 # Installed packages can be listed  with: nix-env -q '*'
 # Installed packages can be deleted with: nix-env -e foobar
 
 use strict;
 use warnings;
 use lib "/opt/ceh/lib";
+use CehBase;
 use CehInstall;
 
-if (not $ARGV[0]) {
-    die "Please provide a package name, run ceh_nixpkgs_avail to get a list to choose from!";
-}
+ceh_nixpkgs_checkout($CEH_BASELINE_NIXPKGS);
 
-ceh_nixpkgs_install($ARGV[0], autoinit => 1);
+exec("$CEH_NIX/bin/nix-env", qw(-f <ceh_nixpkgs> -qaP *));

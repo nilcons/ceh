@@ -1,5 +1,5 @@
 #!/bin/bash -e
 
-. /opt/ceh/scripts/common-functions.sh
+. /opt/ceh/lib/base.sh
 
 exec $CEH_NIX/bin/nix-collect-garbage "$@"

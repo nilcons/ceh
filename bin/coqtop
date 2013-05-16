@@ -1,9 +1,11 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/scripts/common-functions.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
 
-ceh_nixpkgs_install coq 1.0pre23270_6f1aad7 \
-    kqiq8w1dkwnn1pw0ddwin8rxg1r3bppr-coq-8.4.drv \
-    0cwwiyz9wkhansy0irz9yh096cdpzwwk-coq-8.4
-    
-exec $ceh_nix_install_root/bin/coqtop "$@"
+ceh_nixpkgs_install('coq', nixpkgs_version => '008bb6935cddd3708ac4caf3360afb603ee5b4fa', derivation => 'rxcn72scxb0swiamhyw68vw5ssm11a5h-coq-8.4.drv', out => 'z6wi798rymc5cjr6h73wiyypv59lddxv-coq-8.4');
+
+exec "$ceh_nix_install_root/bin/coqtop", @ARGV;

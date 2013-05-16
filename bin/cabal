@@ -1,11 +1,12 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/scripts/common-functions.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+use Packages::GHC;
 
-ceh_init_gcc_env_for_ghc
+ceh_nixpkgs_install("haskellPackages_ghc762.cabalInstall", nixpkgs_version => '008bb6935cddd3708ac4caf3360afb603ee5b4fa', derivation => '5lybxgf6nzc4fzazw5skz059fay0zqj7-cabal-install-1.16.0.2.drv', out => '0c6xh972i1vgpk5saifl3k0iydask7ql-cabal-install-1.16.0.2');
 
-ceh_nixpkgs_install haskellPackages_ghc762.cabalInstall 1.0pre23717_789154b \
-    iw9cp9adf1i59qsn08qbwz40ysh3l9aq-cabal-install-1.16.0.2.drv \
-    id4rbqa5jhw3fcvn06lqanilaaa3w2cg-cabal-install-1.16.0.2
-
-exec $ceh_nix_install_root/bin/cabal "$@"
+exec "$ceh_nix_install_root/bin/cabal", @ARGV;

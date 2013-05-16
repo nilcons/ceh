@@ -1,5 +1,9 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/packages/ghc.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use Packages::GHC;
 
-exec $ceh_ghc_root/bin/ghci "$@"
+exec "$ceh_ghc_root/bin/ghci", @ARGV;
