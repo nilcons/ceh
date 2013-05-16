@@ -1,36 +1,39 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/scripts/common-functions.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehBase;
+use CehInstall;
 
-ceh_exclude() {
-  [ -n "$1" ] || {
-    echo >&2 "Usage: ceh_exclude <executable-to-exclude-from-ceh>"
-    return 1
-  }
+my $target = $ARGV[0];
 
-  [ -e "/opt/ceh/bin-user/$1" ] && {
-    echo >&2 "Already excluded, /opt/ceh/bin-user/$1 already exists"
-    return 1
-  }
-
-  [ -x "/opt/ceh/bin/$1" ] || {
-    echo >&2 "/opt/ceh/bin/$1 is not an executable, can't be excluded"
-    return 1
-  }
-
-  ceh_nixpkgs_install_tools which 1.0pre23218_eda055d \
-    q2bl85vvnvsdrcfbjxjizg0yvlip94bj-which-2.20.drv \
-    s3ilf7fffhkydmcl7ccrb0sq6808lyan-which-2.20
-
-  REALBIN=$(/nix/store/s3ilf7fffhkydmcl7ccrb0sq6808lyan-which-2.20/bin/which -a "$1" | grep -v ^/opt/ceh/bin | head -n1)
-
-  [ -n "$REALBIN" ] || {
-    echo >&2 "No non-ceh binary found in your PATH for $1"
-    return 1
-  }
-
-  echo >&2 "Excluding $1: creating symlink from /opt/ceh/bin-user/$1 -> $REALBIN"
-  ln -s "$REALBIN" "/opt/ceh/bin-user/$1"
+if (not $target) {
+    debug "Usage: ceh_exclude <executable-to-exclude-from-ceh>";
+    exit 1;
 }
 
-ceh_exclude "$@"
+if (-e "/opt/ceh/bin-user/$target") {
+    debug "Already excluded, /opt/ceh/bin-user/$target already exists";
+    exit 1;
+}
+
+if (not -x "/opt/ceh/bin/$target") {
+    debug "/opt/ceh/bin/$target is not an executable, can't be excluded";
+    exit 1;
+}
+
+ceh_nixpkgs_install_tools('which', nixpkgs_version => '008bb6935cddd3708ac4caf3360afb603ee5b4fa', derivation => '0plrk9jal8n7x8pppzbbpsslnnhrs8fx-which-2.20.drv', out => '89859145xgfw1d2rzpm7byglk2z52wza-which-2.20');
+
+my @paths = `$ceh_nix_install_root/bin/which -a '$target'`;
+foreach (@paths) {
+    chomp;
+    next if /^\/opt\/ceh\/bin\//;
+    debug "Excluding $target: creating symlink from /opt/ceh/bin-user/$target -> $_";
+    symlink $_, "/opt/ceh/bin-user/$target";
+    exit 0;
+}
+
+debug "No non-ceh binary found in your PATH for $target";
+exit 2;
