@@ -50,7 +50,7 @@ then
     exit 1
 fi
 
-. /opt/ceh/scripts/base.sh
+. /opt/ceh/lib/base.sh
 
 cd /tmp
 wget -c $CEH_NIX_DOWNLOAD

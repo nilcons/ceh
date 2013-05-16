@@ -38,7 +38,7 @@ then
     exit 1
 fi
 
-. /opt/ceh/scripts/base.sh
+. /opt/ceh/lib/base.sh
 
 if [ -d $CEH_NIX ] && [ -f /opt/ceh/home/.nix-profile/installed_derivations/`basename $CEH_NIX` ]
 then
@@ -57,8 +57,7 @@ wget -c $CEH_NIX_DOWNLOAD
 $CEH_NIX/bin/nix-store --load-db < /nix/store/reginfo
 $CEH_NIX/bin/nix-env -i $CEH_NIX
 
-. /opt/ceh/scripts/common-functions.sh
-ceh_nix_update_cache
+/opt/ceh/lib/update_cache.pl
 
 if [ -d $CEH_NIX ] && [ -f /opt/ceh/home/.nix-profile/installed_derivations/`basename $CEH_NIX` ]
 then
