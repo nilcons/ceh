@@ -26,7 +26,7 @@ sub AUTOINIT() {
 }
 
 # Creates a bare http://github.com/nixos/nixpkgs clone at
-# /nix/var/ceh_nixpkgs/git.
+# $CEH_NIXPKGS_GIT/git.
 sub ceh_nixpkgs_clone() {
     if (not done("$CEH_NIXPKGS_GIT/git")) {
 	debug "Cloning the nixpkgs repository from github...";
@@ -41,7 +41,7 @@ sub ceh_nixpkgs_clone() {
 }
 
 # Downloads and initializes a specific nixpkgs version into the
-# /nix/var/ceh_nixpkgs/commit, so it can be used for builds later.
+# $CEH_NIXPKGS_GIT/1, so it can be used for builds later.
 #
 # This is needed instead of simply using channels and the newest
 # version only, because we want to reproduce specific blessed versions

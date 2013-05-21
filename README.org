@@ -71,12 +71,85 @@ clibs installed, so the package can FFI against it.  There is a
 special nix profile where we keep all the clibs nix packages needed
 for haskell compilations.  To install a new package to this profile
 and then install the haskell package, do something like this:
-: ceh_nixpkgs_install_for_ghc openssl 1.0pre23270_6f1aad7 4zvxbx66y0dsfil57ixgwzrvpxfcx8dg-openssl-1.0.0i.drv 9pn5796z6nz827inhq560zdispvkpzr8-openssl-1.0.0i
+: #!/opt/ceh/lib/perl
+:
+: use strict;
+: use warnings;
+: use lib "/opt/ceh/lib";
+: use CehInstall;
+:
+: ceh_nixpkgs_install_for_ghc('openssl', AUTOINIT);
 : cabal install HsOpenSSL
 
+AUTOINIT will be replaced by the current nixpkgs version and the
+correct hashes when you first run this Perl script.  You can then even
+commit this script to your project's version control, so your
+teammates can reproduce the same environment.
 
 * TODOs
 + Have an LD_PRELOAD library that hides =/usr/lib/mozilla/plugins= from Firefox's view.
+
+
+* Design and other info for Ceh hackers
+** Directory structure
+=/opt/ceh/bin/=: wrapper scripts, they make sure that the wanted package is
+already installed into the user's default nix profile
+(=~/.nix-profile=) and into the nix store (=/nix/store=).  After this
+initialization they just exec the binary from =/nix/store=,
+
+=/opt/ceh/bin-user/=: gitignored directory for local exclusions, so the
+end-user has the final say.  The =scripts/nix-profile.sh= script puts
+this directory in front of the =bin/= directory in PATH,
+
+=/opt/ceh/emacs.d/=: emacs module wrappers, like =bin/=, but for emacs lisp
+packages,
+
+=/opt/ceh/home=: gitignored symlink to the user's home, this is extremely
+useful, because if Ceh is installed, you can simply use
+=/opt/ceh/home= as a path to point to the user's home directory
+without using the tilde expansion of the shell (that doesn't work in
+syscalls or on the shebang line),
+
+=/opt/ceh/lib/=: the Ceh (mainly Perl) internals,
+
+=/opt/ceh/p/=: gitignored symlinks to the user's projects, so every project can
+have an absolute symlink in =/opt/ceh/p/whatever-project=, like we
+have =/opt/ceh/home= as an absolute path for the user's home directory,
+
+=/opt/ceh/scripts/=: Ceh end-user scripts (install, purge, profile, upgrade),
+
+=/nix=: not in Git, but doesn't store any important data.  Deleting
+all the content and reinstalling Ceh will result in some compilation
+and downloading, but everything should be easily reproducible here,
+
+=/nix/store=: contains the installed package roots.  Managed by nix
+commands, like =nix-store=, =nix-env= and =nix-instantiate=,
+
+=/nix/var/ceh_nixpkgs=: contains checked out versions of the nixpkgs
+package collection, used and maintained by =lib/CehInstall.pm=,
+
+=/nix/var/nix/profiles/ceh=: nix user environments (or profiles for
+short).  A nix profile is a set of installed packages from
+=/nix/store=.  The packages are merged together as a symlink farm in
+the profile to show a unixsh prefix root with =bin/=, =share/= and
+other usual directories.  Old versions of the profiles can be garbage
+collected by running =ceh_collect_garbage=,
+
+=/nix/var/nix/profiles/ceh/bin=: the profile for packages installed by
+wrapper scripts in =/opt/ceh/bin=,
+
+=/nix/var/nix/profiles/ceh/emacs=: the profile for packages installed by
+wrapper scripts in =/opt/ceh/emacs.d=,
+
+=/nix/var/nix/profiles/ceh/ghc-libs=: the profile for haskell FFI libraries,
+
+=/nix/var/nix/profiles/ceh/tools=: the profile for tools used by ceh
+itself (e.g. =which=).
+
+** Adding a new package to ceh (TODO: errge)
+
+
+** Upgrading ceh to a new baseline (TODO: errge)
 
 
 * Techtalk
