@@ -5,11 +5,11 @@
     {
       coursera-dl = pkgs.callPackage (
 	{stdenv, fetchurl, makeWrapper, pythonPackages}: stdenv.mkDerivation {
-	  name = "coursera-dl-20130407";
+	  name = "coursera-dl-20130527";
 
 	  src = fetchurl {
-	    url = "https://github.com/jplehmann/coursera/archive/c07d1ac40bc29b104976631559ec8fdce095952d.tar.gz";
-	    sha256 = "92fc5b8eb8be9c8b30547ac798e34211accfc43f96e36e2fde5aa5f4dcd4fabc";
+	    url = "https://github.com/jplehmann/coursera/archive/300d77cf0a195cb796b982e421f780917dc89683.tar.gz";
+	    sha256 = "0d7614a85a0f3e5870cf193658e3af1024f5fbb1b52b7946c8fe7da4169ae766";
 	  };
 
 	buildInputs = [ makeWrapper pythonPackages.python pythonPackages.wrapPython pythonPackages.beautifulsoup ];
