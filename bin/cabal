@@ -7,6 +7,6 @@ use lib "/opt/ceh/lib";
 use CehInstall;
 use Packages::GHC;
 
-ceh_nixpkgs_install("haskellPackages_ghc762.cabalInstall", nixpkgs_version => '008bb6935cddd3708ac4caf3360afb603ee5b4fa', derivation => '5lybxgf6nzc4fzazw5skz059fay0zqj7-cabal-install-1.16.0.2.drv', out => '0c6xh972i1vgpk5saifl3k0iydask7ql-cabal-install-1.16.0.2');
+ceh_nixpkgs_install("haskellPackages_ghc763.cabalInstall", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => 'ppz9635y2g9x5sssf1mrh63hrcmnm0pq-cabal-install-1.16.0.2.drv', out => 'zcf1wxnchrigmhsbbk9631k1cc3f2qiq-cabal-install-1.16.0.2');
 
 exec "$ceh_nix_install_root/bin/cabal", @ARGV;

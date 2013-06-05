@@ -1,4 +1,4 @@
-(let ((proof-general-hash "177qh5d1z68xglrxcvi8nqxy96a7sf9j-ProofGeneral-4.2"))
+(let ((proof-general-hash "qkqsgp619vklk3z2mxhyhm0a5wxi5s8y-ProofGeneral-4.2"))
   (unless (file-exists-p
            (concat "/nix/var/nix/profiles/ceh/emacs/installed_derivations/" proof-general-hash))
     (shell-command "/opt/ceh/emacs.d/proof_general.pl"))

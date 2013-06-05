@@ -24,12 +24,12 @@ use CehInstall;
 
 # This is needed for cases when the user has a ~/.asoundrc that uses
 # modules (e.g. redirects everything through pulseaudio).
-ceh_nixpkgs_install('alsaPlugins', nixpkgs_version => '51c69ea60e20031ee6774006645c3a8384eebe96', derivation => 'fhch2mk5005l051vk1p5kj7acnkppyc4-alsa-plugins-1.0.26.drv', out => 'zqiz1dgxdn2n9s93cq5fnaw066w27i94-alsa-plugins-1.0.26');
+ceh_nixpkgs_install('alsaPlugins', nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => '6zc8yg58l2d2mxl4n2wi2qgwk0vm5gjp-alsa-plugins-1.0.26.drv', out => 'gq02aq0yj2p4n4flz9002b8kmzj4h5kg-alsa-plugins-1.0.26');
 $ENV{ALSA_PLUGIN_DIRS}="$ceh_nix_install_root/lib/alsa-lib";
 
 # To enable google talk plugin and jre plugin.
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/firefox.nix";
-ceh_nixpkgs_install('firefox20Wrapper', nixpkgs_version => '51c69ea60e20031ee6774006645c3a8384eebe96', derivation => 'cw50y1lgdvr0c82zf7rw72iw36g18ly6-firefox-20.0-with-plugins.drv', out => 's1q2gqkd3vs9g62fg07rh0g654whkv29-firefox-20.0-with-plugins');
+ceh_nixpkgs_install('firefox20Wrapper', nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => 'q5hvaw146vwfcw6wyq2r7s7hr5fh1r5f-firefox-20.0-with-plugins.drv', out => 'kll98ap3rcvxd557pq2srns2ym5wdm57-firefox-20.0-with-plugins');
 
 exec "$ceh_nix_install_root/bin/firefox", @ARGV;
 

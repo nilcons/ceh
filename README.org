@@ -228,7 +228,7 @@ git status /opt/ceh.  So if everything works she would just have to
 git commit.
 
 Since some packages have version in their name (e.g. firefox20Wrapper
-or haskellPackages_ghc762.ghc), this won't be ever totally automatic,
+or haskellPackages_ghc763.ghc), this won't be ever totally automatic,
 but in those cases at least the user will notice when ceh is using
 some packages that are not even there in newer nixpkgs.
 

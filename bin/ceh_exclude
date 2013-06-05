@@ -9,6 +9,8 @@ use CehInstall;
 
 my $target = $ARGV[0];
 
+ceh_nixpkgs_install_tools('which', nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => '7bwrfzbg9wfk2wfq0ack9hylc5pmqg5s-which-2.20.drv', out => '89859145xgfw1d2rzpm7byglk2z52wza-which-2.20');
+
 if (not $target) {
     debug "Usage: ceh_exclude <executable-to-exclude-from-ceh>";
     exit 1;
@@ -23,8 +25,6 @@ if (not -x "/opt/ceh/bin/$target") {
     debug "/opt/ceh/bin/$target is not an executable, can't be excluded";
     exit 1;
 }
-
-ceh_nixpkgs_install_tools('which', nixpkgs_version => '008bb6935cddd3708ac4caf3360afb603ee5b4fa', derivation => '0plrk9jal8n7x8pppzbbpsslnnhrs8fx-which-2.20.drv', out => '89859145xgfw1d2rzpm7byglk2z52wza-which-2.20');
 
 my @paths = `$ceh_nix_install_root/bin/which -a '$target'`;
 foreach (@paths) {

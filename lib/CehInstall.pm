@@ -150,6 +150,9 @@ sub ceh_nixpkgs_install($%) {
     ceh_nix_update_cache($profile);
 
     if ($ENV{CEH_AUTO_UPGRADE} and not $autoinit) {
+	# if the baseline is so new that it's not currently fetched, fetch it
+	`cd $CEH_NIXPKGS_GIT/git && $git rev-list --max-count=1 $CEH_BASELINE_NIXPKGS 2>/dev/null`;
+	$? and ceh_nixpkgs_clone();
 	my @revs = `cd $CEH_NIXPKGS_GIT/git && $git rev-list --max-count=1 $nixpkgs_version..$CEH_BASELINE_NIXPKGS`;
 	$? and croak;
         if (@revs) {
@@ -270,13 +273,13 @@ sub ceh_init_gcc_env_for_ghc {
 	$ENV{NIX_LDFLAGS}="-L /nix/var/nix/profiles/ceh/ghc-libs/lib " . ($ENV{NIX_LDFLAGS} or "");
 	$ENV{NIX_CFLAGS_COMPILE}="-idirafter /nix/var/nix/profiles/ceh/ghc-libs/include " . ($ENV{NIX_CFLAGS_COMPILE} or "");
 	path_prepend("/nix/var/nix/profiles/ceh/ghc-libs/lib/pkgconfig", 'PKG_CONFIG_PATH');
-	my $outgcc = ceh_nixpkgs_install("gcc", nixpkgs_version => '008bb6935cddd3708ac4caf3360afb603ee5b4fa', derivation => 'bxrl1rba5l50cdqhy3gqi04sm2vs9v6s-gcc-wrapper-4.6.3.drv', out => 'qk296xnr5zqqjjckkxayyjlhl70y8awb-gcc-wrapper-4.6.3');
+	my $outgcc = ceh_nixpkgs_install("gcc", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => '2qpldc11v53c045p5s8kg5vx8pdcw18c-gcc-wrapper-4.6.3.drv', out => 'qk296xnr5zqqjjckkxayyjlhl70y8awb-gcc-wrapper-4.6.3');
 	path_prepend("$outgcc/bin");
-	my $outpkg = ceh_nixpkgs_install("pkgconfig", nixpkgs_version => '008bb6935cddd3708ac4caf3360afb603ee5b4fa', derivation => 'mrlpvgnzkcg5rbab3h6nk675bk0p4xl1-pkg-config-0.23.drv', out => 'qg882f4p8d1kz6pjlcp9f717q7vp7frc-pkg-config-0.23');
+	my $outpkg = ceh_nixpkgs_install("pkgconfig", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => 'ysif6pp2g800clfwkyzq5ncs8dm7fzv4-pkg-config-0.23.drv', out => 'qg882f4p8d1kz6pjlcp9f717q7vp7frc-pkg-config-0.23');
 	path_prepend("$outpkg/bin");
 	$ENV{CEH_GCC_WRAPPER_FLAGS_SET}=1;
     }
-    $ceh_ghc_root=ceh_nixpkgs_install("haskellPackages_ghc762.ghc", nixpkgs_version => '008bb6935cddd3708ac4caf3360afb603ee5b4fa', derivation => 'rxyjy9bs3zsiiddysz2d2ywvhb8k9q8f-ghc-7.6.2-wrapper.drv', out => 'xhm2j37r3nkwv3x4inqxrkq4l2d3djbq-ghc-7.6.2-wrapper');
+    $ceh_ghc_root=ceh_nixpkgs_install("haskellPackages_ghc763.ghc", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => '8r7z79vrrwl0l8z25lhaaa5ycjzl4g8v-ghc-7.6.3-wrapper.drv', out => 'ygv58ixxb1v52wcsgv5pvykdk6kwrspb-ghc-7.6.3-wrapper');
 }
 
 1;
