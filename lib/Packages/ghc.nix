@@ -6,6 +6,7 @@
 	hsEnv = pkgs.haskellPackages.ghcWithPackages (self : [
             pkgs.haskellPlatform
 	    pkgs.haskellPackages.text
+	    pkgs.haskellPackages.lens
 	]);
     };
 }
