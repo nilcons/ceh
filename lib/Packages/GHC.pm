@@ -16,6 +16,7 @@ our $ceh_ghc_root = '';
 # Ensures that the appropriate ghc package is installed and exports its path in
 # $ceh_ghc_root.
 if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {
+	$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/ghc.nix";
 	$ENV{NIX_LDFLAGS}="-L /nix/var/nix/profiles/ceh/ghc-libs/lib " . ($ENV{NIX_LDFLAGS} or "");
 	$ENV{NIX_CFLAGS_COMPILE}="-idirafter /nix/var/nix/profiles/ceh/ghc-libs/include " . ($ENV{NIX_CFLAGS_COMPILE} or "");
 	path_prepend("/nix/var/nix/profiles/ceh/ghc-libs/lib/pkgconfig", 'PKG_CONFIG_PATH');
@@ -25,7 +26,7 @@ if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {
 	path_prepend("$outpkg/bin");
 	$ENV{CEH_GCC_WRAPPER_FLAGS_SET}=1;
 }
-$ceh_ghc_root=ceh_nixpkgs_install("haskellPackages_ghc763.ghc", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => '8r7z79vrrwl0l8z25lhaaa5ycjzl4g8v-ghc-7.6.3-wrapper.drv', out => 'ygv58ixxb1v52wcsgv5pvykdk6kwrspb-ghc-7.6.3-wrapper');
+$ceh_ghc_root=ceh_nixpkgs_install("hsEnv", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => 'af8ma1fyhfii4vmgpskf95af4zd43m7g-haskell-env-ghc-7.6.3.drv', out => 'szxf6irv9p8x05bpjv7za3mih8npnrhx-haskell-env-ghc-7.6.3');
 
 path_prepend('/nix/var/nix/profiles/ceh/ghc-libs/lib', 'LD_LIBRARY_PATH');
 
