@@ -8,7 +8,7 @@ use Carp;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_for_emacs ceh_init_gcc_env_for_ghc $ceh_nix_install_root $ceh_ghc_root);
+our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_for_emacs $ceh_nix_install_root);
 
 use CehBase;
 use Cache;
@@ -19,7 +19,6 @@ our $git='/usr/bin/git';
 
 # Return variables
 our $ceh_nix_install_root = '';
-our $ceh_ghc_root = '';
 
 sub AUTOINIT() {
     return autoinit => "1";
@@ -262,24 +261,6 @@ sub ceh_nixpkgs_install_for_emacs {
     my ($pkgattr, %opts) = @_;
     $opts{profile} = "/nix/var/nix/profiles/ceh/emacs";
     return ceh_nixpkgs_install($pkgattr, %opts);
-}
-
-# Initializes Nix's GCC environment for GHC: sets PATH and envvars hacked to
-# include libs installed into the /nix/var/nix/profiles/ceh/ghc-libs profile.
-# Ensures that the appropriate ghc package is installed and exports its path in
-# $ceh_ghc_root.
-sub ceh_init_gcc_env_for_ghc {
-    if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {
-	$ENV{NIX_LDFLAGS}="-L /nix/var/nix/profiles/ceh/ghc-libs/lib " . ($ENV{NIX_LDFLAGS} or "");
-	$ENV{NIX_CFLAGS_COMPILE}="-idirafter /nix/var/nix/profiles/ceh/ghc-libs/include " . ($ENV{NIX_CFLAGS_COMPILE} or "");
-	path_prepend("/nix/var/nix/profiles/ceh/ghc-libs/lib/pkgconfig", 'PKG_CONFIG_PATH');
-	my $outgcc = ceh_nixpkgs_install("gcc", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => '2qpldc11v53c045p5s8kg5vx8pdcw18c-gcc-wrapper-4.6.3.drv', out => 'qk296xnr5zqqjjckkxayyjlhl70y8awb-gcc-wrapper-4.6.3');
-	path_prepend("$outgcc/bin");
-	my $outpkg = ceh_nixpkgs_install("pkgconfig", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => 'ysif6pp2g800clfwkyzq5ncs8dm7fzv4-pkg-config-0.23.drv', out => 'qg882f4p8d1kz6pjlcp9f717q7vp7frc-pkg-config-0.23');
-	path_prepend("$outpkg/bin");
-	$ENV{CEH_GCC_WRAPPER_FLAGS_SET}=1;
-    }
-    $ceh_ghc_root=ceh_nixpkgs_install("haskellPackages_ghc763.ghc", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => '8r7z79vrrwl0l8z25lhaaa5ycjzl4g8v-ghc-7.6.3-wrapper.drv', out => 'ygv58ixxb1v52wcsgv5pvykdk6kwrspb-ghc-7.6.3-wrapper');
 }
 
 1;
