@@ -2,7 +2,7 @@
 
 {
     packageOverrides = self : rec {
-	cehGHC = self.haskellPackages_ghc763_profiling.ghcWithPackages (self : [
+        cehGHC = self.haskellPackages_ghc763_profiling.ghcWithPackages (self : [
             # Selected from Haskell Platform:
             self.attoparsec
             self.fgl
@@ -37,7 +37,29 @@
 
 
             # Selected by CEH
-	    self.lens
-	]);
+            # self.ChartGtk
+            # self.cond
+            self.conduit
+            self.cryptoApi
+            self.cryptohash
+            self.dataDefault
+            self.deepseqTh
+            self.digest
+            self.gtk
+            self.haskellSrcExts
+            self.hmatrix
+            # self.HFlags
+            # self.hex
+            self.hslogger
+            self.lens
+            self.MissingH
+            self.monadLoops
+            self.networkConduit
+            self.networkProtocolXmpp
+            # self.pipes
+            # self.templateDefault
+            self.utf8String
+            self.zipArchive
+        ]);
     };
 }
