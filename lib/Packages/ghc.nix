@@ -2,11 +2,11 @@
 
 {
     packageOverrides = pkgs : {
-	cabal.libraryProfiling = true;
-	hsEnv = pkgs.haskellPackages.ghcWithPackages (self : [
-            pkgs.haskellPlatform
-	    pkgs.haskellPackages.text
-	    pkgs.haskellPackages.lens
-	]);
+        cabal.libraryProfiling = true;
+        hsEnv = pkgs.haskellPackages.ghcWithPackages (self : [
+            pkgs.haskellPackages_ghc763_profiling.haskellPlatform
+            pkgs.haskellPackages_ghc763_profiling.text
+            pkgs.haskellPackages_ghc763_profiling.lens
+        ]);
     };
 }
