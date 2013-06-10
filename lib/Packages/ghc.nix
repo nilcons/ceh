@@ -1,12 +1,43 @@
 # Used by ghc and co.
 
 {
-    packageOverrides = pkgs : {
-        cabal.libraryProfiling = true;
-        hsEnv = pkgs.haskellPackages.ghcWithPackages (self : [
-            pkgs.haskellPackages_ghc763_profiling.haskellPlatform
-            pkgs.haskellPackages_ghc763_profiling.text
-            pkgs.haskellPackages_ghc763_profiling.lens
-        ]);
+    packageOverrides = self : rec {
+	cehGHC = self.haskellPackages_ghc763_profiling.ghcWithPackages (self : [
+            # Selected from Haskell Platform:
+            self.attoparsec
+            self.fgl
+            self.haskellSrc
+            self.hashable
+            self.html
+            self.HTTP
+            self.HUnit
+            self.mtl
+            self.network
+            self.parallel
+            self.parsec
+            self.QuickCheck
+            self.random
+            self.regexBase
+            self.regexCompat
+            self.regexPosix
+            self.split
+            self.stm
+            self.syb
+            self.text
+            self.transformers
+            self.unorderedContainers
+            self.vector
+            self.xhtml
+            self.zlib
+            self.cabalInstall
+            self.alex
+            self.haddock
+            self.happy
+            self.primitive
+
+
+            # Selected by CEH
+	    self.lens
+	]);
     };
 }
