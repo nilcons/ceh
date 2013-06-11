@@ -11,6 +11,8 @@ our @EXPORT = qw($ceh_ghc_root);
 
 our $ceh_ghc_root = '';
 
+$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/GHC.nix";
+
 # Initializes Nix's GCC environment for GHC: sets PATH and envvars hacked to
 # include libs installed into the /nix/var/nix/profiles/ceh/ghc-libs profile.
 # Ensures that the appropriate ghc package is installed and exports its path in
@@ -25,7 +27,7 @@ if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {
 	path_prepend("$outpkg/bin");
 	$ENV{CEH_GCC_WRAPPER_FLAGS_SET}=1;
 }
-$ceh_ghc_root=ceh_nixpkgs_install("haskellPackages_ghc763.ghc", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => '8r7z79vrrwl0l8z25lhaaa5ycjzl4g8v-ghc-7.6.3-wrapper.drv', out => 'ygv58ixxb1v52wcsgv5pvykdk6kwrspb-ghc-7.6.3-wrapper');
+$ceh_ghc_root=ceh_nixpkgs_install("cehGHC", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => 'w6kfip8my75akn5vjwgzxfpxik9gghwp-haskell-env-ghc-7.6.3.drv', out => 'a23ylpn56wswa2b66si3dp3005iamq15-haskell-env-ghc-7.6.3');
 
 path_prepend('/nix/var/nix/profiles/ceh/ghc-libs/lib', 'LD_LIBRARY_PATH');
 
