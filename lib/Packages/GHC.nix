@@ -38,10 +38,14 @@
 
             # Selected by CEH
             # self.ChartGtk
+            self.colour
             # self.cond
             self.conduit
             self.cryptoApi
             self.cryptohash
+            self.curl
+            self.dataAccessor
+            self.dataAccessorTemplate
             self.dataDefault
             self.deepseqTh
             self.digest
@@ -51,15 +55,19 @@
             # self.HFlags
             # self.hex
             self.hslogger
+            self.HsOpenSSL
             self.lens
             self.MissingH
             self.monadLoops
             self.networkConduit
             self.networkProtocolXmpp
             # self.pipes
+            self.prettyShow
             # self.templateDefault
             self.utf8String
+            self.utilityHt
             self.zipArchive
+            self.X11
         ]);
     };
 }
