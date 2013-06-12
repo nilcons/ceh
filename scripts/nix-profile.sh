@@ -33,5 +33,6 @@ else
 fi
 export FONTCONFIG_FILE=/etc/fonts/fonts.conf
 export TZDIR=/usr/share/zoneinfo
+export NIX_CONF_DIR=/opt/ceh/lib
 
 ceh_path_prepend /opt/ceh/home/.nix-profile/share/man MANPATH

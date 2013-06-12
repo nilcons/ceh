@@ -63,6 +63,7 @@ operation will be pretty cheap, because everything is already
 downloaded and built in =/nix/store= (assuming you don't run a garbage
 collection):
 : rm /nix/var/nix/profiles/per-user/root/profile*
+: $CEH_NIX/bin/nix-env -i $CEH_NIX
 : rm /nix/var/nix/profiles/ceh/*
 
 
