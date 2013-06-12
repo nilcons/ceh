@@ -53,6 +53,18 @@ you can use the =ceh_exclude= script to create a symlink from
 
 If you don't want the exclusion anymore, just delete the symlink.
 
+*** Troubleshooting if something is broken after git pull
+Sometimes there are package name changes and other complications that
+can cause filename collissions or dynamic linking issues after a =git
+pull= on =/opt/ceh=.  The easiest thing to try in that case is to
+remove all the profiles that is used by ceh.  This will ensure that we
+can create all the profiles afresh, but on the other hand the
+operation will be pretty cheap, because everything is already
+downloaded and built in =/nix/store= (assuming you don't run a garbage
+collection):
+: rm /nix/var/nix/profiles/per-user/root/profile*
+: rm /nix/var/nix/profiles/ceh/*
+
 
 * Installation of haskell packages with cabal
 *** Pure haskell, non-FFI packages
@@ -85,6 +97,7 @@ AUTOINIT will be replaced by the current nixpkgs version and the
 correct hashes when you first run this Perl script.  You can then even
 commit this script to your project's version control, so your
 teammates can reproduce the same environment.
+
 
 * TODOs
 + Have an LD_PRELOAD library that hides =/usr/lib/mozilla/plugins= from Firefox's view.

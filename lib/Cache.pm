@@ -31,6 +31,9 @@ sub ceh_nix_update_cache {
     # update function from anywhere even if the first package is just
     # being installed to a new profile.
     return unless -l $profile;
+    if ($profile eq "/opt/ceh/home/.nix-profile") {
+	return unless -l (readlink "/opt/ceh/home/.nix-profile");
+    }
 
     chmod 0755, "$profile" or croak;
     rmtree("$profile/installed_derivations");
