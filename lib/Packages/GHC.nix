@@ -54,6 +54,7 @@
             self.hmatrix
             # self.HFlags
             # self.hex
+            self.hlint
             self.hslogger
             self.HsOpenSSL
             self.lens

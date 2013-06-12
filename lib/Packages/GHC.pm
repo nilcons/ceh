@@ -27,7 +27,7 @@ if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {
 	path_prepend("$outpkg/bin");
 	$ENV{CEH_GCC_WRAPPER_FLAGS_SET}=1;
 }
-$ceh_ghc_root=ceh_nixpkgs_install("cehGHC", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => 'w6kfip8my75akn5vjwgzxfpxik9gghwp-haskell-env-ghc-7.6.3.drv', out => 'a23ylpn56wswa2b66si3dp3005iamq15-haskell-env-ghc-7.6.3');
+$ceh_ghc_root=ceh_nixpkgs_install("cehGHC", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => 'm8iggmvl13rnflnvy4b7lrdlmzqsmkvc-haskell-env-ghc-7.6.3.drv', out => 'k2782g1j02h6p8hmqj94y53qv8y8spcm-haskell-env-ghc-7.6.3');
 
 path_prepend('/nix/var/nix/profiles/ceh/ghc-libs/lib', 'LD_LIBRARY_PATH');
 
