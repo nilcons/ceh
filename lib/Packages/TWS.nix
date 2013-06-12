@@ -25,9 +25,6 @@
 	  ensureDir $out/share/tws-jars
 	  cp $jts $out/share/tws-jars/jts.jar
 	  cp $total $out/share/tws-jars/total.jar
-
-	  echo    $jre
-	  echo $out
 	'';
 
 	installPhase = ''
@@ -35,8 +32,7 @@
 	  cat >$out/bin/tws-ui <<EOF
 #!/bin/sh
 
-cd $out/share/tws-jars/
-exec $jre/bin/java -cp total.jar:jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/.tws
+exec $jre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/.tws
 EOF
 	  chmod a+x $out/bin/tws-ui
 	'';
