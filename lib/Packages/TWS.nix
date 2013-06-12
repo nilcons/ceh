@@ -32,7 +32,7 @@
 	  cat >$out/bin/tws-ui <<EOF
 #!/bin/sh
 
-exec $jre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/.tws
+exec $jre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/Jts
 EOF
 	  chmod a+x $out/bin/tws-ui
 	'';
