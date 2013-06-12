@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+. /opt/ceh/lib/base.sh
+
+exec $CEH_NIX/bin/nix-prefetch-url "$@"
