@@ -18,7 +18,9 @@
 	};
 
 	jre = pkgs.jre;
-	buildInputs = [ unzip jre ];
+	jre64 = (pkgs.forceSystem "x86_64-linux").jre;
+
+	buildInputs = [ unzip jre jre64 ];
 
 	unpackPhase = ''
 	  ensureDir $out/share/tws-jars
@@ -31,8 +33,13 @@
 	  cat >$out/bin/tws-ui <<EOF
 #!/bin/sh
 
-TZ=America/New_York \
-exec $jre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/Jts
+export TZ=America/New_York
+# try with the 64-bit jre first, it's faster...
+if $jre64/bin/java -version >/dev/null 2>/dev/null; then
+  exec $jre64/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/Jts
+else
+  exec $jre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/Jts
+fi
 EOF
 	  chmod a+x $out/bin/tws-ui
 	'';
