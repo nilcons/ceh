@@ -37,6 +37,7 @@
 
 
             # Selected by CEH
+            self.cabal2nix
             # self.ChartGtk
             self.colour
             # self.cond
