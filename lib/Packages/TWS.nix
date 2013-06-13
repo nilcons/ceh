@@ -4,7 +4,7 @@
   packageOverrides = pkgs:
     {
       tws = pkgs.callPackage (
-      	{stdenv, fetchurl, unzip, jdkdistro}: stdenv.mkDerivation rec {
+      	{stdenv, fetchurl, unzip, jre}: stdenv.mkDerivation rec {
 	name = "tws-937";
 
 	jts = fetchurl {
@@ -17,8 +17,7 @@
 	  sha256 = "0a862rzjzdakyv9jvmb1rnmmagbzim57g7361sy2rnqpywpyg9ls";
 	};
 
-	jre = (jdkdistro false false);
-
+	jre = pkgs.jre;
 	buildInputs = [ unzip jre ];
 
 	unpackPhase = ''
