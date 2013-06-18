@@ -42,6 +42,18 @@ else
 fi
 EOF
 	  chmod a+x $out/bin/tws-ui
+	  cat >$out/bin/tws-api <<EOF
+#!/bin/sh
+
+export TZ=America/New_York
+# try with the 64-bit jre first, it's faster...
+if $jre64/bin/java -version >/dev/null 2>/dev/null; then
+  exec $jre64/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx512m ibgateway.GWClient /opt/ceh/home/Jts
+else
+  exec $jre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx512m ibgateway.GWClient /opt/ceh/home/Jts
+fi
+EOF
+	  chmod a+x $out/bin/tws-api
 	'';
 
 	}) { };
