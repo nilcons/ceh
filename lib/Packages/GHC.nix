@@ -65,6 +65,7 @@
             self.networkProtocolXmpp
             # self.pipes
             self.prettyShow
+            self.randomFu
             # self.templateDefault
             self.utf8String
             self.utilityHt
