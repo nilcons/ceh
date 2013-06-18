@@ -10,6 +10,6 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw($ceh_nix_install_root);
 
 $ENV{NIXPKGS_CONFIG}='/opt/ceh/lib/Packages/VBootReference.nix';
-ceh_nixpkgs_install("vboot_reference", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => 'n7rn03iyngr7gsc8bvamq2bvh97g4xnp-vboot_reference-37.43837.2.drv', out => '8k4rc1yh0iymg9x7cyi1ll4ckyj9bk9l-vboot_reference-37.43837.2');
+ceh_nixpkgs_install("vboot_reference", nixpkgs_version => '25777d2aca0221beb67311085f24698d401af080', derivation => '15yhffxbzjpn2yr4yb0p3bp0bc62cic4-vboot_reference-37.43837.2.drv', out => 'zmk9v0li2p1fzclkv99q95l91p5k52i3-vboot_reference-37.43837.2');
 
 1;

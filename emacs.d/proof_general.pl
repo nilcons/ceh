@@ -6,4 +6,4 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install_for_emacs("emacs24Packages.proofgeneral", nixpkgs_version => 'd82d86eb64b159cc821261ec31c528cf97a68382', derivation => 'azmnzwn5v943pnhj8h9586b6wmpln4pr-ProofGeneral-4.2.drv', out => 'qkqsgp619vklk3z2mxhyhm0a5wxi5s8y-ProofGeneral-4.2');
+ceh_nixpkgs_install_for_emacs("emacs24Packages.proofgeneral", nixpkgs_version => '25777d2aca0221beb67311085f24698d401af080', derivation => 'jm57bqj1pcrpgxwxd3vikjvjqscmscw3-ProofGeneral-4.2.drv', out => 'j406z45hbjk2ip6zs6qc9q5k71br0s3q-ProofGeneral-4.2');
