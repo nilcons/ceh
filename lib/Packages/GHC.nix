@@ -37,10 +37,10 @@
 
 
             # Selected by CEH
+            self.bytedump
             self.cabal2nix
-            # self.ChartGtk
+            self.ChartGtk
             self.colour
-            # self.cond
             self.conduit
             self.cryptoApi
             self.cryptohash
@@ -50,11 +50,12 @@
             self.dataDefault
             self.deepseqTh
             self.digest
+            self.Glob
             self.gtk
             self.haskellSrcExts
             self.hmatrix
-            # self.HFlags
-            # self.hex
+            self.hflags
+            self.hit
             self.hlint
             self.hslogger
             self.HsOpenSSL
@@ -63,14 +64,16 @@
             self.monadLoops
             self.networkConduit
             self.networkProtocolXmpp
-            # self.pipes
+            self.pipes
             self.prettyShow
             self.randomFu
-            # self.templateDefault
+            self.templateDefault
             self.utf8String
             self.utilityHt
+            self.vectorThUnbox
             self.zipArchive
             self.X11
+            self.xtest
         ]);
     };
 }
