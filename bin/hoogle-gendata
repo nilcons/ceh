@@ -1,0 +1,7 @@
+#!/bin/bash -ex
+
+rm -rf ~/.hoogle
+mkdir ~/.hoogle
+hoogle data `ghc-pkg list --simple-output --names-only`  -l -r -d ~/.hoogle
+cd ~/.hoogle
+hoogle combine *.hoo

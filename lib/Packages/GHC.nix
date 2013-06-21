@@ -35,6 +35,9 @@
             self.happy
             self.primitive
 
+            # command line tools
+            self.hlint
+            self.hoogle
 
             # Selected by CEH
             self.bytedump
@@ -56,7 +59,6 @@
             self.hmatrix
             self.hflags
             self.hit
-            self.hlint
             self.hslogger
             self.HsOpenSSL
             self.lens
