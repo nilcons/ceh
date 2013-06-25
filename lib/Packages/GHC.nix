@@ -69,6 +69,7 @@
             self.pipes
             self.prettyShow
             self.randomFu
+            self.regexTdfa
             self.templateDefault
             self.utf8String
             self.utilityHt
