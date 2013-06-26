@@ -67,6 +67,7 @@
             self.networkConduit
             self.networkProtocolXmpp
             self.pipes
+            self.pipesSafe
             self.prettyShow
             self.randomFu
             self.regexTdfa
