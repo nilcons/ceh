@@ -22,14 +22,9 @@ use CehInstall;
 # hiding /usr/lib/mozilla, ~/.mozilla/plugins and whatever else that
 # is needed.
 
-# This is needed for cases when the user has a ~/.asoundrc that uses
-# modules (e.g. redirects everything through pulseaudio).
-ceh_nixpkgs_install('alsaPlugins', nixpkgs_version => '25777d2aca0221beb67311085f24698d401af080', derivation => '8hn5brgh8y911c3dzz46726826zfq2kw-alsa-plugins-1.0.26.drv', out => 'jvqvkxa8pdd62zab96vk57dybjmwa6q4-alsa-plugins-1.0.26');
-$ENV{ALSA_PLUGIN_DIRS}="$ceh_nix_install_root/lib/alsa-lib";
-
 # To enable google talk plugin and jre plugin.
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/firefox.nix";
-ceh_nixpkgs_install('firefox21Wrapper', nixpkgs_version => '25777d2aca0221beb67311085f24698d401af080', derivation => 'ly4a2z5mm11q4dvd0l9inl59sf53gfdh-firefox-21.0-with-plugins.drv', out => 'ss919r2bga764is4cv9rpc7acgmmpcws-firefox-21.0-with-plugins');
+ceh_nixpkgs_install('firefoxCeh', autoinit => 1);
 
 exec "$ceh_nix_install_root/bin/firefox", @ARGV;
 
