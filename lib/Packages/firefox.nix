@@ -4,10 +4,10 @@
   packageOverrides = pkgs:
     {
       firefoxCeh = pkgs.callPackage (
-        {stdenv, fetchurl, gtk, pango, perl, python, zip
-        , libjpeg, libpng, zlib, dbus, dbus_glib, bzip2, xlibs
-        , freetype, fontconfig, file, alsaLib, alsaPlugins, nspr, nss, libnotify
-        , yasm, mesa, sqlite, unzip, makeWrapper, glibc
+        { stdenv, fetchurl, gtk, pango, perl, python, zip
+        , libjpeg, libpng, zlib, dbus, dbus_glib, xlibs
+        , freetype, fontconfig, alsaLib, alsaPlugins, nspr
+        , nss, libnotify, mesa, sqlite
         , hunspell, libevent, libstartup_notification, libvpx
         , cairo, glib, atk, gdk_pixbuf, linuxPackages, mesa_drivers
         , flashplayer, google_talk_plugin, jrePlugin }: stdenv.mkDerivation rec {
@@ -30,10 +30,10 @@
         libPath = stdenv.lib.makeLibraryPath
           [ stdenv.gcc.gcc libpng gtk libjpeg zlib
             dbus dbus_glib pango freetype fontconfig xlibs.libXi
-            xlibs.libX11 xlibs.libXrender xlibs.libXft xlibs.libXt file
-            alsaLib alsaPlugins nspr nss libnotify xlibs.pixman yasm mesa
-            xlibs.libXScrnSaver xlibs.scrnsaverproto glibc
-            xlibs.libXext xlibs.xextproto sqlite unzip makeWrapper
+            xlibs.libX11 xlibs.libXrender xlibs.libXft xlibs.libXt
+            alsaLib alsaPlugins nspr nss libnotify xlibs.pixman mesa
+            xlibs.libXScrnSaver xlibs.scrnsaverproto stdenv.glibc
+            xlibs.libXext xlibs.xextproto sqlite
             hunspell libevent libstartup_notification libvpx
             cairo glib atk gdk_pixbuf linuxPackages.nvidia_x11
             mesa_drivers

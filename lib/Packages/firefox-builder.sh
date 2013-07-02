@@ -28,7 +28,7 @@ export MOZ_PLUGIN_PATH=\$MOZ_PLUGIN_PATH\${MOZ_PLUGIN_PATH:+:}$flashplayer_path/
 export MOZ_PLUGIN_PATH=\$MOZ_PLUGIN_PATH\${MOZ_PLUGIN_PATH:+:}$jre_path/jre/lib/i386/plugins
 export MOZ_PLUGIN_PATH=\$MOZ_PLUGIN_PATH\${MOZ_PLUGIN_PATH:+:}$google_talk_plugin_path/lib/mozilla/plugins
 
-exec $out/share/firefox/firefox
+exec $out/share/firefox/firefox "\$@"
 EOF
 chmod a+x firefox
 
