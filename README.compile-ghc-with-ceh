@@ -1,0 +1,48 @@
+TODO(errge): maybe we can add ncurses to our haskell-env and then this step will not be needed
+add ncurses to ghc-libs in ceh:
+  cd /nix/var/ceh_nixpkgs/<current-baseline-hash>
+  NIX_PATH="nixpkgs=`pwd`" nix-env -j 4 -p /nix/var/nix/profiles/ceh/ghc-libs -f '<nixpkgs>' -i -A ncurses
+
+first time source setup: http://hackage.haskell.org/trac/ghc/wiki/Building/GettingTheSources
+  git clone git://github.com/ghc/ghc ghc-github
+  cd ghc-github
+  ./sync-all -r git://github.com/ghc get
+
+afterwards that, to get new stuff:
+  ./sync-all pull
+
+building docs: http://hackage.haskell.org/trac/ghc/wiki/Building/Hacking
+  /opt/ceh/scripts/ghc-shell.pl (To get a shell that has all the env-vars properly set up to use ceh's ghc as the bootstrap compiler)
+    (after this, do everything in the resulting shell)
+    echo $NIX_LDFLAGS   (should print: -L /nix/var/nix/profiles/ceh/ghc-libs/lib)
+
+    cp mk/build.mk.sample mk/build.mk
+    vi mk/build.mk (change BuildFlavour to quick)
+
+    perl boot
+    ./configure
+    grep -r with-cc=.usr.bin.gcc .       (should have no results, if everything is properly using ceh)
+    make -j 4                            (parallel building seems to be a bit buggy, so maybe have to run more than once)
+
+    inplace/bin/ghc-stage2 --version
+
+To install a package in the new ghc:
+  /opt/ceh/scripts/ghc-shell.pl
+    cabal unpack stm
+    cd stm
+    cabal --with-ghc=/home/errge/tmp/ghc-github/inplace/bin/ghc-stage2 --with-ghc-pkg=/home/errge/tmp/ghc-github/inplace/bin/ghc-pkg --disable-library-profiling configure
+    cabal --with-ghc=/home/errge/tmp/ghc-github/inplace/bin/ghc-stage2 --with-ghc-pkg=/home/errge/tmp/ghc-github/inplace/bin/ghc-pkg build
+    cabal --with-ghc=/home/errge/tmp/ghc-github/inplace/bin/ghc-stage2 --with-ghc-pkg=/home/errge/tmp/ghc-github/inplace/bin/ghc-pkg --disable-library-profiling install
+
+To run the testsuite:
+  /opt/ceh/scripts/ghc-shell.pl
+    CPUS=4 sh validate
+
+Stuff to read while hacking GHC:
+  http://hackage.haskell.org/trac/ghc/wiki/Building/Hacking
+  http://hackage.haskell.org/trac/ghc/wiki/Debugging/RuntimeSystem
+  http://hackage.haskell.org/trac/ghc/wiki/TestingPatches
+  http://hackage.haskell.org/trac/ghc/wiki/Commentary/Rts/Scheduler
+  http://hackage.haskell.org/trac/ghc/wiki/Commentary/Rts/STM
+  http://hackage.haskell.org/trac/ghc/wiki/Commentary/Rts
+  (and of course anything from the commentary is interesting!)
