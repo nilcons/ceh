@@ -40,6 +40,7 @@
             self.hoogle
 
             # Selected by CEH
+            self.async
             self.bytedump
             self.cabal2nix
             self.ChartGtk
@@ -71,6 +72,7 @@
             self.prettyShow
             self.randomFu
             self.regexTdfa
+            self.regexTdfaText
             self.templateDefault
             self.utf8String
             self.utilityHt
