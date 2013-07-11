@@ -54,6 +54,7 @@
             self.dataDefault
             self.deepseqTh
             self.digest
+            self.ghcMod
             self.Glob
             self.gtk
             self.haskellSrcExts
