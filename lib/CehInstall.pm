@@ -8,7 +8,7 @@ use Carp;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_for_emacs $ceh_nix_install_root);
+our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_bin ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_for_emacs $ceh_nix_install_root);
 
 use CehBase;
 use Cache;
@@ -101,21 +101,19 @@ sub ceh_nixpkgs_checkout($) {
 # hash and out path hash will be written to the calling script.
 #
 # $1: package name (attribute path),
-# %profile: optional; target profile (defaults to /opt/ceh/home/.nix-profile),
+# $2: target profile (e.g. /nix/var/nix/profiles/ceh/bin),
 # %autoinit: autocomplete the function invocation with default values,
-#    Example: ceh_nixpkgs_install('git', profile => 'haskell', AUTOINIT);
+#    Example: ceh_nixpkgs_install_bin('git', AUTOINIT);
 #      AUTOINIT will be replaced with correct values for
 #      nixpkgs_version, derivation and out.
-#    Example: ceh_nixpkgs_install('git', profile => 'haskell', nixpkgs_version => '3abc135', AUTOINIT);
+#    Example: ceh_nixpkgs_install_bin('git', nixpkgs_version => '3abc135', AUTOINIT);
 #      AUTOINIT will be replaced with correct values for derivation
 #      and out using the specified nixpkgs git commit.
 # %nixpkgs_version: nixpkgs version to use
 # %derivation: resulting derivation in /nix/store, excludes AUTOINIT
 # %out: output path in /nix/store, excludes AUTOINIT
-sub ceh_nixpkgs_install($%) {
-    my ($pkgattr, %opts) = @_;
-    my @profile = $opts{profile} ? ('-p', $opts{profile}) : ();
-    my $profile = $opts{profile} ? $opts{profile} : "/opt/ceh/home/.nix-profile";
+sub ceh_nixpkgs_install($$%) {
+    my ($pkgattr, $profile, %opts) = @_;
     my $autoinit = $opts{autoinit};
     my $autoupgrade = 0;
     my $nixpkgs_version = $opts{nixpkgs_version};
@@ -172,7 +170,7 @@ sub ceh_nixpkgs_install($%) {
     # debug "out: $out" if $out;
 
     # quick return if the package is already installed in the profile
-    if ($out and -e "$profile/installed_derivations/$out" ) {
+    if ($out and -e "$profile/installed_derivations/$out") {
 	$ceh_nix_install_root = "/nix/store/$out";
 	return $ceh_nix_install_root;
     }
@@ -215,10 +213,10 @@ sub ceh_nixpkgs_install($%) {
     ($out eq $current_out) or croak("out mismatch.  expected: $out, deducted: $current_out");
 
     systemdie("$CEH_NIX/bin/nix-store --cores 0 -r /nix/store/$current_derivation >&2");
-    if ($opts{profile} and not -d dirname($profile)) {
+    if (not -d dirname($profile)) {
 	make_path(dirname($profile)) or confess;
     }
-    systemdie("$CEH_NIX/bin/nix-env @profile --cores 0 -i /nix/store/$out >&2");
+    systemdie("$CEH_NIX/bin/nix-env -p $profile --cores 0 -i /nix/store/$out >&2");
     ceh_nix_update_cache($profile);
 
     if ($autoinit) {
@@ -247,25 +245,29 @@ sub ceh_nixpkgs_install($%) {
     return $ceh_nix_install_root;
 }
 
+# This is the main profile for ceh executables (wrappers in /opt/ceh/bin).
+sub ceh_nixpkgs_install_bin {
+    my ($pkgattr, %opts) = @_;
+    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/bin", %opts);
+}
+
+# Profile for libraries for GHC FFI packages.
 sub ceh_nixpkgs_install_for_ghc {
     my ($pkgattr, %opts) = @_;
-    $opts{profile} = "/nix/var/nix/profiles/ceh/ghc-libs";
-    return ceh_nixpkgs_install($pkgattr, %opts);
+    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-libs", %opts);
 }
 
 # Use this profile when you're installing packages used only by the
 # functions in these files.  E.g. the which package for ceh_exclude.
 sub ceh_nixpkgs_install_tools {
     my ($pkgattr, %opts) = @_;
-    $opts{profile} = "/nix/var/nix/profiles/ceh/tools";
-    return ceh_nixpkgs_install($pkgattr, %opts);
+    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/tools", %opts);
 }
 
 # Use this profile when you're installing packages for emacs.
 sub ceh_nixpkgs_install_for_emacs {
     my ($pkgattr, %opts) = @_;
-    $opts{profile} = "/nix/var/nix/profiles/ceh/emacs";
-    return ceh_nixpkgs_install($pkgattr, %opts);
+    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/emacs", %opts);
 }
 
 1;

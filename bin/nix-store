@@ -1,5 +1,12 @@
-#!/bin/bash -e
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
 
-. /opt/ceh/lib/base.sh
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use Cache;
+use CehBase;
 
-exec $CEH_NIX/bin/nix-store "$@"
+ensure_nix_installed_in_bin_profile();
+
+exec "${CEH_NIX}/bin/nix-store", @ARGV;

@@ -55,16 +55,43 @@ If you don't want the exclusion anymore, just delete the symlink.
 
 *** Troubleshooting if something is broken after git pull
 Sometimes there are package name changes and other complications that
-can cause filename collissions or dynamic linking issues after a =git
-pull= on =/opt/ceh=.  The easiest thing to try in that case is to
+can cause filename collissions or dynamic linking issues after a
+=git pull= on =/opt/ceh=.  The easiest thing to try in that case is to
 remove all the profiles that is used by ceh.  This will ensure that we
 can create all the profiles afresh, but on the other hand the
 operation will be pretty cheap, because everything is already
 downloaded and built in =/nix/store= (assuming you don't run a garbage
 collection):
-: rm /nix/var/nix/profiles/per-user/root/profile*
-: $CEH_NIX/bin/nix-env -i $CEH_NIX
 : rm /nix/var/nix/profiles/ceh/*
+
+
+* Upgrade notes
+** 2013-08: ~/.nix-profile reserved for the user from now on
+The =/nix/var/nix/profiles/per-user/root/profile= profile (which is
+symlinked by default from $HOME/.nix-profile) is not used for
+installations anymore.  Earlier versions of ceh used to install
+packages there, but now that profile is reserved for the user.
+
+This is good, because if you need some package (e.g. =vim=) quickly from
+the current ceh baseline, you can just do:
+: ceh_nixpkgs_install vim
+: ~/.nix-profile/bin/vim
+
+Alternatively, you can use the most up-to-date nixpkgs:
+: nix-channel --add http://nixos.org/releases/nixpkgs/channels/nixpkgs-unstable
+: nix-channel --update
+: nix-env -i vim
+: ~/.nix-profile/bin/vim
+
+No need to create wrappers in =/opt/ceh=, etc.  If you want to get rid
+of your user profile, simply delete
+=/nix/var/nix/profiles/per-user/root/profile*=.  This is from now on
+is totally separate from ceh's packages installed by wrappers in
+=/opt/ceh/bin=.
+
+If you're upgrading =ceh= from a version, where the default profile
+was used for package installations, please delete
+=/nix/var/nix/profiles/per-user/root/profile*=.
 
 
 * Installation of haskell packages with cabal
@@ -104,12 +131,13 @@ teammates can reproduce the same environment.
 + Have an LD_PRELOAD library that hides =/usr/lib/mozilla/plugins= from Firefox's view.
 
 
-* Design and other info for Ceh hackers
+* Design and other info for Ceh hackers, maintainers
 ** Directory structure
-=/opt/ceh/bin/=: wrapper scripts, they make sure that the wanted package is
-already installed into the user's default nix profile
-(=~/.nix-profile=) and into the nix store (=/nix/store=).  After this
-initialization they just exec the binary from =/nix/store=,
+=/opt/ceh/bin/=: wrapper scripts, they make sure that the wanted
+package is already installed into ceh's bin nix profile
+(=/nix/var/nix/profiles/ceh/bin=) and into the nix store
+(=/nix/store=).  After this initialization they just exec the binary
+from =/nix/store=,
 
 =/opt/ceh/bin-user/=: gitignored directory for local exclusions, so the
 end-user has the final say.  The =scripts/nix-profile.sh= script puts
@@ -196,9 +224,10 @@ itself (e.g. =which=).
 : my setup around Nix.
 
 
-* Design ideas for V2
+* Design ideas for V2 (obsolete, these are mostly done)
 ** What issues do we have
-*** More consistent nixpkgs version for different packages
+
+*** DONE : More consistent nixpkgs version for different packages
 Currently ceh_nixpkgs_install supports using different nixpkgs
 versions for every executable.  It's so efficient in what it does,
 that we don't care at all about using the same nixpkgs in different
@@ -213,8 +242,7 @@ we'd only use newer nixpkgs version for packages that have to be new:
 e.g. firefox, coursera-dl.  Of course we'd move the baseline quite
 frequently, so we keep ourselves generally fresh (e.g. every 3
 months?).
-
-*** All these hashes are a bit painful to have
+*** DONE (implemented autoinit): All these hashes are a bit painful to have
 We know, that nixpkgs_version+package_name+$NIXPKGS_CONFIG determines
 the derivation and the output hash, so we only include those hashes to
 catch an inconsistency when the result of this mapping is not
@@ -232,7 +260,7 @@ the ceh installed packages with hashes, so users can compare there
 machines to debug issues.
 
 ** Missing features
-*** Easy upgradability for packages
+*** DONE (see maintainer notes): Easy upgradability for packages
 Let's assume that I'm willing to spend 2 minutes now to try out if
 tmux works even with a newer nixpkgs (the next baseline, or whatever).
 It'd be nice to have some environment variable that the user can
@@ -247,7 +275,7 @@ or haskellPackages_ghc763.ghc), this won't be ever totally automatic,
 but in those cases at least the user will notice when ceh is using
 some packages that are not even there in newer nixpkgs.
 
-*** Install world
+*** DONE : Install world
 Installation of all the packages currently found anywhere in /opt/ceh.
 Without starting the installed programs of course.
 

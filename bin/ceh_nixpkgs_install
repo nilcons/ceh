@@ -1,15 +1,22 @@
 #!/opt/ceh/lib/perl
 # -*- mode: perl; -*-
 
-# This script can be used to install packages to the default nix
+# This script can be used to install packages to the user's nix
 # profile quickly from the current nixpkgs baseline.  Of course,
 # without wrappers the resulting installation is not as useful as
 # something that is included in ceh, but you can still access the
 # executables through ~/.nix-profile/bin, so good for quick
 # experimentation.
 #
+# Available packages can be listed  with: ceh_nixpkgs_avail
 # Installed packages can be listed  with: nix-env -q '*'
 # Installed packages can be deleted with: nix-env -e foobar
+#
+# If instead of the current ceh baseline of nixpkgs, you want to use
+# the most up-to-date nixpkgs, use nix commands to do that:
+#   nix-channel --add http://nixos.org/releases/nixpkgs/channels/nixpkgs-unstable
+#   nix-channel --update
+#   nix-env -i vim
 
 use strict;
 use warnings;
@@ -20,4 +27,4 @@ if (not $ARGV[0]) {
     die "Please provide a package name, run ceh_nixpkgs_avail to get a list to choose from!";
 }
 
-ceh_nixpkgs_install($ARGV[0], autoinit => 1);
+ceh_nixpkgs_install($ARGV[0], "/nix/var/nix/profiles/per-user/$ENV{USER}/profile", autoinit => 1);

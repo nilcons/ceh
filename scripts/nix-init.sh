@@ -35,10 +35,10 @@ then
     exit 1
 fi
 
-if env | grep -iq ^nix_
+if env | grep -v ^NIX_CONF_DIR | grep -iq ^nix_
 then
     echo "Nix variables in env. Please remove those from bashrc." >&2
-    echo "\"env | grep -i ^nix_\" should have no results" >&2
+    echo "\"env | grep -v ^NIX_CONF_DIR | grep -i ^nix_\" should have no results" >&2
     exit 1
 fi
 
@@ -63,19 +63,19 @@ regInfo=/nix/store/reginfo
 $CEH_NIX/bin/nix-store --load-db < $regInfo
 
 # Set up the symlinks
+mkdir -m 0755 -p /nix/var/nix/profiles/ceh
 mkdir -m 0755 -p /nix/var/nix/profiles/per-user/$USER
 ln -s /nix/var/nix/profiles/per-user/$USER/profile $HOME/.nix-profile
+( cd /nix/var/nix/profiles/per-user ; ln -s $USER root )
 mkdir $HOME/.nix-defexpr
 
-# Create the first user environment
-$CEH_NIX/bin/nix-env -i $CEH_NIX
+# Test that on-demand installation works
+/opt/ceh/bin/nix-env --version
 
 # Add channels
 $CEH_NIX/bin/nix-channel --add http://nixos.org/releases/nixpkgs/channels/nixpkgs-unstable
 $CEH_NIX/bin/nix-channel --update
 
-# binary-cache is only used from the root profile...
-( cd /nix/var/nix/profiles/per-user ; ln -s $USER root )
 
     cat <<EOF
 Installation finished.  To ensure that the necessary environment

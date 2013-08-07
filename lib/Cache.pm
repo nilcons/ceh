@@ -18,11 +18,9 @@ use CehBase;
 # we can create an installed_derivations top-level dir in them with
 # one file touched for each package.
 #
-# $1 is the profile path (defaults to /opt/ceh/home/.nix-profile).
-sub ceh_nix_update_cache {
+# $1 is the profile path
+sub ceh_nix_update_cache($) {
     my ($profile) = @_;
-    my @profile = $profile ? ('-p', $profile) : ();
-    $profile = "/opt/ceh/home/.nix-profile" if not $profile;
 
     return if done("$profile/installed_derivations");
 
@@ -31,16 +29,13 @@ sub ceh_nix_update_cache {
     # update function from anywhere even if the first package is just
     # being installed to a new profile.
     return unless -l $profile;
-    if ($profile eq "/opt/ceh/home/.nix-profile") {
-	return unless -l (readlink "/opt/ceh/home/.nix-profile");
-    }
 
     chmod 0755, "$profile" or croak;
     rmtree("$profile/installed_derivations");
     not -e "$profile/installed_derivations" or croak;
     mkdir "$profile/installed_derivations" or croak;
 
-    my @paths = `$CEH_NIX/bin/nix-env @profile --no-name --out-path -q '*'`;
+    my @paths = `$CEH_NIX/bin/nix-env -p $profile --no-name --out-path -q '*'`;
     $? and croak;
     foreach (@paths) {
 	chomp;

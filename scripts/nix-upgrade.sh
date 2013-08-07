@@ -23,10 +23,10 @@ then
     exit 1
 fi
 
-if env | grep -iq ^nix_
+if env | grep -v ^NIX_CONF_DIR | grep -iq ^nix_
 then
     echo "Nix variables in env. Please remove those from bashrc." >&2
-    echo "\"env | grep -i ^nix_\" should have no results" >&2
+    echo "\"env | grep -v ^NIX_CONF_DIR | grep -i ^nix_\" should have no results" >&2
     exit 1
 fi
 
@@ -40,11 +40,11 @@ fi
 
 . /opt/ceh/lib/base.sh
 
-if [ -d $CEH_NIX ] && [ -f /opt/ceh/home/.nix-profile/installed_derivations/`basename $CEH_NIX` ]
+if [ -d $CEH_NIX ] && [ -f /nix/var/nix/profiles/ceh/bin/installed_derivations/`basename $CEH_NIX` ]
 then
     echo >&2 "Nix store already has the current nix version:"
     echo >&2 "  $CEH_NIX"
-    echo >&2 "  /opt/ceh/home/.nix-profile/installed_derivations/`basename $CEH_NIX`"
+    echo >&2 "  /nix/var/nix/profiles/ceh/bin/installed_derivations/`basename $CEH_NIX`"
     exit 1
 fi
 
@@ -55,15 +55,13 @@ wget -c $CEH_NIX_DOWNLOAD
 ( cd / && tar -x -k --delay-directory-restore -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix/store )
 ( cd / && tar -x --overwrite --delay-directory-restore -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix/store/reginfo )
 $CEH_NIX/bin/nix-store --load-db < /nix/store/reginfo
-$CEH_NIX/bin/nix-env -i $CEH_NIX
+/opt/ceh/bin/nix-env --version
 
-/opt/ceh/lib/update_cache.pl
-
-if [ -d $CEH_NIX ] && [ -f /opt/ceh/home/.nix-profile/installed_derivations/`basename $CEH_NIX` ]
+if [ -d $CEH_NIX ] && [ -f /nix/var/nix/profiles/ceh/bin/installed_derivations/`basename $CEH_NIX` ]
 then
     echo >&2 "Upgrade succeeded:"
     echo >&2 "  $CEH_NIX"
-    echo >&2 "  /opt/ceh/home/.nix-profile/installed_derivations/`basename $CEH_NIX`"
+    echo >&2 "  /nix/var/nix/profiles/ceh/bin/installed_derivations/`basename $CEH_NIX`"
     exit 0
 else
     echo >&2 "Upgrade failed."
