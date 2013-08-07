@@ -198,8 +198,23 @@ itself (e.g. =which=).
 + send a github pull request.
 
 
-** Upgrading ceh to a new baseline (TODO: errge)
+** Upgrading ceh to a new baseline
++ Update =lib/CehBase.pm= with a new hash, that you should get from
+  http://nixos.org/releases/nixpkgs/, by choosing the most recent
+  release and getting the git commit id from there (in my case b253eb0).
+  To get the long hash id for that commit, do this:
+: cd /nix/var/ceh_nixpkgs/git
+: git fetch origin master:master
+: git log -1 --format=oneline b253eb0 -- | cat
++ Update all the wrappers to have the new baseline versions.  For
+  example to upgrade git:
+: export CEH_AUTO_UPGRADE=1
+: /opt/ceh/bin/git
+This will update the hash in lib/Packages/Git.pm.
 
+To do this for all the packages, use scripts/install-world.sh.
++ =git grep= the old baseline hash to see that everything has been
+  updated.
 
 * Techtalk
 : Title: Nix & ceh: reproducible power-user environment
