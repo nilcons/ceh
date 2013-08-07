@@ -143,8 +143,9 @@ from =/nix/store=,
 end-user has the final say.  The =scripts/nix-profile.sh= script puts
 this directory in front of the =bin/= directory in PATH,
 
-=/opt/ceh/emacs.d/=: emacs module wrappers, like =bin/=, but for emacs lisp
-packages,
+=/opt/ceh/emacs.d/=: contains =nix-mode.el= only, we used to
+distribute emacs modules via Ceh, but it didn't work too well, it's
+simpler to just use melpa,
 
 =/opt/ceh/home=: gitignored symlink to the user's home, this is extremely
 useful, because if Ceh is installed, you can simply use
@@ -179,9 +180,6 @@ collected by running =ceh_collect_garbage=,
 
 =/nix/var/nix/profiles/ceh/bin=: the profile for packages installed by
 wrapper scripts in =/opt/ceh/bin=,
-
-=/nix/var/nix/profiles/ceh/emacs=: the profile for packages installed by
-wrapper scripts in =/opt/ceh/emacs.d=,
 
 =/nix/var/nix/profiles/ceh/ghc-libs=: the profile for clibs that are
 needed to install FFI libraries with cabal,
