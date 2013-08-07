@@ -189,7 +189,15 @@ needed to install FFI libraries with cabal,
 =/nix/var/nix/profiles/ceh/tools=: the profile for tools used by ceh
 itself (e.g. =which=).
 
-** Adding a new package to ceh (TODO: errge)
+
+** Adding a new package to ceh
++ Simply create a wrapper script in =/opt/ceh/bin=, use =tmux= as an example,
++ use the autoinit feature to get the initial hash values:
+  : ceh_nixpkgs_install_bin('newpkg', AUTOINIT);
+  After running this wrapper once, the AUTOINIT will be replaced with
+  the current nixpkgs version, derivation and out hash values.
++ add it to =scripts/install-world.sh=,
++ send a github pull request.
 
 
 ** Upgrading ceh to a new baseline (TODO: errge)
