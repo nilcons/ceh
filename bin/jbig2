@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install_bin('jbig2enc', nixpkgs_version => '168115f610835654c1ed85a1bcf089f0919c9566', derivation => 'pzwd03v0gv1ii7fyhk8xjfvdsphdlnc4-jbig2enc-0.28.drv', out => 'wgvvzn5b1g7zz4m7xl470xwfxpvyr6mm-jbig2enc-0.28');
+ceh_nixpkgs_install_bin('jbig2enc', nixpkgs_version => 'b253eb0d593cb1041bd9c87ab03dbf72295c79d6', derivation => 'dz1av0a3nj12cd7q1c1xvs7cfdh6swpa-jbig2enc-0.28.drv', out => 'wgvvzn5b1g7zz4m7xl470xwfxpvyr6mm-jbig2enc-0.28');
 
 exec "$ceh_nix_install_root/bin/jbig2", @ARGV;

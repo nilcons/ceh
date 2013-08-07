@@ -41,6 +41,7 @@
 
             # Selected by CEH
             self.async
+            self.bindingsPosix
             self.bytedump
             self.cabal2nix
             self.ChartGtk
@@ -56,6 +57,7 @@
             self.digest
             self.ghcMod
             self.Glob
+            self.gloss
             self.gtk
             self.haskellSrcExts
             self.hmatrix

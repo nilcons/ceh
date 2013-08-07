@@ -8,7 +8,7 @@ use Carp;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_bin ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_for_emacs $ceh_nix_install_root);
+our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_bin ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools $ceh_nix_install_root);
 
 use CehBase;
 use Cache;
@@ -262,12 +262,6 @@ sub ceh_nixpkgs_install_for_ghc {
 sub ceh_nixpkgs_install_tools {
     my ($pkgattr, %opts) = @_;
     return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/tools", %opts);
-}
-
-# Use this profile when you're installing packages for emacs.
-sub ceh_nixpkgs_install_for_emacs {
-    my ($pkgattr, %opts) = @_;
-    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/emacs", %opts);
 }
 
 1;
