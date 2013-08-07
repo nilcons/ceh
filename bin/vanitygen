@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install_bin('vanitygen', nixpkgs_version => 'b253eb0d593cb1041bd9c87ab03dbf72295c79d6', derivation => '5qs0lmxira1rvb7raq2j3x52ijgv5zdv-vanitygen-0.21.drv', out => 'a4dvk6hdlp2hb58hpnyw5jwp0sz2l1gd-vanitygen-0.21');
+
+exec "$ceh_nix_install_root/bin/vanitygen", @ARGV;
