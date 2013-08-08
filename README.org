@@ -1,12 +1,14 @@
-* Guild for people who like Nix
-+ Agreements and repositories for a shared GNU/Linux power-user environment.
+* Sharable power-user environment on top of any modern GNU/Linux
++ Agreements and a repository for a shared GNU/Linux power-user environment.
 + So that it's easy to work on shared projects (e.g. the haskell
-  header can be =#!/opt/ceh/bin/runhaskell=, instead of some
-  complicated perl one-liner).
+  header can be =#!/opt/ceh/bin/runhaskell -i /opt/ceh/p/ourproject=,
+  instead of some complicated perl one-liner).
 + So that the packages are available with the same version on our
   machines (e.g. =emacs= and =ghc=).
 + These agreements are intentionally based on simple unifications
-  instead of abstractions.
+  instead of abstractions (e.g. =/opt/ceh/home= has to be a symlink
+  for the user's home directory, no need to =$HOME= or tilde lookups
+  anymore).
 + We use i686 Nix for package management and if you can decide the
   distribution that you use as a base system, we recommend i686 Debian
   (maybe with amd64 kernel, if you sometimes need the extra registers
@@ -20,12 +22,12 @@
 + The machine only has one user who wants to use ceh and nix and she
   will be the owner of the files in =/opt/ceh= and =/nix=.
 + Root privileges for the installation.  Actually only needed for the
-  creation of =/opt/ceh= and =/nix=, not needed for everyday usage and
+  creation of =/opt/ceh= and =/nix=, not needed for everyday usage or
   package installation.
 + =/etc/passwd= contains your user, so nix doesn't have to use any
   fancy NSS modules.
 + The user uses bash or zsh.  This is because he has to source
-  /opt/ceh/scripts/nix-profile.sh which supports these two shells.
+  =/opt/ceh/scripts/nix-profile.sh= which supports these two shells.
   Patches are welcome for other shells.
 
 
@@ -49,31 +51,33 @@ that you're supposed to source from your =~/.bashrc=.
 *** Exclusions: ignoring programs provided by ceh
 If for any reason you prefer to ignore one of our provided binaries,
 you can use the =ceh_exclude= script to create a symlink from
-=/opt/ceh/bin-user/= to the other version of the binary in your PATH.
+=/opt/ceh/bin-user/= to the other version of the binary in your =PATH=.
 
 If you don't want the exclusion anymore, just delete the symlink.
 
 *** Troubleshooting if something is broken after git pull
 Sometimes there are package name changes and other complications that
-can cause filename collissions or dynamic linking issues after a
-=git pull= on =/opt/ceh=.  The easiest thing to try in that case is to
-remove all the profiles that is used by ceh.  This will ensure that we
-can create all the profiles afresh, but on the other hand the
-operation will be pretty cheap, because everything is already
-downloaded and built in =/nix/store= (assuming you don't run a garbage
-collection):
+can cause filename collissions or dynamic linking issues after a =git
+pull= in =/opt/ceh=.  The easiest thing to try in that case is to
+remove all the nix profiles that is used by ceh.  This will ensure
+that we can install all the packages afresh:
 : rm /nix/var/nix/profiles/ceh/*
 
+This operation will be cheap, because everything is already downloaded
+and built in =/nix/store= (so don't run =nix-collect-garbage= or
+=ceh_collect_garbage= before running your favorite binaries at least
+once).
 
 * Upgrade notes
-** 2013-08: ~/.nix-profile reserved for the user from now on
+*** 2013-08: ~/.nix-profile reserved for the user
 The =/nix/var/nix/profiles/per-user/root/profile= profile (which is
-symlinked by default from $HOME/.nix-profile) is not used for
+symlinked by default from =$HOME/.nix-profile=) is not used for
 installations anymore.  Earlier versions of ceh used to install
 packages there, but now that profile is reserved for the user.
 
-This is good, because if you need some package (e.g. =vim=) quickly from
-the current ceh baseline, you can just do:
+This is good, because if you need some package (e.g. =vim=) quickly
+from the nixpkgs version that is current the ceh baseline, you can
+just do:
 : ceh_nixpkgs_install vim
 : ~/.nix-profile/bin/vim
 
@@ -83,34 +87,41 @@ Alternatively, you can use the most up-to-date nixpkgs:
 : nix-env -i vim
 : ~/.nix-profile/bin/vim
 
-No need to create wrappers in =/opt/ceh=, etc.  If you want to get rid
-of your user profile, simply delete
-=/nix/var/nix/profiles/per-user/root/profile*=.  This is from now on
-is totally separate from ceh's packages installed by wrappers in
-=/opt/ceh/bin=.
+No need to create a wrapper in =/opt/ceh= just for a quick test.  If
+you want to get rid of your user profile, simply delete
+=/nix/var/nix/profiles/per-user/$USER/profile*=.  This is from now on
+is totally separate from ceh's own nix profiles.  Those are located in
+=/nix/var/nix/profiles/ceh/*=.
 
 If you're upgrading =ceh= from a version, where the default profile
 was used for package installations, please delete
 =/nix/var/nix/profiles/per-user/root/profile*=.
 
 
-* Installation of haskell packages with cabal
-*** Pure haskell, non-FFI packages
+* Haskell packages
+*** Builtin packages, shipped with ceh
+The list can be found in =/opt/ceh/lib/Packages/GHC.nix=, feel free to
+send pull requests if you need something.
 
-The /opt/ceh/bin/ghc and /opt/ceh/bin/cabal scripts are wrapped in a
-way that the whole toolchain (ghc, gcc, ld) is used from Nix.
+
+*** Pure haskell, non-FFI packages
+The =/opt/ceh/bin/ghc= and =/opt/ceh/bin/cabal= scripts are wrapped in
+a way that the whole toolchain (ghc, gcc, ld) is used from Nix.
 
 This means that simple, non-FFI packages should just work out-of-the-box:
 : cabal update
 : vi ~/.cabal/config    (enable library-profiling if you want)
 : cabal install hflags
 
+But again, if we miss some basic, important package from the default
+installation, please tell us, instead of cabal installing it on your
+own machines.
+
 *** FFI packages
-For FFI packages to work, you of course need to have the required
-clibs installed, so the package can FFI against it.  There is a
-special nix profile where we keep all the clibs nix packages needed
-for haskell compilations.  To install a new package to this profile
-and then install the haskell package, do something like this:
+For FFI packages to work, you of course need to have the required libs
+installed, so the package can link against them.  There is a special
+nix profile where we install all the nix packages for these libs to.
+To install a new package to this profile, you can do this:
 : #!/opt/ceh/lib/perl
 :
 : use strict;
@@ -119,12 +130,14 @@ and then install the haskell package, do something like this:
 : use CehInstall;
 :
 : ceh_nixpkgs_install_for_ghc('openssl', AUTOINIT);
-: cabal install HsOpenSSL
 
 AUTOINIT will be replaced by the current nixpkgs version and the
 correct hashes when you first run this Perl script.  You can then even
 commit this script to your project's version control, so your
 teammates can reproduce the same environment.
+
+After that you will be able to simply call cabal install:
+: cabal install HsOpenSSL
 
 
 * TODOs
@@ -147,8 +160,8 @@ this directory in front of the =bin/= directory in PATH,
 distribute emacs modules via Ceh, but it didn't work too well, it's
 simpler to just use melpa,
 
-=/opt/ceh/home=: gitignored symlink to the user's home, this is extremely
-useful, because if Ceh is installed, you can simply use
+=/opt/ceh/home=: gitignored symlink to the user's home, this is
+extremely useful, because if Ceh is installed, you can simply use
 =/opt/ceh/home= as a path to point to the user's home directory
 without using the tilde expansion of the shell (that doesn't work in
 syscalls or on the shebang line),
@@ -163,7 +176,7 @@ have =/opt/ceh/home= as an absolute path for the user's home directory,
 
 =/nix=: not in Git, but doesn't store any important data.  Deleting
 all the content and reinstalling Ceh will result in some compilation
-and downloading, but everything should be easily reproducible here,
+and downloading, but everything will be recreated eventually,
 
 =/nix/store=: contains the installed package roots.  Managed by nix
 commands, like =nix-store=, =nix-env= and =nix-instantiate=,
@@ -174,7 +187,7 @@ package collection, used and maintained by =lib/CehInstall.pm=,
 =/nix/var/nix/profiles/ceh=: nix user environments (or profiles for
 short).  A nix profile is a set of installed packages from
 =/nix/store=.  The packages are merged together as a symlink farm in
-the profile to show a unixsh prefix root with =bin/=, =share/= and
+the profile to show a unixish prefix root with =bin/=, =share/= and
 other usual directories.  Old versions of the profiles can be garbage
 collected by running =ceh_collect_garbage=,
 
@@ -206,13 +219,16 @@ itself (e.g. =which=).
 : cd /nix/var/ceh_nixpkgs/git
 : git fetch origin master:master
 : git log -1 --format=oneline b253eb0 -- | cat
+
 + Update all the wrappers to have the new baseline versions.  For
   example to upgrade git:
 : export CEH_AUTO_UPGRADE=1
 : /opt/ceh/bin/git
+
 This will update the hash in lib/Packages/Git.pm.
 
 To do this for all the packages, use scripts/install-world.sh.
+
 + =git grep= the old baseline hash to see that everything has been
   updated.
 
@@ -248,7 +264,7 @@ To do this for all the packages, use scripts/install-world.sh.
 * Design ideas for V2 (obsolete, these are mostly done)
 ** What issues do we have
 
-*** DONE : More consistent nixpkgs version for different packages
+*** More consistent nixpkgs version for different packages (DONE)
 Currently ceh_nixpkgs_install supports using different nixpkgs
 versions for every executable.  It's so efficient in what it does,
 that we don't care at all about using the same nixpkgs in different
@@ -263,7 +279,8 @@ we'd only use newer nixpkgs version for packages that have to be new:
 e.g. firefox, coursera-dl.  Of course we'd move the baseline quite
 frequently, so we keep ourselves generally fresh (e.g. every 3
 months?).
-*** DONE (implemented autoinit): All these hashes are a bit painful to have
+
+*** All these hashes are a bit painful to have (DONE: implemented autoinit)
 We know, that nixpkgs_version+package_name+$NIXPKGS_CONFIG determines
 the derivation and the output hash, so we only include those hashes to
 catch an inconsistency when the result of this mapping is not
@@ -281,7 +298,7 @@ the ceh installed packages with hashes, so users can compare there
 machines to debug issues.
 
 ** Missing features
-*** DONE (see maintainer notes): Easy upgradability for packages
+*** Easy upgradability for packages (DONE: see maintainer notes)
 Let's assume that I'm willing to spend 2 minutes now to try out if
 tmux works even with a newer nixpkgs (the next baseline, or whatever).
 It'd be nice to have some environment variable that the user can
@@ -296,7 +313,7 @@ or haskellPackages_ghc763.ghc), this won't be ever totally automatic,
 but in those cases at least the user will notice when ceh is using
 some packages that are not even there in newer nixpkgs.
 
-*** DONE : Install world
+*** Install world (DONE)
 Installation of all the packages currently found anywhere in /opt/ceh.
 Without starting the installed programs of course.
 
