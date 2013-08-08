@@ -16,8 +16,9 @@
         builder = ./firefox-builder.sh;
 
         src = fetchurl {
-          url = "http://releases.mozilla.org/pub/mozilla.org/firefox/releases/22.0/linux-i686/en-US/firefox-22.0.tar.bz2";
-          sha256 = "02rpfvv62h9mdzxfr6jvap3in7acazfyygxhiwnqf6x8iip9clrj";
+          url = "https://download.mozilla.org/?product=firefox-23.0&os=linux&lang=en-US";
+          name = "firefox.tar.bz2";
+          sha256 = "11an1ymqyahjpsgmnywsxxlq3w8i89lmiz92kw1kvbf0m3sihcss";
         };
 
         flashplayer_path = flashplayer;
