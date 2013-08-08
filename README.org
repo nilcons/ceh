@@ -68,6 +68,7 @@ and built in =/nix/store= (so don't run =nix-collect-garbage= or
 =ceh_collect_garbage= before running your favorite binaries at least
 once).
 
+
 * Upgrade notes
 *** 2013-08: ~/.nix-profile reserved for the user
 The =/nix/var/nix/profiles/per-user/root/profile= profile (which is
@@ -229,8 +230,11 @@ This will update the hash in lib/Packages/Git.pm.
 
 To do this for all the packages, use scripts/install-world.sh.
 
++ Update the =/opt/ceh/lib/perl= symlink to the new perl.
+
 + =git grep= the old baseline hash to see that everything has been
   updated.
+
 
 * Techtalk
 : Title: Nix & ceh: reproducible power-user environment
