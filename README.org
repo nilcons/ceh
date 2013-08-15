@@ -230,10 +230,14 @@ This will update the hash in lib/Packages/Git.pm.
 
 To do this for all the packages, use scripts/install-world.sh.
 
-+ Update the =/opt/ceh/lib/perl= symlink to the new perl.
-
 + =git grep= the old baseline hash to see that everything has been
   updated.
+
+
+** Upgrading nix inside ceh
++ TODO
+
++ Update the =/opt/ceh/lib/perl= symlink to the new perl.
 
 
 * Techtalk
