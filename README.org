@@ -253,9 +253,22 @@ To do this for all the packages, use scripts/maintainer/install-world.sh.
 
 
 *** Upgrading nix inside ceh
-+ TODO
++ Choose a new release from http://nixos.org/nix/download.html, read
+  release notes, etc.
 
-+ Update the =/opt/ceh/lib/perl= symlink to the new perl.
++ Download "Distribution-independent Nix bootstrap binaries for i686-linux".
+
++ Unpack in a temp folder (warning! tarbomb!).
+
++ Update =lib/base.sh=, =lib/CehBase.pm= and =emacs.d/nix-mode.el=
+  with the URL and the nix store path.
+
++ Update the =/opt/ceh/lib/perl= symlink to the perl in the package.
+
++ Test if =ceh-upgrade.sh= is able to upgrade your old installation to
+  the new one.
+
++ git commit, git push.
 
 
 * Techtalk

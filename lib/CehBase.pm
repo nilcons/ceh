@@ -12,7 +12,7 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw($CEH_NIX $CEH_NIXPKGS_GITURL $CEH_NIXPKGS_GIT
   $CEH_BASELINE_NIXPKGS done debug touch systemdie path_prepend);
 
-our $CEH_NIX='/nix/store/k0ksg8yjwz026vwivcnkjwfmv4jbkqyl-nix-1.5.1';
+our $CEH_NIX='/nix/store/fi99n6gsjc7098rf9225pgh00z0gyrv6-nix-1.5.3';
 our $CEH_NIXPKGS_GITURL='http://github.com/NixOS/nixpkgs';
 our $CEH_NIXPKGS_GIT='/nix/var/ceh_nixpkgs';
 our $CEH_BASELINE_NIXPKGS='b253eb0d593cb1041bd9c87ab03dbf72295c79d6';
