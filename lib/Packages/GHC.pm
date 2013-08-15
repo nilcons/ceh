@@ -21,9 +21,9 @@ if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {
 	$ENV{NIX_LDFLAGS}="-L /nix/var/nix/profiles/ceh/ghc-libs/lib " . ($ENV{NIX_LDFLAGS} or "");
 	$ENV{NIX_CFLAGS_COMPILE}="-idirafter /nix/var/nix/profiles/ceh/ghc-libs/include " . ($ENV{NIX_CFLAGS_COMPILE} or "");
 	path_prepend("/nix/var/nix/profiles/ceh/ghc-libs/lib/pkgconfig", 'PKG_CONFIG_PATH');
-	my $outgcc = ceh_nixpkgs_install_for_ghc("gcc", nixpkgs_version => 'b253eb0d593cb1041bd9c87ab03dbf72295c79d6', derivation => '9jcxj7fr89in7074ycqzrrgfgc6wd8ci-gcc-wrapper-4.6.3.drv', out => 'q09m5iknwzqcb4js54pmghzqzd18wz08-gcc-wrapper-4.6.3');
+	my $outgcc = ceh_nixpkgs_install_ghctools("gcc", nixpkgs_version => 'b253eb0d593cb1041bd9c87ab03dbf72295c79d6', derivation => '9jcxj7fr89in7074ycqzrrgfgc6wd8ci-gcc-wrapper-4.6.3.drv', out => 'q09m5iknwzqcb4js54pmghzqzd18wz08-gcc-wrapper-4.6.3');
 	path_prepend("$outgcc/bin");
-	my $outpkg = ceh_nixpkgs_install_for_ghc("pkgconfig", nixpkgs_version => 'b253eb0d593cb1041bd9c87ab03dbf72295c79d6', derivation => '7kiw825s9cd681088b1brnf1pajabry3-pkg-config-0.23.drv', out => 'sjg0j92drrip1pch65srsxa9jw0zq4g6-pkg-config-0.23');
+	my $outpkg = ceh_nixpkgs_install_ghctools("pkgconfig", nixpkgs_version => 'b253eb0d593cb1041bd9c87ab03dbf72295c79d6', derivation => '7kiw825s9cd681088b1brnf1pajabry3-pkg-config-0.23.drv', out => 'sjg0j92drrip1pch65srsxa9jw0zq4g6-pkg-config-0.23');
 	path_prepend("$outpkg/bin");
 	$ENV{CEH_GCC_WRAPPER_FLAGS_SET}=1;
 }

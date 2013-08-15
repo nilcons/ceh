@@ -8,7 +8,7 @@ use Carp;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_bin ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools $ceh_nix_install_root);
+our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_bin ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_ghctools $ceh_nix_install_root);
 
 use CehBase;
 use Cache;
@@ -262,6 +262,12 @@ sub ceh_nixpkgs_install_for_ghc {
 sub ceh_nixpkgs_install_tools {
     my ($pkgattr, %opts) = @_;
     return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/tools", %opts);
+}
+
+# Profile for stuff needed to properly wrap GHC, used by ceh internally.
+sub ceh_nixpkgs_install_ghctools {
+    my ($pkgattr, %opts) = @_;
+    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-tools", %opts);
 }
 
 1;
