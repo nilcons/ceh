@@ -76,6 +76,12 @@ mkdir $HOME/.nix-defexpr
 $CEH_NIX/bin/nix-channel --add http://nixos.org/releases/nixpkgs/channels/nixpkgs-unstable
 $CEH_NIX/bin/nix-channel --update
 
+# TODO(errge): reimplement this whole script in perl, and then we can share
+# common variables, like CEH_NIXPKGS_GITURL and CEH_NIXPKGS_GIT
+echo "Checking out nixpkgs..."
+mkdir -p /nix/var/ceh_nixpkgs/git
+/usr/bin/git clone --bare http://github.com/NixOS/nixpkgs /nix/var/ceh_nixpkgs/git
+touch /nix/var/ceh_nixpkgs/git.done
 
     cat <<EOF
 Installation finished.  To ensure that the necessary environment
