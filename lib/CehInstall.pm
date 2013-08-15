@@ -11,7 +11,7 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_bin ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_ghctools $ceh_nix_install_root);
 
 use CehBase;
-use Cache;
+use CehCache;
 use Replacer;
 
 # So we don't accidentally use git from ceh and go into an infinite loop

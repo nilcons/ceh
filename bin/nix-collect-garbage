@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use lib "/opt/ceh/lib";
-use Cache;
+use CehCache;
 use CehBase;
 
 ensure_nix_installed_in_bin_profile();

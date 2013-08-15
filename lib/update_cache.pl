@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use lib '/opt/ceh/lib';
-use Cache;
+use CehCache;
 use Carp;
 
 $ARGV[0] or croak("have to pass a profile as the first parameter");

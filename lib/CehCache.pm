@@ -1,6 +1,6 @@
 #!/opt/ceh/lib/perl
 
-package Cache;
+package CehCache;
 
 use strict;
 use warnings;
