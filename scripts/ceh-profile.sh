@@ -15,11 +15,11 @@
     echo >&2 "  $CEH_NIX"
     echo >&2 ""
     echo >&2 "If ceh is not initialized at all, you can use:"
-    echo >&2 "  /opt/ceh/scripts/nix-init.sh"
+    echo >&2 "  /opt/ceh/scripts/ceh-init.sh"
     echo >&2 ""
     echo >&2 "If ceh is already installed and you got this message after a"
     echo >&2 "git pull in /opt/ceh, then most probably you have to upgrade nix:"
-    echo >&2 "  /opt/ceh/scripts/nix-upgrade.sh"
+    echo >&2 "  /opt/ceh/scripts/ceh-upgrade.sh"
     echo >&2 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
     return 1
 }

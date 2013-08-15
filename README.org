@@ -27,7 +27,7 @@
 + =/etc/passwd= contains your user, so nix doesn't have to use any
   fancy NSS modules.
 + The user uses bash or zsh.  This is because he has to source
-  =/opt/ceh/scripts/nix-profile.sh= which supports these two shells.
+  =/opt/ceh/scripts/ceh-profile.sh= which supports these two shells.
   Patches are welcome for other shells.
 
 
@@ -38,14 +38,14 @@
 : cd /opt/ceh
 : git clone git://github.com/errge/ceh.git .
 : ln -s $HOME home
-: /opt/ceh/scripts/nix-init.sh
+: /opt/ceh/scripts/ceh-init.sh
 
 
 * Everyday usage
 In the =/opt/ceh/bin= directory there are small wrapper scripts.  Those
 install the required pacakages for the wrapped binaries on first run.
 
-=/opt/ceh/bin= is put into =$PATH= by =/opt/ceh/scripts/nix-profile.sh=,
+=/opt/ceh/bin= is put into =$PATH= by =/opt/ceh/scripts/ceh-profile.sh=,
 that you're supposed to source from your =~/.bashrc=.
 
 *** Exclusions: ignoring programs provided by ceh
@@ -68,9 +68,18 @@ and built in =/nix/store= (so don't run =nix-collect-garbage= or
 =ceh_collect_garbage= before running your favorite binaries at least
 once).
 
+Also, sometimes we have to upgrade the nix package itself inside ceh.
+The nix package manager executable itself is unpacked when
+=ceh-init.sh= is ran for the first time.  So, if we upgrade that,
+users have to run =ceh-upgrade.sh= to download and install the new
+version.  The profile script (ceh-profile.sh) tries to warn you when
+this happens, but you can check for this explicitly by checking that
+path stored in =$CEH_NIX= exists on your system.  If it doesn't, just
+go ahead and run =ceh-upgrade.sh=.
+
 
 * Upgrade notes
-*** 2013-08: ~/.nix-profile reserved for the user
+*** 2013-08-05: ~/.nix-profile reserved for the user
 The =/nix/var/nix/profiles/per-user/root/profile= profile (which is
 symlinked by default from =$HOME/.nix-profile=) is not used for
 installations anymore.  Earlier versions of ceh used to install
@@ -98,6 +107,13 @@ If you're upgrading =ceh= from a version, where the default profile
 was used for package installations, please delete
 =/nix/var/nix/profiles/per-user/root/profile*=.
 
+*** 2013-08-15: renames
+nix-init.sh    -> ceh-init.sh
+nix-profile.sh -> ceh-profile.sh
+nix-purge.sh   -> ceh-purge.sh
+nix-upgrade.sh -> ceh-upgrade.sh
+
+And install-world.sh and predict-binary-cache.sh moved to scripts/maintainer.
 
 * Haskell packages
 *** Builtin packages, shipped with ceh
@@ -146,7 +162,7 @@ After that you will be able to simply call cabal install:
 
 
 * Design and other info for Ceh hackers, maintainers
-** Directory structure
+*** Directory structure
 =/opt/ceh/bin/=: wrapper scripts, they make sure that the wanted
 package is already installed into ceh's bin nix profile
 (=/nix/var/nix/profiles/ceh/bin=) and into the nix store
@@ -154,7 +170,7 @@ package is already installed into ceh's bin nix profile
 from =/nix/store=,
 
 =/opt/ceh/bin-user/=: gitignored directory for local exclusions, so the
-end-user has the final say.  The =scripts/nix-profile.sh= script puts
+end-user has the final say.  The =scripts/ceh-profile.sh= script puts
 this directory in front of the =bin/= directory in PATH,
 
 =/opt/ceh/emacs.d/=: contains =nix-mode.el= only, we used to
@@ -174,6 +190,8 @@ have an absolute symlink in =/opt/ceh/p/whatever-project=, like we
 have =/opt/ceh/home= as an absolute path for the user's home directory,
 
 =/opt/ceh/scripts/=: Ceh end-user scripts (install, purge, profile, upgrade),
+
+=/opt/ceh/scripts/maintainer=: Ceh maintainer scripts,
 
 =/nix=: not in Git, but doesn't store any important data.  Deleting
 all the content and reinstalling Ceh will result in some compilation
@@ -202,17 +220,17 @@ needed to install FFI libraries with cabal,
 itself (e.g. =which=).
 
 
-** Adding a new package to ceh
+*** Adding a new package to ceh
 + Simply create a wrapper script in =/opt/ceh/bin=, use =tmux= as an example,
 + use the autoinit feature to get the initial hash values:
   : ceh_nixpkgs_install_bin('newpkg', AUTOINIT);
   After running this wrapper once, the AUTOINIT will be replaced with
   the current nixpkgs version, derivation and out hash values.
-+ add it to =scripts/install-world.sh=,
++ add it to =scripts/maintainer/install-world.sh=,
 + send a github pull request.
 
 
-** Upgrading ceh to a new baseline
+*** Upgrading ceh to a new baseline
 + Update =lib/CehBase.pm= with a new hash, that you should get from
   http://nixos.org/releases/nixpkgs/, by choosing the most recent
   release and getting the git commit id from there (in my case b253eb0).
@@ -228,13 +246,13 @@ itself (e.g. =which=).
 
 This will update the hash in lib/Packages/Git.pm.
 
-To do this for all the packages, use scripts/install-world.sh.
+To do this for all the packages, use scripts/maintainer/install-world.sh.
 
 + =git grep= the old baseline hash to see that everything has been
   updated.
 
 
-** Upgrading nix inside ceh
+*** Upgrading nix inside ceh
 + TODO
 
 + Update the =/opt/ceh/lib/perl= symlink to the new perl.

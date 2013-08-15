@@ -18,7 +18,7 @@ fi
 
 if [ -n "$(ls -A /nix)" ]
 then
-    echo "/nix is not empty. Try running the nix-purge.sh." >&2
+    echo "/nix is not empty. Try running the ceh-purge.sh." >&2
     exit 1
 fi
 
@@ -31,7 +31,7 @@ fi
 
 if find ~ -maxdepth 1 -name '.nix*' | grep -q .
 then
-    echo "~/.nix* found. Try running the nix-purge.sh." >&2
+    echo "~/.nix* found. Try running the ceh-purge.sh." >&2
     exit 1
 fi
 
@@ -87,7 +87,7 @@ touch /nix/var/ceh_nixpkgs/git.done
 Installation finished.  To ensure that the necessary environment
 variables are set, please add the line
 
-  source /opt/ceh/scripts/nix-profile.sh
+  source /opt/ceh/scripts/ceh-profile.sh
 
 to your shell profile (e.g. ~/.profile).
 EOF

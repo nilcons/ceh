@@ -1,7 +1,7 @@
 # -*- mode: shell-script; sh-basic-offset: 2; -*-
 
 # Functions here should work in any reasonable shell, because this
-# file is sourced from nix-profile.sh.
+# file is sourced from ceh-profile.sh.
 
 # TODO(errge): document that this is shared between perl and shell
 export CEH_NIX_DOWNLOAD=http://hydra.nixos.org/build/4253993/download/1/nix-1.5.1-i686-linux.tar.bz2

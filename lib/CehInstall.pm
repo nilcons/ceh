@@ -194,7 +194,7 @@ sub ceh_nixpkgs_install($$%) {
     }
     ($derivation eq $current_derivation) or croak("derivation mismatch.  expected: $derivation, deducted: $current_derivation");
 
-    # this hack is used by /opt/ceh/scripts/predict-binary-cache.sh
+    # this hack is used by /opt/ceh/scripts/maintainer/predict-binary-cache.sh
     if ($ENV{CEH_GATHER_DERIVATIONS_ONLY}) {
 	debug "CEH_GATHER_DERIVATIONS_ONLY: /nix/store/$current_derivation\n";
 	exit 0;

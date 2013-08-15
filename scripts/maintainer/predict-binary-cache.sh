@@ -9,7 +9,7 @@
 # cache is populated.
 
 export CEH_GATHER_DERIVATIONS_ONLY=1
-. /opt/ceh/scripts/install-world.sh
+. /opt/ceh/scripts/maintainer/install-world.sh
 DERIVATIONS=`grep ^CEH_GATHER_DERIVATIONS_ONLY: $CEH_INSTALLWORLDDIR/* | cut -d\  -f2`
 echo -e "Gathered derivations:\n$DERIVATIONS"
 echo "Running nix-store:"
