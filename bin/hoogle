@@ -6,5 +6,7 @@ use warnings;
 use lib "/opt/ceh/lib";
 use Packages::GHC;
 
+path_prepend('/nix/var/nix/profiles/ceh/ghc-libs/lib', 'LD_LIBRARY_PATH');
+
 chdir "$ENV{HOME}/.hoogle";
 exec "$ceh_ghc_root/bin/hoogle", @ARGV;
