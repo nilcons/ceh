@@ -55,7 +55,9 @@
             self.dataDefault
             self.deepseqTh
             self.digest
+            self.ghcHeapView
             self.ghcMod
+            self.ghcVis
             self.Glob
             self.gloss
             self.gtk
@@ -76,6 +78,7 @@
             self.randomFu
             self.regexTdfa
             self.regexTdfaText
+            self.SafeSemaphore
             self.templateDefault
             self.utf8String
             self.utilityHt

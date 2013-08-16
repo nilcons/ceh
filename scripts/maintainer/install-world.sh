@@ -7,7 +7,7 @@ install () {
     echo Installing $1
     /opt/ceh/bin/$1 --version >$CEH_INSTALLWORLDDIR/$1.stdout 2>$CEH_INSTALLWORLDDIR/$1.stderr || true
     if [ "$CEH_GATHER_DERIVATIONS_ONLY" != "1" ]; then
-	fgrep -q "$2" $CEH_INSTALLWORLDDIR/$1.{stdout,stderr}
+	fgrep -q -- "$2" $CEH_INSTALLWORLDDIR/$1.{stdout,stderr}
     fi
 }
 
@@ -20,7 +20,6 @@ install alex "Simon Marlow"
 install cabal "cabal-install version"
 install cabal2nix "url-to-cabal-file"
 install cgpt "cgpt COMMAND"
-install coqtop "Coq Proof Assistant"
 install coursera-dl "usage: coursera-dl"
 install cpphs "cpphs 1"
 install emacs "GNU Emacs"
@@ -42,3 +41,9 @@ install tws-ui "TWS"
 install vanitygen "Generates a bitcoin"
 install vbutil_kernel "This program creates, signs"
 install xpra "xpra v0."
+
+# very slow, so do it last!
+install coqtop "Coq Proof Assistant"
+
+# also upgrade ceh_exclude's which
+install ceh_exclude "--version is not an executable"

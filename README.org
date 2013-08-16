@@ -115,6 +115,7 @@ nix-upgrade.sh -> ceh-upgrade.sh
 
 And install-world.sh and predict-binary-cache.sh moved to scripts/maintainer.
 
+
 * Haskell packages
 *** Builtin packages, shipped with ceh
 The list can be found in =/opt/ceh/lib/Packages/GHC.nix=, feel free to
@@ -246,7 +247,9 @@ itself (e.g. =which=).
 
 This will update the hash in lib/Packages/Git.pm.
 
-To do this for all the packages, use scripts/maintainer/install-world.sh.
++ To update all the packages, use scripts/maintainer/install-world.sh.
+  You may also find scripts/maintainer/predict-binary-cache.sh useful
+  in selecting and checking a baseline.
 
 + =git grep= the old baseline hash to see that everything has been
   updated.
