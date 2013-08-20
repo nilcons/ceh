@@ -8,7 +8,7 @@ use Carp;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_bin ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_ghctools $ceh_nix_install_root);
+our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_bin ceh_nixpkgs_install_bin64 ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_ghctools $ceh_nix_install_root);
 
 use CehBase;
 use CehCache;
@@ -102,6 +102,7 @@ sub ceh_nixpkgs_checkout($) {
 #
 # $1: package name (attribute path),
 # $2: target profile (e.g. /nix/var/nix/profiles/ceh/bin),
+# %bit64: build/install for x86_64-linux if 1,
 # %autoinit: autocomplete the function invocation with default values,
 #    Example: ceh_nixpkgs_install_bin('git', AUTOINIT);
 #      AUTOINIT will be replaced with correct values for
@@ -116,6 +117,7 @@ sub ceh_nixpkgs_install($$%) {
     my ($pkgattr, $profile, %opts) = @_;
     my $autoinit = $opts{autoinit};
     my $autoupgrade = 0;
+    my $nixsystem = $opts{bit64} ? "--option system x86_64-linux" : "--option system i686-linux";
     my $nixpkgs_version = $opts{nixpkgs_version};
     my $derivation = $opts{derivation};
     my $out = $opts{out};
@@ -182,8 +184,8 @@ sub ceh_nixpkgs_install($$%) {
 
     ceh_nixpkgs_checkout $nixpkgs_version;
 
-    $_ = `$CEH_NIX/bin/nix-instantiate '<ceh_nixpkgs>' -A $pkgattr`;
-    $? and croak;
+    $_ = `$CEH_NIX/bin/nix-instantiate $nixsystem '<ceh_nixpkgs>' -A $pkgattr`;
+    $? and confess;
     chomp;
     /^\/nix\/store\// or croak($_ . " not starting with /nix/store");
     s,/nix/store/,,;
@@ -212,7 +214,7 @@ sub ceh_nixpkgs_install($$%) {
     }
     ($out eq $current_out) or croak("out mismatch.  expected: $out, deducted: $current_out");
 
-    systemdie("$CEH_NIX/bin/nix-store --cores 0 -r /nix/store/$current_derivation >&2");
+    systemdie("$CEH_NIX/bin/nix-store $nixsystem --cores 0 -r /nix/store/$current_derivation >&2");
     if (not -d dirname($profile)) {
 	make_path(dirname($profile)) or confess;
     }
@@ -249,6 +251,12 @@ sub ceh_nixpkgs_install($$%) {
 sub ceh_nixpkgs_install_bin {
     my ($pkgattr, %opts) = @_;
     return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/bin", %opts);
+}
+
+# This is the main profile for 64-bit ceh executables (wrappers in /opt/ceh/bin).
+sub ceh_nixpkgs_install_bin64 {
+    my ($pkgattr, %opts) = @_;
+    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/bin64", bit64 => 1, %opts);
 }
 
 # Profile for libraries for GHC FFI packages.
