@@ -77,6 +77,21 @@ this happens, but you can check for this explicitly by checking that
 path stored in =$CEH_NIX= exists on your system.  If it doesn't, just
 go ahead and run =ceh-upgrade.sh=.
 
+*** Disable the binary cache, for fun and profit
+You may just want to see if it's still possible to build a software
+from source, instead of using the nix binary cache.  Or the nix binary
+cache is down and you still want to install packages instead of having
+a break until it's back.
+
+In both cases, you can just set =$CEH_NO_BIN_CACHE= to 1 and then the
+wrapper scripts will start building packages instead of using the
+binary cache.
+
+When you do this, you may also want to set =$CEH_BUILD_MAX_JOBS= to
+the number of your processor cores in the system, because usually
+building of tools (like compilers, linkers, make, etc.) can be
+parallelized by nix.
+
 
 * Upgrade notes
 *** 2013-08-05: ~/.nix-profile reserved for the user
