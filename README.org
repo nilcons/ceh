@@ -131,26 +131,53 @@ nix-upgrade.sh -> ceh-upgrade.sh
 And install-world.sh and predict-binary-cache.sh moved to scripts/maintainer.
 
 
-* Haskell packages
+* Haskell support
+*** 32-bit vs 64-bit
+Ceh usually installs 32-bit binaries.  64-bit is very nice, but there
+are still a lot of environments with i686 machines not in amd64 mode.
+E.g. on a barebone VPS with standard servers (apache, exim, etc.) you
+can save a lot of memory and disk by choosing 32-bit.  Memory of these
+two is especially expensive.
+
+On the other hand, not having a 64-bit GHC is pain when you're trying
+to write well performing code with bigger integers than 32-bit
+(e.g. project euler).
+
+For this reason, as an exception for GHC, we support turning to 64-bit
+via an envvar.  If =$CEH_GHC64= is 1, then ghc, cabal, etc. will be
+installed in 64-bit mode.  This of course only works, if your kernel
+is amd64.  But note, that your userspace doesn't have to be amd64.
+E.g. Debian ships amd64 kernel packages even for i686 installations.
+So you can save memory on standard apps, but still perform well in
+64-bit mode for project euler code.
+
+If you're switching between ghc 32-bit and 64-bit mode, then it's
+recommended to add =-$arch= to =install-dirs= user prefix in your
+=~/.cabal/config= file, so the installed packages for the two
+different architecture will land in different directories.
+
+
 *** Builtin packages, shipped with ceh
 The list can be found in =/opt/ceh/lib/Packages/GHC.nix=, feel free to
 send pull requests if you need something.
 
 
-*** Pure haskell, non-FFI packages
+*** Installation of pure haskell, non-FFI packages
 The =/opt/ceh/bin/ghc= and =/opt/ceh/bin/cabal= scripts are wrapped in
 a way that the whole toolchain (ghc, gcc, ld) is used from Nix.
 
 This means that simple, non-FFI packages should just work out-of-the-box:
 : cabal update
 : vi ~/.cabal/config    (enable library-profiling if you want)
+                        (and add -$arch to install-dirs user -> prefix,
+                         if you want to use CEH_GHC64)
 : cabal install hflags
 
 But again, if we miss some basic, important package from the default
 installation, please tell us, instead of cabal installing it on your
 own machines.
 
-*** FFI packages
+*** Installation of FFI packages
 For FFI packages to work, you of course need to have the required libs
 installed, so the package can link against them.  There is a special
 nix profile where we install all the nix packages for these libs to.

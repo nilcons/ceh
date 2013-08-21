@@ -8,7 +8,16 @@ use Carp;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(AUTOINIT ceh_nixpkgs_checkout ceh_nixpkgs_install ceh_nixpkgs_install_bin ceh_nixpkgs_install_bin64 ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_tools ceh_nixpkgs_install_ghctools $ceh_nix_install_root);
+our @EXPORT = qw(
+  AUTOINIT
+  ceh_nixpkgs_checkout
+  ceh_nixpkgs_install
+  ceh_nixpkgs_install_tools
+  ceh_nixpkgs_install_bin ceh_nixpkgs_install_bin64
+  ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_for_ghc64
+  ceh_nixpkgs_install_ghctools ceh_nixpkgs_install_ghctools64
+  $ceh_nix_install_root
+);
 
 use CehBase;
 use CehCache;
@@ -268,6 +277,12 @@ sub ceh_nixpkgs_install_for_ghc {
     return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-libs", %opts);
 }
 
+# Profile for libraries for GHC64 FFI packages.
+sub ceh_nixpkgs_install_for_ghc64 {
+    my ($pkgattr, %opts) = @_;
+    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-libs64", bit64 => 1, %opts);
+}
+
 # Use this profile when you're installing packages used only by the
 # functions in these files.  E.g. the which package for ceh_exclude.
 sub ceh_nixpkgs_install_tools {
@@ -279,6 +294,12 @@ sub ceh_nixpkgs_install_tools {
 sub ceh_nixpkgs_install_ghctools {
     my ($pkgattr, %opts) = @_;
     return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-tools", %opts);
+}
+
+# Profile for stuff needed to properly wrap GHC on 64-bit, used by ceh internally.
+sub ceh_nixpkgs_install_ghctools64 {
+    my ($pkgattr, %opts) = @_;
+    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-tools64", bit64 => 1, %opts);
 }
 
 1;
