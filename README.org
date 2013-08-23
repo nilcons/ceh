@@ -1,4 +1,4 @@
-* Sharable power-user environment on top of any modern GNU/Linux
+* Power-user environment to share
 + Agreements and a repository for a shared GNU/Linux power-user environment.
 + So that it's easy to work on shared projects (e.g. the haskell
   header can be =#!/opt/ceh/bin/runhaskell -i /opt/ceh/p/ourproject=,
