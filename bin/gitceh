@@ -1,0 +1,14 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+# This wrapper is not called git, because using even git from ceh was a
+# bit confusing.  If you really need the newest git from nixpkgs and
+# the one supplied by your distro is not enough, you can always just
+# type gitceh.  Or have a git -> gitceh symlink in bin-user.
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use Packages::Git;
+
+exec "$ceh_nix_install_root/bin/git", @ARGV;
