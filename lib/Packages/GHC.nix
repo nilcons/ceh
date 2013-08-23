@@ -43,6 +43,7 @@
             self.async
             self.bindingsPosix
             self.bytedump
+            self.c2hs
             self.cabal2nix
             self.ChartGtk
             self.colour
