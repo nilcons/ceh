@@ -186,6 +186,13 @@ sub ceh_nixpkgs_install($$%) {
 	return $ceh_nix_install_root;
     }
 
+    # Change personality to match what we're building for
+    if ($opts{bit64}) {
+	syscall(136, 0);
+    } else {
+	syscall(136, 8);
+    }
+
     if (not $nixpkgs_version) {
 	$nixpkgs_version = $CEH_BASELINE_NIXPKGS;
 	debug "*** Autoguessed nixpkgs version: $nixpkgs_version";
