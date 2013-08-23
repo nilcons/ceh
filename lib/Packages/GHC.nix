@@ -66,6 +66,7 @@
             self.hmatrix
             self.hflags
             self.hit
+            self.hscolour
             self.hslogger
             self.HsOpenSSL
             self.lens

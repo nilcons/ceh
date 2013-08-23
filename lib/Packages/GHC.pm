@@ -13,6 +13,11 @@ our $ceh_ghc_root = '';
 
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/GHC.nix";
 
+# TODO(errge): instead of directly NIX_LDFLAGS'ing to the profile, we
+# should enumerate the packages and add a -L for all of them.  That
+# way we would get much more pure libraries (test ldd of them,
+# e.g. with hfuse).
+
 # Initializes Nix's GCC environment for GHC: sets PATH and envvars hacked to
 # include libs installed into the /nix/var/nix/profiles/ceh/ghc-libs[64] profile.
 # Ensures that the appropriate ghc package is installed and exports its path in
@@ -44,9 +49,9 @@ if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {
         $ENV{CEH_GCC_WRAPPER_FLAGS_SET}=1;
 }
 if ($ENV{CEH_GHC64}) {
-    $ceh_ghc_root=ceh_nixpkgs_install_bin64("cehGHC", nixpkgs_version => '1f2ecd08cc28d0d199d7f0304da9d8bbc2ff6239', derivation => 'g5ay4h7lxgjby2ih97vl6mg6w2s6d4hl-haskell-env-ghc-7.6.3.drv', out => 'xyn2a5287zg12hrava19hpgplx1p6v40-haskell-env-ghc-7.6.3');
+    $ceh_ghc_root=ceh_nixpkgs_install_bin64("cehGHC", nixpkgs_version => '1f2ecd08cc28d0d199d7f0304da9d8bbc2ff6239', derivation => 'm4mkq1w8vi218ycbprscha0bpcsy221h-haskell-env-ghc-7.6.3.drv', out => '7vgpb3a7hzkqmrlg4s1nfgj1q9r2g7bb-haskell-env-ghc-7.6.3');
 } else {
-    $ceh_ghc_root=ceh_nixpkgs_install_bin("cehGHC", nixpkgs_version => '1f2ecd08cc28d0d199d7f0304da9d8bbc2ff6239', derivation => 'zy1bi4gwc951nimg08n0bdchxmpmn81m-haskell-env-ghc-7.6.3.drv', out => 'yydfzdnsacxzyjlsfnwfgfpl6kir2a0d-haskell-env-ghc-7.6.3');
+    $ceh_ghc_root=ceh_nixpkgs_install_bin("cehGHC", nixpkgs_version => '1f2ecd08cc28d0d199d7f0304da9d8bbc2ff6239', derivation => '3y86gjwk2g593bvi6yvng24474r4kl73-haskell-env-ghc-7.6.3.drv', out => 'js5z6z5nc28pjv402182y0jv6prshvfd-haskell-env-ghc-7.6.3');
 }
 
 1;
