@@ -75,6 +75,25 @@ wget -c $CEH_NIX_DOWNLOAD
 chmod 0700 /nix
 ( cd / && tar -x --delay-directory-restore -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix )
 
+# Travis needs some help...
+# This can be removed when nix 1.6 is released
+if [ "$TRAVIS_BUILD_DIR" != "" ]
+then
+    (
+        cd /tmp
+        git clone git://github.com/errge/glibc-bin-for-ceh
+        cd glibc-bin-for-ceh
+        mkdir x
+        cd x
+        tar xfz ../6svswqi259sv26xda2rm5h9iry6q9k5k-glibc-2.17.tgz
+        sudo rm -rf /nix/store/yivvs4w7qhj3yysvxvfwzzfspr4yzd38-glibc-2.17
+        mkdir /nix/store/yivvs4w7qhj3yysvxvfwzzfspr4yzd38-glibc-2.17
+        cp -a * /nix/store/yivvs4w7qhj3yysvxvfwzzfspr4yzd38-glibc-2.17
+        cd /nix/store
+        ln -s /nix/store/yivvs4w7qhj3yysvxvfwzzfspr4yzd38-glibc-2.17 /nix/store/6svswqi259sv26xda2rm5h9iry6q9k5k-glibc-2.17
+    )
+fi
+
 # Stolen from /usr/bin/nix-finish-install & /etc/profile.d/nix.sh
 regInfo=/nix/store/reginfo
 
