@@ -1,41 +1,46 @@
-TODO(errge): maybe we can add ncurses to our haskell-env and then this step will not be needed
-add ncurses to ghc-libs in ceh:
-  cd /nix/var/ceh_nixpkgs/<current-baseline-hash>
-  NIX_PATH="nixpkgs=`pwd`" nix-env -j 4 -p /nix/var/nix/profiles/ceh/ghc-libs -f '<nixpkgs>' -i -A ncurses
-
 first time source setup: http://hackage.haskell.org/trac/ghc/wiki/Building/GettingTheSources
-  git clone git://github.com/ghc/ghc ghc-github
-  cd ghc-github
-  ./sync-all -r git://github.com/ghc get
+  git clone http://git.haskell.org/ghc
+  cd ghc
+  ./sync-all get
 
-afterwards that, to get new stuff:
+to get new stuff later:
   ./sync-all pull
 
 building docs: http://hackage.haskell.org/trac/ghc/wiki/Building/Hacking
-  /opt/ceh/scripts/ghc-shell.pl (To get a shell that has all the env-vars properly set up to use ceh's ghc as the bootstrap compiler)
-    (after this, do everything in the resulting shell)
-    echo $NIX_LDFLAGS   (should print: -L /nix/var/nix/profiles/ceh/ghc-libs/lib)
+  export LANG=en_US.UTF-8     (ghc only builds on utf-8)
+  perl --version >/dev/null   (if this has output, you don't have locales, fix it!)
+
+  /opt/ceh/scripts/ghc-build-shell.pl
+  (or CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl, if building 64-bit GHC)
+    (This gets you a shell that is properly set up to use ceh's ghc as
+     the bootstrap compiler and provides also the other needed tools:
+     perl, gnumake, m4, autoconf, automake.)
+
+    (After this, do everything in the resulting shell!)
 
     cp mk/build.mk.sample mk/build.mk
     vi mk/build.mk (change BuildFlavour to quick)
 
     perl boot
-    ./configure
+    ./configure --prefix=$HOME/wherever-i-want
     grep -r with-cc=.usr.bin.gcc .       (should have no results, if everything is properly using ceh)
-    make -j 4                            (parallel building seems to be a bit buggy, so maybe have to run more than once)
+    make -j 4                            (parallel building seems to be a bit buggy, so run again if fails)
 
     inplace/bin/ghc-stage2 --version
 
+    make install (if you want)
+
 To install a package in the new ghc:
-  /opt/ceh/scripts/ghc-shell.pl
-    cabal unpack stm
-    cd stm
-    cabal --with-ghc=/home/errge/tmp/ghc-github/inplace/bin/ghc-stage2 --with-ghc-pkg=/home/errge/tmp/ghc-github/inplace/bin/ghc-pkg --disable-library-profiling configure
-    cabal --with-ghc=/home/errge/tmp/ghc-github/inplace/bin/ghc-stage2 --with-ghc-pkg=/home/errge/tmp/ghc-github/inplace/bin/ghc-pkg build
-    cabal --with-ghc=/home/errge/tmp/ghc-github/inplace/bin/ghc-stage2 --with-ghc-pkg=/home/errge/tmp/ghc-github/inplace/bin/ghc-pkg --disable-library-profiling install
+  /opt/ceh/scripts/ghc-build-shell.pl
+  (or CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl, if building 64-bit GHC)
+    export PATH=$HOME/wherever-i-want:$PATH
+    cabal update
+    # quick doesn't provide library profiling
+    cabal --disable-library-profiling install stm
 
 To run the testsuite:
-  /opt/ceh/scripts/ghc-shell.pl
+  /opt/ceh/scripts/ghc-build-shell.pl
+  (or CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl, if building 64-bit GHC)
     CPUS=4 sh validate
 
 Stuff to read while hacking GHC:
