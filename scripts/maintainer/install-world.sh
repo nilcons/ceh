@@ -18,6 +18,12 @@ install () {
 export CEH_INSTALLWORLDDIR=`mktemp -d /tmp/installworld.XXXXXX`
 echo $CEH_INSTALLWORLDDIR
 
+(
+    cd /tmp
+    wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-i586.bin"
+    nix-store --add-fixed sha256 jdk-6u45-linux-i586.bin
+)
+
 install ack "Andy Lester"
 install adb "Android Debug Bridge"
 install alex "Simon Marlow"
