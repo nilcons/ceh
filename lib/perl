@@ -1,1 +1,20 @@
-/nix/store/dfslgql59kljrsann9fz326rb8n6c77g-perl-5.16.2/bin/perl
+#!/bin/sh
+
+. /opt/ceh/lib/base.sh
+
+[ -d $CEH_NIX ] || {
+    echo >&2 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+    echo >&2 "Ceh is not properly initialized, the base package is missing:"
+    echo >&2 "  $CEH_NIX"
+    echo >&2 ""
+    echo >&2 "If ceh is not initialized at all, you can use:"
+    echo >&2 "  /opt/ceh/scripts/ceh-init.sh"
+    echo >&2 ""
+    echo >&2 "If ceh is already installed and you got this message after a"
+    echo >&2 "git pull in /opt/ceh, then most probably you have to upgrade nix:"
+    echo >&2 "  /opt/ceh/scripts/ceh-upgrade.sh"
+    echo >&2 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+    exit 1
+}
+
+exec /nix/store/x39yy4fg60qqgdrjhbwzrjs8r7w5wmzy-perl-5.16.3/bin/perl "$@"

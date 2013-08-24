@@ -303,12 +303,12 @@ This will update the hash in lib/Packages/Git.pm.
 
 + Download "Distribution-independent Nix bootstrap binaries for i686-linux".
 
-+ Unpack in a temp folder (warning! tarbomb!).
++ tar xvfj nix-x.x.x.tar.bz2 /nix (it's a tarbomb, we only want /nix from it).
 
 + Update =lib/base.sh=, =lib/CehBase.pm= and =emacs.d/nix-mode.el=
   with the URL and the nix store path.
 
-+ Update the =/opt/ceh/lib/perl= symlink to the perl in the package.
++ Update the =/opt/ceh/lib/perl= wrapper to point to the current perl.
 
 + Test if =ceh-upgrade.sh= is able to upgrade your old installation to
   the new one.

@@ -2,6 +2,24 @@
 
 export LANG=C LC_ALL=C
 
+if ! wget --version >/dev/null 2>&1
+then
+  echo "wget is needed for installation" >&2
+  exit 1
+fi
+
+if ! bzip2 --version >/dev/null 2>&1
+then
+  echo "bzip2 is needed for installation" >&2
+  exit 1
+fi
+
+if ! git --version >/dev/null 2>&1
+then
+  echo "git is needed for installation" >&2
+  exit 1
+fi
+
 if [ ! -d /nix ]
 then
   echo "/nix doesn't exist. To create it do:" >&2
