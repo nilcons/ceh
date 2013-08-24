@@ -5,8 +5,8 @@
 
 install () {
     echo Installing $1
-    if [ "$CEH_INSTALL_WORLD_VERBOSE" ]; then
-        /opt/ceh/bin/$1 --version | tee >$CEH_INSTALLWORLDDIR/$1.out 2>&1 || true
+    if [ "$CEH_INSTALL_WORLD_VERBOSE" != "" ]; then
+        /opt/ceh/bin/$1 --version 2>&1 | tee >$CEH_INSTALLWORLDDIR/$1.out || true
     else
         /opt/ceh/bin/$1 --version >$CEH_INSTALLWORLDDIR/$1.out 2>&1 || true
     fi
