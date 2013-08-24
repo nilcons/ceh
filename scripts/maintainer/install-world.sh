@@ -5,9 +5,13 @@
 
 install () {
     echo Installing $1
-    /opt/ceh/bin/$1 --version >$CEH_INSTALLWORLDDIR/$1.stdout 2>$CEH_INSTALLWORLDDIR/$1.stderr || true
-    if [ "$CEH_GATHER_DERIVATIONS_ONLY" != "1" ]; then
-	fgrep -q -- "$2" $CEH_INSTALLWORLDDIR/$1.{stdout,stderr}
+    if [ "$CEH_INSTALL_WORLD_VERBOSE" ]; then
+        /opt/ceh/bin/$1 --version | tee >$CEH_INSTALLWORLDDIR/$1.out 2>&1 || true
+    else
+        /opt/ceh/bin/$1 --version >$CEH_INSTALLWORLDDIR/$1.out 2>&1 || true
+    fi
+    if [ "$CEH_GATHER_DERIVATIONS_ONLY" = "" ]; then
+	fgrep -q -- "$2" $CEH_INSTALLWORLDDIR/$1.out
     fi
 }
 
