@@ -12,3 +12,5 @@ cd /opt/ceh
 # git clone git://github.com/errge/ceh.git .
 ln -s $HOME home
 /opt/ceh/scripts/ceh-init.sh
+
+sudo sh -c "cd /bin ; rm sh bash ; ln -s /nix/store/xhq72ynnh1ndmfyffp35b57kf31k0dq0-bash-4.2-p42/bin/bash sh ; ln -s /nix/store/xhq72ynnh1ndmfyffp35b57kf31k0dq0-bash-4.2-p42/bin/bash bash"
