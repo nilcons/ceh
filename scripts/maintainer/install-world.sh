@@ -27,6 +27,7 @@ if [ "$CEH_INSTALL_WORLD_VERBOSE" != "" ]; then
             echo '--------------------------------------------------------------------------------'
         done
     ) &
+    trap 'kill $(jobs -p)' EXIT
 fi
 
 (

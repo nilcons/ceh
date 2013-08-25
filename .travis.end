@@ -7,7 +7,8 @@ sudo cat /proc/user_beancounters
 echo '--------------------------------------------------------------------------------'
 
 cd /opt/ceh
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
-if [ "$BRANCH" = "travis-baseline" ]; then
-    git diff
+if [ "$TRAVIS_BRANCH" = "travis-baseline" ]; then
+    echo '-------------------------------- FINAL PATCH -----------------------------------'
+    git diff | cat
+    echo '--------------------------------------------------------------------------------'
 fi
