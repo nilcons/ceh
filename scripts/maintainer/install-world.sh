@@ -29,6 +29,7 @@ install adb "Android Debug Bridge"
 install alex "Simon Marlow"
 install cabal "cabal-install version"
 install cabal2nix "url-to-cabal-file"
+install ceh_exclude "--version is not an executable"
 install cgpt "cgpt COMMAND"
 install coursera-dl "usage: coursera-dl"
 install cpphs "cpphs 1"
@@ -54,6 +55,3 @@ install xpra "xpra v0."
 
 # very slow, so do it last!
 install coqtop "Coq Proof Assistant"
-
-# also upgrade ceh_exclude's which
-install ceh_exclude "--version is not an executable"

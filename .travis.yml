@@ -2,3 +2,6 @@ language: c
 install: bash ./.travis.run
 script: . /opt/ceh/scripts/ceh-profile.sh ; CEH_INSTALL_WORLD_VERBOSE=1 /opt/ceh/scripts/maintainer/install-world.sh
 after_script: bash /opt/ceh/.travis.err
+env:
+  - CEH_NO_BIN_CACHE=
+  - CEH_NO_BIN_CACHE=1
