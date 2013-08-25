@@ -12,7 +12,7 @@
             sha256 = "0vpwwj7whpgkirx39xrwz1k15b0k17qxbngzg599xzmql9fvqi3j";
           };
 
-        buildInputs = [ makeWrapper pythonPackages.python pythonPackages.wrapPython pythonPackages.beautifulsoup4 pythonPackages.requests pythonPackages.six ];
+        buildInputs = [ makeWrapper pythonPackages.python pythonPackages.wrapPython pythonPackages.beautifulsoup4 pythonPackages.requests pythonPackages.six pythonPackages.html5lib ];
 
         installPhase = ''
           find
