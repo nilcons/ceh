@@ -5,22 +5,33 @@
 
 install () {
     echo Installing $1
-    if [ "$CEH_INSTALL_WORLD_VERBOSE" != "" ]; then
-        /opt/ceh/bin/$1 --version 2>&1 | tee $CEH_INSTALLWORLDDIR/$1.out || true
-    else
-        /opt/ceh/bin/$1 --version >$CEH_INSTALLWORLDDIR/$1.out 2>&1 || true
-    fi
+    /opt/ceh/bin/$1 --version >$CEH_INSTALLWORLDDIR/$1.out 2>&1 || true
     if [ "$CEH_GATHER_DERIVATIONS_ONLY" = "" ]; then
-	fgrep -q -- "$2" $CEH_INSTALLWORLDDIR/$1.out
+        fgrep -q -- "$2" $CEH_INSTALLWORLDDIR/$1.out
     fi
 }
 
 export CEH_INSTALLWORLDDIR=`mktemp -d /tmp/installworld.XXXXXX`
 echo $CEH_INSTALLWORLDDIR
 
+if [ "$CEH_INSTALL_WORLD_VERBOSE" != "" ]; then
+    (
+        set +e
+        cd $CEH_INSTALLWORLDDIR
+        while true ; do
+            sleep 120
+            echo '--------------------------------------------------------------------------------'
+            date
+            wc -l `ls -1rt | tail -n1`
+            ls -lart --time=ctime /nix/store
+            echo '--------------------------------------------------------------------------------'
+        done
+    ) &
+fi
+
 (
     cd /tmp
-    wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-i586.bin"
+    wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-i586.bin"
     nix-store --add-fixed sha256 jdk-6u45-linux-i586.bin
 )
 
