@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo '--------------------------------------------------------------------------------'
+ulimit -av
+free
+sudo cat /proc/user_beancounters
+echo '--------------------------------------------------------------------------------'
+
+cd /opt/ceh
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$BRANCH" = "travis-baseline" ]; then
+    git diff
+fi

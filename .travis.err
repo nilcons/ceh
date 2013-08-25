@@ -1,5 +1,0 @@
-#!/bin/bash
-
-ulimit -av
-free
-sudo cat /proc/user_beancounters

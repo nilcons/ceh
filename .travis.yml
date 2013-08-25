@@ -1,7 +1,11 @@
 language: c
-install: bash ./.travis.run
-script: . /opt/ceh/scripts/ceh-profile.sh ; CEH_INSTALL_WORLD_VERBOSE=1 /opt/ceh/scripts/maintainer/install-world.sh
-after_script: bash /opt/ceh/.travis.err
+install: bash ./.travis.beg
+script: bash /opt/ceh/.travis.main
+after_script: bash /opt/ceh/.travis.end
 env:
   - CEH_NO_BIN_CACHE=
-  - CEH_NO_BIN_CACHE=1
+# This would be soooo cool, but it's way slower than 50 minutes and
+# that's the current limit on Travis.  Maybe later we will be able
+# to contribute our own instance for Ceh and then enable this, but
+# currently that is not supported by Travis unfortunately.
+#  - CEH_NO_BIN_CACHE=1

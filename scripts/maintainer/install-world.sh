@@ -65,8 +65,8 @@ install vanitygen "Generates a bitcoin"
 install vbutil_kernel "This program creates, signs"
 install xpra "xpra v0."
 
-CEH_GHC64=  scripts/ghc-build-shell.pl </dev/null
-CEH_GHC64=1 scripts/ghc-build-shell.pl </dev/null
+CEH_GHC64=  scripts/ghc-build-shell.pl </dev/null || true
+CEH_GHC64=1 scripts/ghc-build-shell.pl </dev/null || true
 
 # very slow, so do it last!
 install coqtop "Coq Proof Assistant"

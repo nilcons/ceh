@@ -92,6 +92,14 @@ mkdir $HOME/.nix-defexpr
 $CEH_NIX/bin/nix-channel --add http://nixos.org/releases/nixpkgs/channels/nixpkgs-unstable
 $CEH_NIX/bin/nix-channel --update
 
+# Travis has some strange buggy bash, that freaks out autoconf somehow...
+# https://github.com/travis-ci/travis-ci/issues/1357
+if [ "$TRAVIS_BUILD_DIR" != "" ]
+then
+    CEHBASH=$(ls -1 /nix/store/*bash*/bin/bash  | head -n1)
+    sudo sh -c "cd /bin ; rm sh bash ; ln -s $CEHBASH sh ; ln -s $CEHBASH bash"
+fi
+
 # TODO(errge): reimplement this whole script in perl, and then we can share
 # common variables, like CEH_NIXPKGS_GITURL and CEH_NIXPKGS_GIT
 echo "Checking out nixpkgs..."
