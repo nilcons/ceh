@@ -47,6 +47,7 @@ install cpphs "cpphs 1"
 install emacs "GNU Emacs"
 install firefox "Mozilla Firefox"
 install ghc "Glorious Glasgow Haskell Compilation System"
+CEH_GHC64=1 install ghc "Glorious Glasgow Haskell Compilation System"
 install gitceh "git version 1"
 install git-annex "Usage: git-annex command"
 install haddock "Haddock version 2"
@@ -63,6 +64,9 @@ install tws-ui "TWS"
 install vanitygen "Generates a bitcoin"
 install vbutil_kernel "This program creates, signs"
 install xpra "xpra v0."
+
+CEH_GHC64=  scripts/ghc-build-shell.pl </dev/null
+CEH_GHC64=1 scripts/ghc-build-shell.pl </dev/null
 
 # very slow, so do it last!
 install coqtop "Coq Proof Assistant"
