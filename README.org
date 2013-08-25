@@ -296,6 +296,8 @@ This will update the hash in lib/Packages/Git.pm.
 + =git grep= the old baseline hash to see that everything has been
   updated.
 
++ git commit, git push.
+
 
 *** Upgrading nix inside ceh
 + Choose a new release from http://nixos.org/nix/download.html, read
