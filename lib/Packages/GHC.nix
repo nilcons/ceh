@@ -43,6 +43,7 @@
             self.async
             self.bindingsPosix
             self.bytedump
+            self.unixBytestring
             self.c2hs
             self.cabal2nix
             self.ChartGtk
@@ -54,6 +55,7 @@
             self.dataAccessor
             self.dataAccessorTemplate
             self.dataDefault
+            self.dataMemocombinators
             self.deepseqTh
             self.digest
             self.ghcHeapView
@@ -63,6 +65,7 @@
             self.gloss
             self.gtk
             self.haskellSrcExts
+            self.HFuse
             self.hmatrix
             self.hflags
             self.hit
@@ -71,6 +74,7 @@
             self.HsOpenSSL
             self.lens
             self.MissingH
+            # self.modularArithmetic
             self.monadLoops
             self.networkConduit
             self.networkProtocolXmpp
@@ -84,6 +88,7 @@
             self.templateDefault
             self.utf8String
             self.utilityHt
+            self.vectorAlgorithms
             self.vectorThUnbox
             self.zipArchive
             self.X11
