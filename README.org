@@ -182,14 +182,16 @@ For FFI packages to work, you of course need to have the required libs
 installed, so the package can link against them.  There is a special
 nix profile where we install all the nix packages for these libs to.
 To install a new package to this profile, you can do this:
-: #!/opt/ceh/lib/perl
-:
-: use strict;
-: use warnings;
-: use lib "/opt/ceh/lib";
-: use CehInstall;
-:
-: ceh_nixpkgs_install_for_ghc('openssl', AUTOINIT);
+#+BEGIN_SRC perl
+#!/opt/ceh/lib/perl
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install_for_ghc('openssl', AUTOINIT);
+#+END_SRC
 
 AUTOINIT will be replaced by the current nixpkgs version and the
 correct hashes when you first run this Perl script.  You can then even
