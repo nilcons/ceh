@@ -12,3 +12,9 @@ if [ "$TRAVIS_BRANCH" = "travis-baseline" ]; then
     git diff | cat
     echo '--------------------------------------------------------------------------------'
 fi
+
+echo $TRAVIS_TEST_RESULT
+
+echo LAST FAILING SCRIPT OUTPUT:
+ls -lart /tmp/installworld*
+tail -n 100 `ls -1rt /tmp/installworld* | tail -n1`
