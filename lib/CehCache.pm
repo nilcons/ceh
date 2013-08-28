@@ -4,6 +4,7 @@ package CehCache;
 
 use strict;
 use warnings;
+use File::Basename qw(dirname);
 use File::Path qw(make_path rmtree);
 use Carp;
 
@@ -54,6 +55,9 @@ sub ensure_nix_installed_in_bin_profile {
     my $profile = "/nix/var/nix/profiles/ceh/bin";
     my $out = $CEH_NIX; $out =~ s,^/nix/store/,,;
     if (not -e "$profile/installed_derivations/$out") {
+	if (not -d dirname($profile)) {
+	    make_path(dirname($profile)) or confess;
+	}
         systemdie("$CEH_NIX/bin/nix-env -p $profile -i $CEH_NIX >&2");
         ceh_nix_update_cache($profile);
     }
