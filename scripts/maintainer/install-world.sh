@@ -37,7 +37,6 @@ fi
 )
 
 install ack "Andy Lester"
-install adb "Android Debug Bridge"
 install alex "Simon Marlow"
 install cabal "cabal-install version"
 install cabal2nix "url-to-cabal-file"
@@ -47,8 +46,8 @@ install coursera-dl "usage: coursera_dl"
 install cpphs "cpphs 1"
 install emacs "GNU Emacs"
 install firefox "Mozilla Firefox"
-install ghc "Glorious Glasgow Haskell Compilation System"
-CEH_GHC64=1 install ghc "Glorious Glasgow Haskell Compilation System"
+CEH_GHC64= install ghc "Glorious Glasgow Haskell Compilation System"
+CEH_GHC64= /opt/ceh/scripts/ghc-build-shell.pl </dev/null || true
 install gitceh "git version 1"
 install git-annex "Usage: git-annex command"
 install haddock "Haddock version 2"
@@ -61,13 +60,19 @@ install jbig2 "jbig2enc 0.28"
 install patchelf "patchelf 0"
 install python3 "Python 3"
 install tmux "usage: tmux"
-install tws-ui "TWS"
 install vanitygen "Generates a bitcoin"
 install vbutil_kernel "This program creates, signs"
 install xpra "xpra v0."
 
-CEH_GHC64=  scripts/ghc-build-shell.pl </dev/null || true
-CEH_GHC64=1 scripts/ghc-build-shell.pl </dev/null || true
+# Needs investigation: doesn't compile from source, because gcc doesn't compile in 64-bit mode.
+# Binary cache installation is OK.
+CEH_NO_BIN_CACHE= CEH_GHC64=1 install ghc "Glorious Glasgow Haskell Compilation System"
+CEH_NO_BIN_CACHE= CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl </dev/null || true
 
-# very slow, so do it last!
+# Needs investigation: doesn't compile from source, because openjdk doesn't compile.
+# Binary cache installation is OK.
+CEH_NO_BIN_CACHE= install adb "Android Debug Bridge"
+CEH_NO_BIN_CACHE= install tws-ui "TWS"
+
+# very slow, so do it last to see early results from other packages.
 install coqtop "Coq Proof Assistant"
