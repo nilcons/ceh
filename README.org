@@ -156,11 +156,9 @@ recommended to add =-$arch= to =install-dirs= user prefix in your
 =~/.cabal/config= file, so the installed packages for the two
 different architecture will land in different directories.
 
-
 *** Builtin packages, shipped with ceh
 The list can be found in =/opt/ceh/lib/Packages/GHC.nix=, feel free to
 send pull requests if you need something.
-
 
 *** Installation of pure haskell, non-FFI packages
 The =/opt/ceh/bin/ghc= and =/opt/ceh/bin/cabal= scripts are wrapped in
@@ -200,6 +198,20 @@ teammates can reproduce the same environment.
 
 After that you will be able to simply call cabal install:
 : cabal install HsOpenSSL
+
+*** Deploying Haskell binaries built with Ceh to non-Ceh machines
+Thanks to the isolated compilation and linking environment provided by
+Ceh's GHC, those binaries are easy to deploy.  By putting the needed
+=.so= files in a =lib/= directory beside the binary and modifying the
+binary with =patchelf= to search that directory for libraries, you can
+create a bundle that can be easily zipped up and shipped to any
+machine with the same architecture to run completely isolated from the
+system libraries in that machine.  To see an example on how to do
+this, check out https://github.com/errge/PrefetchFS/blob/master/deploy.sh.
+
+*** Using ceh to get a fresh GHC environment on Travis
+Checkout out https://github.com/errge/hflags and the =.travis= files
+there.
 
 
 * TODOs
@@ -264,7 +276,6 @@ needed to install FFI libraries with cabal,
 =/nix/var/nix/profiles/ceh/tools=: the profile for tools used by ceh
 itself (e.g. =which=).
 
-
 *** Adding a new package to ceh
 + Simply create a wrapper script in =/opt/ceh/bin=, use =tmux= as an example,
 + use the autoinit feature to get the initial hash values:
@@ -273,7 +284,6 @@ itself (e.g. =which=).
   the current nixpkgs version, derivation and out hash values.
 + add it to =scripts/maintainer/install-world.sh=,
 + send a github pull request.
-
 
 *** Upgrading ceh to a new baseline
 + Update =lib/CehBase.pm= with a new hash, that you should get from
@@ -299,7 +309,6 @@ This will update the hash in lib/Packages/Git.pm.
   updated.
 
 + git commit, git push.
-
 
 *** Upgrading nix inside ceh
 + Choose a new release from http://nixos.org/nix/download.html, read
@@ -351,7 +360,6 @@ This will update the hash in lib/Packages/Git.pm.
 
 * Design ideas for V2 (obsolete, these are mostly done)
 ** What issues do we have
-
 *** More consistent nixpkgs version for different packages (DONE)
 Currently ceh_nixpkgs_install supports using different nixpkgs
 versions for every executable.  It's so efficient in what it does,
