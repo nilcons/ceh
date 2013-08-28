@@ -233,6 +233,7 @@ sub ceh_nixpkgs_install($$%) {
     my $extraopts = '';
     $extraopts .= ' --option use-binary-caches false' if ($ENV{CEH_NO_BIN_CACHE});
     $extraopts .= " --option build-max-jobs $ENV{CEH_BUILD_MAX_JOBS}" if ($ENV{CEH_BUILD_MAX_JOBS});
+    $extraopts .= " -K" if ($ENV{CEH_BUILD_KEEP_FAILED});
     systemdie("$CEH_NIX/bin/nix-store $extraopts $nixsystem --cores 0 -r /nix/store/$current_derivation >&2");
     if (not -d dirname($profile)) {
 	make_path(dirname($profile)) or confess;
