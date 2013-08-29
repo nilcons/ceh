@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Gergely Risko (gergely@risko.hu)" />
+  <title>Ceh - power user environments to share</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="http://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <script src="http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js.gz"
+    charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+<div class="slide titlepage">
+  <h1 class="title">Ceh - power user environments to share</h1>
+  <p class="author">
+Gergely Risko (<script type="text/javascript">
+<!--
+h='&#114;&#x69;&#x73;&#x6b;&#x6f;&#46;&#104;&#x75;';a='&#64;';n='&#x67;&#x65;&#114;&#x67;&#x65;&#108;&#x79;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x67;&#x65;&#114;&#x67;&#x65;&#108;&#x79;&#32;&#x61;&#116;&#32;&#114;&#x69;&#x73;&#x6b;&#x6f;&#32;&#100;&#x6f;&#116;&#32;&#104;&#x75;</noscript>)
+  </p>
+  <p class="date">FP Afternoon in Zurich - August 29th, 2013</p>
+</div>
+<div id="agenda" class="slide section level1">
+<h1>Agenda</h1>
+<ul>
+<li>Nix terminology (<a href="http://nixos.org/">http://nixos.org/</a>)
+<ul>
+<li>Nix, the package manager and programming language</li>
+<li>Nixpkgs, the package collection</li>
+<li>NixOS, the operating system</li>
+</ul></li>
+<li>Ceh (<a href="http://github.com/errge/ceh/">http://github.com/errge/ceh/</a>)
+<ul>
+<li>the Git synchronized, sharable and reproducible power-user environment based on Nix and Nixpkgs</li>
+</ul></li>
+<li>Nix details. Nix language example: coursera-dl</li>
+<li>Ceh details. Wrapper for tmux, ldd</li>
+<li>Haskell integration, included tools, deploying binaries</li>
+<li>Travis thyme</li>
+<li>Summary, what to do with this?</li>
+</ul>
+</div>
+<div id="nix-nixpkgs-nixos" class="slide section level1">
+<h1>Nix, Nixpkgs, NixOS</h1>
+<ul>
+<li><p>Nix: a lazy and pure language to describe software build instructions (like debian/rules) and the corresponding package manager to execute these instructions (like dpkg, but more like Gentoo with binary cache). <br><a href="https://github.com/NixOS/nix/">https://github.com/NixOS/nix/</a></p></li>
+<li><p>Nixpkgs: a package collection with ~9000 packages. <br><a href="https://github.com/NixOS/nixpkgs/">https://github.com/NixOS/nixpkgs/</a></p></li>
+<li><p>Nixpkgs is continuously built using hydra. <br><a href="http://hydra.nixos.org/">http://hydra.nixos.org/</a></p></li>
+<li><p>NixOS: Linux distribution based on Nix.</p></li>
+</ul>
+</div>
+<div id="nixos-screenshot-12" class="slide section level1">
+<h1>NixOS screenshot 1/2</h1>
+<center>
+<img src="img/grub.jpg" />
+</center>
+
+<p>NixOS grub menu, note the different configurations! You can boot the system at a specific version by just choosing from GRUB.</p>
+</div>
+<div id="nixos-screenshot-22" class="slide section level1">
+<h1>NixOS screenshot 2/2</h1>
+<center>
+<img src="img/terminals.jpg" />
+</center>
+
+</div>
+<div id="nixos-goals" class="slide section level1">
+<h1>NixOS goals</h1>
+<ul>
+<li><p>Reliable, atomic upgrades and rollbacks,</p></li>
+<li><p>reproducible systems,</p></li>
+<li><p>buildable from source, but have a binary cache,</p></li>
+<li><p>consistency (e.g. security upgrades work even if you link statically against a library),</p></li>
+<li><p>package management even for non-root users.</p></li>
+</ul>
+</div>
+<div id="ceh-goals" class="slide section level1">
+<h1>Ceh goals</h1>
+<ul>
+<li>Reproducible distribution of packages (power-user envs):
+<ul>
+<li>GHC with batteries, best possible GHC experience,</li>
+<li>Firefox with running Java, Flash and Google Hangouts,</li>
+<li>fresh Emacs,</li>
+<li>whatever else you want and help with it, :)</li>
+</ul></li>
+<li>upgrades/rollbacks via Git, synchronization via Github,</li>
+<li>top of any modern GNU/Linux distro,</li>
+<li>on both i686 and amd64 machines,</li>
+<li>convenient (no chroots or VMs that you have to log into),</li>
+<li>/opt/ceh/home, /opt/ceh/p/myproject; we are single-user anyways.</li>
+</ul>
+</div>
+<div id="nix-details" class="slide section level1">
+<h1>Nix details</h1>
+<ul>
+<li>Store every installed package in a subdir inside /nix/store,
+<ul>
+<li>subdir name based on the hash of all the build inputs,</li>
+<li>different versions/configurations of a package can be installed,</li>
+</ul></li>
+<li>hack the build environment and makefiles of packages to behave in /nix/store in a pure way: no random picking up of dependencies from /usr/lib or /usr/include, Nix is the language to describe this procedure (demo: <a href="https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/misc/vanitygen/default.nix">https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/misc/vanitygen/default.nix</a>)</li>
+<li>hack the installed binaries to have everything correctly RPATHed (demo: patchelf --print-rpath /nix/store/.../tmux and ldd),</li>
+<li>binary cache based on the output hashes,</li>
+<li>symlink farms (so called profiles) for a unixish view (demo),</li>
+<li>can be used without NixOS.</li>
+</ul>
+</div>
+<div id="ceh-details" class="slide section level1">
+<h1>Ceh details</h1>
+<ul>
+<li>Just a bunch of scripts to make handling of Nix convenient on a standard GNU/Linux workstation,</li>
+<li>root needed only for installation:</li>
+</ul>
+<pre><code>sudo mkdir /opt/ceh /nix
+sudo chown $USER. /opt/ceh /nix
+chmod 0700 /opt/ceh /nix
+cd /opt/ceh
+git clone git://github.com/errge/ceh.git .
+ln -s $HOME home
+/opt/ceh/scripts/ceh-init.sh</code></pre>
+<ul>
+<li>single user, but we get /opt/ceh/home and /opt/ceh/p,
+<ul>
+<li>if you're really worried, look into LXC mount namespaces,</li>
+<li>but don't hold onto your abstractions if you don't need them anymore,</li>
+</ul></li>
+<li>/opt/ceh/bin goes to your PATH and <a href="https://github.com/errge/ceh/blob/master/bin/tmux">/opt/ceh/bin/tmux</a> installs tmux on-demand.</li>
+</ul>
+</div>
+<div id="haskell-integration-included-tools" class="slide section level1">
+<h1>Haskell integration, included tools</h1>
+<ul>
+<li>Since we use Haskell a lot, it's very well supported, full featured:
+<ul>
+<li>GHC in 32 and 64-bit mode,</li>
+<li>with all the Platform libraries,</li>
+<li>with a lot of extra libraries (e.g. lens, gtk, pipes),</li>
+<li>hoogle with local data indexing for all the installed libraries,</li>
+<li>ghc-vis and ghc-heapview,</li>
+<li>ghc-mod for Emacs,</li>
+</ul></li>
+<li>documented way to compile 32 or 64-bit GHC (no more VMs).</li>
+</ul>
+</div>
+<div id="deploying-compiled-binaries" class="slide section level1">
+<h1>Deploying compiled binaries</h1>
+<ul>
+<li>Documented way to deploy Ceh compiled haskell binaries:
+<ul>
+<li>just gather the needed .so files from /nix/store,</li>
+<li>put them in a lib/ directory,</li>
+<li>use patchelf to redirect RPATHs to point there,</li>
+<li>deploy binary+lib/ combination to any system even without Ceh.</li>
+</ul></li>
+</ul>
+<pre><code>errge@curry:/tmp/deploy $ ldd ./PrefetchFS ; du -sh
+  linux-gate.so.1 (0xf778a000)
+  libfuse.so.2 =&gt; /tmp/deploy/./lib/libfuse.so.2 (0xf7754000)
+  librt.so.1 =&gt; /tmp/deploy/./lib/librt.so.1 (0xf774c000)
+  libutil.so.1 =&gt; /tmp/deploy/./lib/libutil.so.1 (0xf7747000)
+  libdl.so.2 =&gt; /tmp/deploy/./lib/libdl.so.2 (0xf7743000)
+  libgmp.so.10 =&gt; /tmp/deploy/./lib/libgmp.so.10 (0xf76c8000)
+  libm.so.6 =&gt; /tmp/deploy/./lib/libm.so.6 (0xf768a000)
+  libpthread.so.0 =&gt; /tmp/deploy/./lib/libpthread.so.0 (0xf7671000)
+  libc.so.6 =&gt; /tmp/deploy/./lib/libc.so.6 (0xf74da000)
+  /lib/ld-linux.so.2 (0xf778b000)
+4.3M    .</code></pre>
+</div>
+<div id="travis-thyme" class="slide section level1">
+<h1>Travis thyme</h1>
+<p><a href="https://travis-ci.org/errge/thyme">https://travis-ci.org/errge/thyme</a></p>
+<p>.travis.yml, .travis.ceh:</p>
+<pre><code>language: c
+install: bash ./.travis.ceh
+script: bash ./.travis.main
+env:
+  - CEH_GHC64=
+  - CEH_GHC64=1</code></pre>
+<pre><code>#!/bin/bash -e
+
+. /opt/ceh/scripts/ceh-profile.sh
+
+cabal update
+cabal install --only-dependencies
+cabal configure --user --enable-tests
+cabal build
+cabal test</code></pre>
+</div>
+<div id="travis-thyme-1" class="slide section level1">
+<h1>Travis thyme</h1>
+<p><a href="https://travis-ci.org/errge/thyme">https://travis-ci.org/errge/thyme</a></p>
+<p>.travis.main:</p>
+<pre><code>#!/bin/bash -e
+
+. /opt/ceh/scripts/ceh-profile.sh
+
+cabal update
+cabal install --only-dependencies
+cabal configure --user --enable-tests
+cabal build
+cabal test</code></pre>
+</div>
+<div id="summary-where-to-go-from-here" class="slide section level1">
+<h1>Summary, where to go from here</h1>
+<p>So, how to use all this, where to go from here?</p>
+<ul>
+<li>Option 1, live with my governance regarding ceh and:
+<ul>
+<li>check out, install, try, periodically pull for new things,</li>
+<li>send pull requests for missing stuff,</li>
+<li>if I turn evil, just revert to a good state in Git and fork.</li>
+</ul></li>
+<li>Option 2, commercial setting or just a little bit paranoid:
+<ul>
+<li>fork me on Github,</li>
+<li>and maintain your own version for your own company/whatever,</li>
+<li>merge here and there.</li>
+</ul></li>
+<li>Option 3, meh, I'm not interested:
+<ul>
+<li>remember the novel, interesting way how Nix applied the concepts of purity, immutability, and lazyness to the software configuration world.</li>
+</ul></li>
+</ul>
+</div>
+<div id="thank-you" class="slide section level1">
+<h1>Thank you</h1>
+<p>Questions, remarks?</p>
+<p>I'm also available during the Zurihac to answer your questions or help with installing/using/abusing Ceh.</p>
+<p><a href="http://github.com/errge/ceh">http://github.com/errge/ceh</a></p>
+</div>
+</body>
+</html>

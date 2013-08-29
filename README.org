@@ -209,7 +209,7 @@ machine with the same architecture to run completely isolated from the
 system libraries in that machine.  To see an example on how to do
 this, check out https://github.com/errge/PrefetchFS/blob/master/deploy.sh.
 
-*** Using ceh to get a fresh GHC environment on Travis
+*** Using ceh to get a current GHC environment on Travis
 Checkout out https://github.com/errge/hflags and the =.travis= files
 there.
 
