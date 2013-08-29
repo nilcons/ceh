@@ -109,9 +109,16 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
 <li>hack the build environment and makefiles of packages to behave in /nix/store in a pure way: no random picking up of dependencies from /usr/lib or /usr/include, Nix is the language to describe this procedure (demo: <a href="https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/misc/vanitygen/default.nix">https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/misc/vanitygen/default.nix</a>)</li>
 <li>hack the installed binaries to have everything correctly RPATHed (demo: patchelf --print-rpath /nix/store/.../tmux and ldd),</li>
 <li>binary cache based on the output hashes,</li>
-<li>symlink farms (so called profiles) for a unixish view (demo),</li>
+<li>symlink farms (so called profiles) for a unixish view (next slide),</li>
 <li>can be used without NixOS.</li>
 </ul>
+</div>
+<div id="nix-details-1" class="slide section level1">
+<h1>Nix details</h1>
+<center>
+<img src="img/user-environments.png" />
+</center>
+
 </div>
 <div id="ceh-details" class="slide section level1">
 <h1>Ceh details</h1>

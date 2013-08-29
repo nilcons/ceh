@@ -89,8 +89,13 @@ Nix details
 - hack the installed binaries to have everything correctly RPATHed
   (demo: patchelf --print-rpath /nix/store/.../tmux and ldd),
 - binary cache based on the output hashes,
-- symlink farms (so called profiles) for a unixish view (demo),
+- symlink farms (so called profiles) for a unixish view (next slide),
 - can be used without NixOS.
+
+Nix details
+===========
+
+<center>![](img/user-environments.png)</center>
 
 Ceh details
 ===========
