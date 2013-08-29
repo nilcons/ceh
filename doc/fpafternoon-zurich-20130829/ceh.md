@@ -12,7 +12,7 @@ Agenda
 - Ceh ([http://github.com/errge/ceh/](http://github.com/errge/ceh/))
     + the Git synchronized, sharable and reproducible power-user
       environment based on Nix and Nixpkgs
-- Nix details.  Nix language example: coursera-dl
+- Nix details.  Nix language example: vanitygen
 - Ceh details.  Wrapper for tmux, ldd
 - Haskell integration, included tools, deploying binaries
 - Travis thyme
@@ -71,7 +71,7 @@ Ceh goals
     + fresh Emacs,
     + whatever else you want and help with it, :)
 - upgrades/rollbacks via Git, synchronization via Github,
-- top of any modern GNU/Linux distro,
+- on top of any modern GNU/Linux distro,
 - on both i686 and amd64 machines,
 - convenient (no chroots or VMs that you have to log into),
 - /opt/ceh/home, /opt/ceh/p/myproject; we are single-user anyways.
