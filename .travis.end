@@ -13,8 +13,9 @@ if [ "$TRAVIS_BRANCH" = "travis-baseline" ]; then
     echo '--------------------------------------------------------------------------------'
 fi
 
-echo $TRAVIS_TEST_RESULT
-
-echo LAST FAILING SCRIPT OUTPUT:
-ls -lart /tmp/installworld*
-tail -n 100 `ls -1rt /tmp/installworld* | tail -n1`
+if [ "$TRAVIS_TEST_RESULT" != 0 ]; then
+    echo LAST FAILING SCRIPT OUTPUT:
+    cd /tmp/installworld*
+    ls -lart
+    tail -n 100 `ls -1rt | tail -n1`
+fi
