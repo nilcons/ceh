@@ -150,9 +150,11 @@ ln -s $HOME home
 <li>GHC in 32 and 64-bit mode,</li>
 <li>with all the Platform libraries,</li>
 <li>with a lot of extra libraries (e.g. lens, gtk, pipes),</li>
+<li>everything built with profiling possibility,</li>
 <li>hoogle with local data indexing for all the installed libraries,</li>
 <li>ghc-vis and ghc-heapview,</li>
 <li>ghc-mod for Emacs,</li>
+<li>all coming from the Nix binary cache, so it's quick to install,</li>
 </ul></li>
 <li>documented way to compile 32 or 64-bit GHC (no more VMs).</li>
 </ul>
@@ -193,13 +195,13 @@ env:
   - CEH_GHC64=1</code></pre>
 <pre><code>#!/bin/bash -e
 
-. /opt/ceh/scripts/ceh-profile.sh
-
-cabal update
-cabal install --only-dependencies
-cabal configure --user --enable-tests
-cabal build
-cabal test</code></pre>
+sudo mkdir /opt/ceh /nix
+sudo chown $USER. /opt/ceh /nix
+chmod 0700 /opt/ceh /nix
+cd /opt/ceh
+git clone git://github.com/errge/ceh.git .
+ln -s $HOME home
+/opt/ceh/scripts/ceh-init.sh</code></pre>
 </div>
 <div id="travis-thyme-1" class="slide section level1">
 <h1>Travis thyme</h1>

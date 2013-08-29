@@ -127,9 +127,11 @@ Haskell integration, included tools
     + GHC in 32 and 64-bit mode,
     + with all the Platform libraries,
     + with a lot of extra libraries (e.g. lens, gtk, pipes),
+    + everything built with profiling possibility,
     + hoogle with local data indexing for all the installed libraries,
     + ghc-vis and ghc-heapview,
     + ghc-mod for Emacs,
+    + all coming from the Nix binary cache, so it's quick to install,
 
 - documented way to compile 32 or 64-bit GHC (no more VMs).
 
@@ -175,13 +177,13 @@ env:
 ~~~~
 #!/bin/bash -e
 
-. /opt/ceh/scripts/ceh-profile.sh
-
-cabal update
-cabal install --only-dependencies
-cabal configure --user --enable-tests
-cabal build
-cabal test
+sudo mkdir /opt/ceh /nix
+sudo chown $USER. /opt/ceh /nix
+chmod 0700 /opt/ceh /nix
+cd /opt/ceh
+git clone git://github.com/errge/ceh.git .
+ln -s $HOME home
+/opt/ceh/scripts/ceh-init.sh
 ~~~~
 
 Travis thyme
