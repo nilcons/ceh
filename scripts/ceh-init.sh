@@ -8,7 +8,7 @@ then
   exit 1
 fi
 
-if ! bzip2 --version >/dev/null 2>&1
+if ! bzip2 --help >/dev/null 2>&1
 then
   echo "bzip2 is needed for installation" >&2
   exit 1
