@@ -46,6 +46,7 @@
             self.unixBytestring
             self.c2hs
             self.cabal2nix
+            self.cabalGhci
             self.ChartGtk
             self.colour
             self.conduit

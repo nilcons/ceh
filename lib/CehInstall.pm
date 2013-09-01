@@ -230,8 +230,8 @@ sub ceh_nixpkgs_install($$%) {
     }
     ($out eq $current_out) or croak("out mismatch.  expected: $out, deducted: $current_out");
 
-    my $extraopts = '';
-    $extraopts .= ' --option use-binary-caches false' if ($ENV{CEH_NO_BIN_CACHE});
+    my $extraopts = "";
+    $extraopts .= " --option use-binary-caches false" if ($ENV{CEH_NO_BIN_CACHE});
     $extraopts .= " --option build-max-jobs $ENV{CEH_BUILD_MAX_JOBS}" if ($ENV{CEH_BUILD_MAX_JOBS});
     $extraopts .= " -K" if ($ENV{CEH_BUILD_KEEP_FAILED});
     systemdie("$CEH_NIX/bin/nix-store $extraopts $nixsystem --cores 0 -r /nix/store/$current_derivation >&2");
