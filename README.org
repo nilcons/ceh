@@ -199,6 +199,38 @@ teammates can reproduce the same environment.
 After that you will be able to simply call cabal install:
 : cabal install HsOpenSSL
 
+*** Hoogle usage
+To use hoogle for all the installed packages, first you have to
+generate the databases.  You can do that with the =hoogle-gendata=
+command.  This may take a while.  After the databases are generated,
+you can issue queries using =hoogle=, e.g.:
+
+: errge@curry:/opt/ceh/scripts/maintainer $ time hoogle-gendata >/dev/null 2>&1
+: real  1m19.005s
+: user  1m15.764s
+: sys   0m9.356s
+: errge@curry:~ $ hoogle '[a] -> [a]' | grep '^Prelude' | head -n 20
+: Prelude cycle :: [a] -> [a]
+: Prelude init :: [a] -> [a]
+: Prelude reverse :: [a] -> [a]
+: Prelude tail :: [a] -> [a]
+: Prelude scanl1 :: (a -> a -> a) -> [a] -> [a]
+: Prelude scanr1 :: (a -> a -> a) -> [a] -> [a]
+: Prelude dropWhile :: (a -> Bool) -> [a] -> [a]
+: Prelude filter :: (a -> Bool) -> [a] -> [a]
+: Prelude takeWhile :: (a -> Bool) -> [a] -> [a]
+: Prelude drop :: Int -> [a] -> [a]
+: Prelude take :: Int -> [a] -> [a]
+: Prelude (++) :: [a] -> [a] -> [a]
+: Prelude.Unicode (⧺) :: [α] -> [α] -> [α]
+: Prelude concat :: [[a]] -> [a]
+: Prelude head :: [a] -> a
+: Prelude last :: [a] -> a
+: Prelude repeat :: a -> [a]
+: Prelude map :: (a -> b) -> [a] -> [b]
+: Prelude concatMap :: (a -> [b]) -> [a] -> [b]
+: Prelude foldl1 :: (a -> a -> a) -> [a] -> a
+
 *** Deploying Haskell binaries built with Ceh to non-Ceh machines
 Thanks to the isolated compilation and linking environment provided by
 Ceh's GHC, those binaries are easy to deploy.  By putting the needed
