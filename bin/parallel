@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install_bin('parallel', nixpkgs_version => 'c9318f4d2d28d9716699c92280eccb4f12638aef', derivation => 'lfw0b6k44ik8ksd89wzzg606jgmzk76m-parallel-20130422.drv', out => '1lgm3j3392gmi2r9k3p368y3dil5acf4-parallel-20130422');
+
+exec "$ceh_nix_install_root/bin/parallel", @ARGV;
