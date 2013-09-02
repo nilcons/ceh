@@ -12,18 +12,24 @@
             sha256 = "0vpwwj7whpgkirx39xrwz1k15b0k17qxbngzg599xzmql9fvqi3j";
           };
 
-          buildInputs = [ makeWrapper pythonPackages.python pythonPackages.wrapPython pythonPackages.beautifulsoup4 pythonPackages.requests pythonPackages.six pythonPackages.html5lib ];
+          buildInputs = [ makeWrapper pythonPackages.python
+            pythonPackages.wrapPython pythonPackages.beautifulsoup4
+            pythonPackages.requests pythonPackages.six
+            pythonPackages.html5lib ];
+
+          patchPhase = ''
+            sed -i "s|PATH_CACHE = os\.path\.join(ROOT, '_cache')|PATH_CACHE = '/opt/ceh/home/.courseradl_cache/'|" coursera/define.py
+          '';
 
           installPhase = ''
-            find
-            cat requirements.txt
             ensureDir $out/bin/.wrapped
-            cp -av coursera/* $out/bin/.wrapped
-            ( cd $out/bin/.wrapped ; find -type f -exec sed -i 's/^from \./from /' {} \; )
-            ( cd $out/bin/.wrapped ; find -type f -exec sed -i "s/ROOT, '_cache/os.getenv('HOME'), '.courseradl_cache/" {} \; )
+            cp -av coursera-dl $out/bin/.wrapped/coursera-dl
+            ensureDir $out/lib/${pythonPackages.python.libPrefix}/site-packages/coursera
+            cp -av coursera/*.py $out/lib/${pythonPackages.python.libPrefix}/site-packages/coursera
             makeWrapper ${pythonPackages.python}/bin/python $out/bin/coursera-dl \
               --prefix PYTHONPATH : $PYTHONPATH \
-              --add-flags "$out/bin/.wrapped/coursera_dl.py"
+              --suffix PYTHONPATH : $out/lib/${pythonPackages.python.libPrefix}/site-packages \
+              --add-flags "$out/bin/.wrapped/coursera-dl"
           '';
           }) { };
     };
