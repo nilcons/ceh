@@ -65,6 +65,7 @@
             self.dataMemocombinators
             self.deepseqTh
             self.digest
+            self.elerea
             self.Glob
             self.gloss
             self.gtk
@@ -88,6 +89,7 @@
             self.regexTdfa
             self.regexTdfaText
             self.SafeSemaphore
+            self.statistics
             self.templateDefault
             self.utf8String
             self.utilityHt
