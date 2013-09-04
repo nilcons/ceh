@@ -38,15 +38,21 @@
             # command line tools
             self.hlint
             self.hoogle
+            self.cabal2nix
+            self.cabalGhci
+            self.ghcMod
+            self.ghcVis
+            self.ghcHeapView
+
+            # compilation tools
+            self.c2hs
+            self.hscolour
 
             # Selected by CEH
             self.async
             self.bindingsPosix
             self.bytedump
             self.unixBytestring
-            self.c2hs
-            self.cabal2nix
-            self.cabalGhci
             self.ChartGtk
             self.colour
             self.conduit
@@ -59,9 +65,6 @@
             self.dataMemocombinators
             self.deepseqTh
             self.digest
-            self.ghcHeapView
-            self.ghcMod
-            self.ghcVis
             self.Glob
             self.gloss
             self.gtk
@@ -70,7 +73,6 @@
             self.hmatrix
             self.hflags
             self.hit
-            self.hscolour
             self.hslogger
             self.HsOpenSSL
             self.lens
