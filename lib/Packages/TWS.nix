@@ -4,7 +4,7 @@
   packageOverrides = pkgs:
     {
       tws = pkgs.callPackage (
-      	{stdenv, fetchurl, unzip, jre}: stdenv.mkDerivation rec {
+      	{stdenv, fetchurl, unzip, jre, jrePlugin}: stdenv.mkDerivation rec {
 	name = "tws-937";
 
 	jts = fetchurl {
@@ -18,9 +18,9 @@
 	};
 
 	jre = pkgs.jre;
-	jre64 = (pkgs.forceSystem "x86_64-linux").jre;
+	sunjre = pkgs.jrePlugin;
 
-	buildInputs = [ unzip jre jre64 ];
+	buildInputs = [ unzip jre sunjre ];
 
 	unpackPhase = ''
 	  ensureDir $out/share/tws-jars
@@ -34,9 +34,8 @@
 #!/bin/sh
 
 export TZ=America/New_York
-# try with the 64-bit jre first, it's faster...
-if $jre64/bin/java -version >/dev/null 2>/dev/null; then
-  exec $jre64/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/Jts
+if [ "\$CEH_TWSSUN" = "1" ]; then
+  exec $sunjre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/Jts
 else
   exec $jre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/Jts
 fi
@@ -46,9 +45,8 @@ EOF
 #!/bin/sh
 
 export TZ=America/New_York
-# try with the 64-bit jre first, it's faster...
-if $jre64/bin/java -version >/dev/null 2>/dev/null; then
-  exec $jre64/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx512m ibgateway.GWClient /opt/ceh/home/Jts
+if [ "\$CEH_TWSSUN" = "1" ]; then
+  exec $sunjre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx512m ibgateway.GWClient /opt/ceh/home/Jts
 else
   exec $jre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx512m ibgateway.GWClient /opt/ceh/home/Jts
 fi
