@@ -56,6 +56,7 @@
             self.ChartGtk
             self.colour
             self.conduit
+            self.criterion
             self.cryptoApi
             self.cryptohash
             self.curl
