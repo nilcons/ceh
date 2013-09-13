@@ -196,6 +196,11 @@ correct hashes when you first run this Perl script.  You can then even
 commit this script to your project's version control, so your
 teammates can reproduce the same environment.
 
+If you don't need the conrete hashes that you used committed and
+recorded, just want to install a lib to the correct profile for a
+quick =cabal install=, you can use the
+=/opt/ceh/bin/ceh_nixpkgs_install_ghclibs= script.
+
 After that you will be able to simply call cabal install:
 : cabal install HsOpenSSL
 
