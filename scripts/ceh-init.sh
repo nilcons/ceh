@@ -75,6 +75,7 @@ fi
 if [ "$TRAVIS_BUILD_DIR" != "" ]
 then
     sudo bash -c "echo 0 > /proc/sys/kernel/randomize_va_space"
+    echo "check_certificate = off" >~/.wgetrc
 fi
 
 cd /tmp
