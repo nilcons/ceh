@@ -28,6 +28,10 @@ building docs: http://hackage.haskell.org/trac/ghc/wiki/Building/Hacking
 
     inplace/bin/ghc-stage2 --version
 
+    (if you want to run ghci, do this:)
+    export LD_LIBRARY_PATH=/nix/var/nix/profiles/ceh/ghc-build-bin/lib
+    inplace/bin/ghc-stage2 --interactive
+
     make install (if you want)
 
 To install a package in the new ghc:
