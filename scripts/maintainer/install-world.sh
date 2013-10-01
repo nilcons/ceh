@@ -38,6 +38,9 @@ fi
     nix-store --add-fixed sha256 jdk-6u45-linux-x64.bin
 )
 
+# Firefox first, because mozilla CDN is sucky -> we want to fail fast
+install firefox "Mozilla Firefox"
+
 install ack "Andy Lester"
 install alex "Simon Marlow"
 install cabal "cabal-install version"
@@ -47,7 +50,6 @@ install cgpt "cgpt COMMAND"
 install coursera-dl "usage: coursera-dl"
 install cpphs "cpphs 1"
 install emacs "GNU Emacs"
-install firefox "Mozilla Firefox"
 CEH_GHC64= install ghc "Glorious Glasgow Haskell Compilation System"
 CEH_GHC64= /opt/ceh/scripts/ghc-build-shell.pl </dev/null || true
 install gitceh "git version 1"
