@@ -23,7 +23,7 @@ if [ "$CEH_INSTALL_WORLD_VERBOSE" != "" ]; then
             echo '--------------------------------------------------------------------------------'
             date
             wc -l `ls -1rt | tail -n1`
-            ls -lart --time=ctime /nix/store | grep '^d'
+            ls -lart --full-time --time=ctime /nix/store | grep '^d' | tail -n 10
             echo '--------------------------------------------------------------------------------'
         done
     ) &
