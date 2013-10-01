@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/errge/ceh.png)](https://travis-ci.org/errge/ceh)
+[[https://travis-ci.org/errge/ceh][https://travis-ci.org/errge/ceh.png]]
 
 * Power-user environment to share
 + Agreements and a repository for a shared GNU/Linux power-user environment.
