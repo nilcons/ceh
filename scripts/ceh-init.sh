@@ -81,7 +81,7 @@ fi
 cd /tmp
 wget -c $CEH_NIX_DOWNLOAD
 chmod 0700 /nix
-( cd / && tar -x --delay-directory-restore -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix )
+( cd / && tar -x -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix )
 
 # Stolen from /usr/bin/nix-finish-install & /etc/profile.d/nix.sh
 $CEH_NIX/bin/nix-store --load-db < /nix/store/reginfo

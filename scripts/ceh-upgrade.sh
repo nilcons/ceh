@@ -70,8 +70,8 @@ echo >&2 Checks OK, upgrading to `basename $CEH_NIX`
 
 cd /tmp
 wget -c $CEH_NIX_DOWNLOAD
-( cd / && tar -x -k --delay-directory-restore -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix/store )
-( cd / && tar -x --overwrite --delay-directory-restore -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix/store/reginfo )
+( cd / && tar -x -k -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix/store )
+( cd / && tar -x --overwrite -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix/store/reginfo )
 $CEH_NIX/bin/nix-store --load-db < /nix/store/reginfo
 /opt/ceh/bin/nix-env --version
 
