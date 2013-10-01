@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/errge/ceh.png)](https://travis-ci.org/errge/ceh)
+
 * Power-user environment to share
 + Agreements and a repository for a shared GNU/Linux power-user environment.
 + So that it's easy to work on shared projects (e.g. the haskell
