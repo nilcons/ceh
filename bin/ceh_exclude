@@ -9,7 +9,7 @@ use CehInstall;
 
 my $target = $ARGV[0];
 
-ceh_nixpkgs_install_tools('which', nixpkgs_version => 'c9318f4d2d28d9716699c92280eccb4f12638aef', derivation => '9k8skacrspbl3jdgmr748fnj6x8k6kr5-which-2.20.drv', out => '25npjmsx9ik5gyqcngga88jz7bg1gjyf-which-2.20');
+ceh_nixpkgs_install_tools('which', nixpkgs_version => 'e26b828f4a3f00c89497913970ca2fef8441367f', derivation => '0qw9d5g6f2mq0n5vbs8mzybbnl7zrv15-which-2.20.drv', out => '25npjmsx9ik5gyqcngga88jz7bg1gjyf-which-2.20');
 
 if (not $target) {
     debug "Usage: ceh_exclude <executable-to-exclude-from-ceh>";
