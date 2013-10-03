@@ -77,10 +77,14 @@
             self.hit
             self.hslogger
             self.HsOpenSSL
+            self.hspec
             self.lens
+            self.lensDatetime
+            self.linear
             self.MissingH
-            # self.modularArithmetic
+            self.modularArithmetic
             self.monadLoops
+            self.ncurses
             self.networkConduit
             self.networkProtocolXmpp
             self.pipes
@@ -91,7 +95,9 @@
             self.regexTdfaText
             self.SafeSemaphore
             self.statistics
+            self.statvfs
             self.templateDefault
+            self.thyme
             self.utf8String
             self.utilityHt
             self.vectorAlgorithms
