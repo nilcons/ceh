@@ -29,10 +29,11 @@
             self.vector
             self.xhtml
             self.zlib
-            self.cabalInstall
-            self.alex
+            self.cabalInstall_1_18_0_1
+            self.Cabal_1_18_1
+            self.alex_3_1_0
             self.haddock
-            self.happy
+            self.happy_1_19_0
             self.primitive
 
             # command line tools
