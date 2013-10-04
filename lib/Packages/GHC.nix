@@ -89,6 +89,8 @@
             self.networkConduit
             self.networkProtocolXmpp
             self.pipes
+            self.pipesBytestring
+            self.pipesParse
             self.pipesSafe
             self.prettyShow
             self.randomFu
