@@ -9,12 +9,12 @@
 
 	jts = fetchurl {
 	  url = "http://download2.interactivebrokers.com/java/classes/latest/jts.latest.jar";
-	  sha256 = "174cj9vgr5v31i85b7l7fh1njlxqgznaf7h36qlhh3mij1an3wrg";
+	  sha1 = "3c72f1bf046d39d54d09e226ad763425dd1576cf";
 	};
 
 	total = fetchurl {
 	  url = "http://download2.interactivebrokers.com/java/classes/total.2012.jar";
-	  sha256 = "17fpxwjvy6q5s8dij632qadc6r0c8i6gkv09mccjmdppbzz7a4qb";
+	  sha1 = "348755c2f21c32f93ce423527c6255c813650fb6";
 	};
 
 	jre = pkgs.jre;
