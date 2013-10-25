@@ -101,6 +101,7 @@
             self.statvfs
             self.templateDefault
             self.thyme
+            self.unixTime
             self.utf8String
             self.utilityHt
             self.vectorAlgorithms
