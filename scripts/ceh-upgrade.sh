@@ -70,8 +70,20 @@ echo >&2 Checks OK, upgrading to `basename $CEH_NIX`
 
 cd /tmp
 wget -c $CEH_NIX_DOWNLOAD
-( cd / && tar -x -k -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix/store )
-( cd / && tar -x --overwrite -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix/store/reginfo )
+# ---------- this is a bit hacky, but --skip-old-files is very new in gnutar :-(
+bzcat /tmp/`basename $CEH_NIX_DOWNLOAD` >/tmp/`basename $CEH_NIX_DOWNLOAD .bz2`
+SHOULDHAVE=$(tar tf /tmp/`basename $CEH_NIX_DOWNLOAD .bz2`  | grep '^/nix/store/' | cut -d/ -f-4 | sort | uniq | grep -v '/nix/store/reginfo')
+needed="/nix/store/reginfo"
+for i in  $SHOULDHAVE; do
+    if [ -e $i ]; then
+        :
+    else
+        needed="$needed $i"
+    fi
+done
+rm -f /nix/store/reginfo
+( cd / && tar -x --overwrite -f /tmp/`basename $CEH_NIX_DOWNLOAD .bz2` $needed )
+# ---------- end of the hack
 $CEH_NIX/bin/nix-store --load-db < /nix/store/reginfo
 /opt/ceh/bin/nix-env --version
 
