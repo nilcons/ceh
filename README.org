@@ -360,10 +360,10 @@ This will update the hash in lib/Packages/Git.pm.
 + Update =lib/base.sh=, =lib/CehBase.pm= and =emacs.d/nix-mode.el=
   with the URL and the nix store path.
 
-+ Update the =lib/perl= wrapper to point to the current perl.
++ Update the =/opt/ceh/lib/perl= wrapper to point to the current perl.
 
-+ Test if =scripts/ceh-upgrade.sh= is able to upgrade your old
-  installation to the new one.
++ Test if =ceh-upgrade.sh= is able to upgrade your old installation to
+  the new one.
 
 + git commit, git push.
 
