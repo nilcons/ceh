@@ -29,7 +29,7 @@
             self.vector
             self.xhtml
             self.zlib
-            self.cabalInstall_1_18_0_1
+            self.cabalInstall_1_18_0_2
             self.Cabal_1_18_1
             self.alex_3_1_0
             self.haddock

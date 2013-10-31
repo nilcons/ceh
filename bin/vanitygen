@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install_bin('vanitygen', nixpkgs_version => 'e26b828f4a3f00c89497913970ca2fef8441367f', derivation => 'p5jv3wzf1kpwhr1mb4p8sybck45gm3nc-vanitygen-0.21.drv', out => 'a4dvk6hdlp2hb58hpnyw5jwp0sz2l1gd-vanitygen-0.21');
+ceh_nixpkgs_install_bin('vanitygen', nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => '719mn962wfwyda1z46cbz880zkd6dn0g-vanitygen-0.21.drv', out => 'a4dvk6hdlp2hb58hpnyw5jwp0sz2l1gd-vanitygen-0.21');
 
 exec "$ceh_nix_install_root/bin/vanitygen", @ARGV;
