@@ -9,7 +9,7 @@
 
 	jts = fetchurl {
 	  url = "http://download2.interactivebrokers.com/java/classes/latest/jts.latest.jar";
-	  sha1 = "7ca96677e281599a1b943cf58215ecfd4732a416";
+	  sha1 = "01311cbdf94de7794aaf8f77e301fe90d7ce145f";
 	};
 
 	total = fetchurl {
