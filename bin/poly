@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install_bin('polyml', nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => '4mkhnwzdwdb3nfxidvzj01x71rnyd9fw-polyml-5.4.1.drv', out => 'y3qjwjr80bvlbhkkh2ldcbjw625knp1d-polyml-5.4.1');
+
+exec "$ceh_nix_install_root/bin/poly", @ARGV;

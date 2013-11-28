@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install_bin('hol', nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => '00zqxch8v3lnnknccwy6a5zi3kh3bi9s-hol4-k.8.drv', out => 'qr8m5q62s6phnvfw4a5az5mr2ccm4hxi-hol4-k.8');
+
+exec "$ceh_nix_install_root/bin/hol", @ARGV;
