@@ -82,6 +82,7 @@
             self.lens
             self.lensDatetime
             self.linear
+            self.mimeMail
             self.MissingH
             self.modularArithmetic
             self.monadLoops
@@ -101,6 +102,8 @@
             self.statvfs
             self.templateDefault
             self.thyme
+            self.tls
+            self.tlsExtra
             self.unixTime
             self.utf8String
             self.utilityHt
