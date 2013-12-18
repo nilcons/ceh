@@ -11,9 +11,9 @@ our @EXPORT = qw($ceh_nix_install_root);
 
 $ENV{NIXPKGS_CONFIG}='/opt/ceh/lib/Packages/TWS.nix';
 if ($ENV{CEH_TWS64}) {
-    ceh_nixpkgs_install_bin64("tws", nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'fan0bdxkwfh6aa8dzx8y3vb5bf1dpmx5-tws-20131209.drv', out => '9gxb93ayq33v3z347xrnkdzkhrpav8ch-tws-20131209');
+    ceh_nixpkgs_install_bin64("tws", nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => '8gc2h3b2304xdk11lx96zzj0jqh6d448-tws-20131218.drv', out => '8382gd4gfivk2jqw0y8rphsbff7crzra-tws-20131218');
 } else {
-    ceh_nixpkgs_install_bin("tws", nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'jyglr7zfz1cccwf61smglgnf3rlsw0cy-tws-20131209.drv', out => '6ldnxygyr9fyhi0d1qx4mscvj3g7p445-tws-20131209');
+    ceh_nixpkgs_install_bin("tws", nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'jhqlizflpp9l81wpv2hmhzy83s2akf26-tws-20131218.drv', out => 'xahna0jzbib4rbdmh6l26z9jp3gh596r-tws-20131218');
 }
 
 1;
