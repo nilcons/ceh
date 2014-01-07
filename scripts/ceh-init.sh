@@ -97,7 +97,7 @@ mkdir $HOME/.nix-defexpr
 /opt/ceh/bin/nix-env --version
 
 # Add channels
-$CEH_NIX/bin/nix-channel --add http://nixos.org/releases/nixpkgs/channels/nixpkgs-unstable
+$CEH_NIX/bin/nix-channel --add http://nixos.org/channels/nixpkgs-unstable
 $CEH_NIX/bin/nix-channel --update
 
 # TODO(errge): reimplement this whole script in perl, and then we can share
