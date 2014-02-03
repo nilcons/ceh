@@ -30,10 +30,10 @@
             self.xhtml
             self.zlib
             self.cabalInstall_1_18_0_2
-            self.Cabal_1_18_1
-            self.alex_3_1_0
-            self.haddock
-            self.happy_1_19_0
+            self.Cabal_1_18_1_2
+            self.alex_3_1_3
+            # seems to be not needed anymore, because nix auto inserts it: self.haddock
+            self.happy_1_19_3
             self.primitive
 
             # command line tools
@@ -81,7 +81,8 @@
             self.hspec
             self.lens
             self.lensDatetime
-            self.linear
+            # TODO(errge): broken in nixpkgs because of lens-4 transition, uncomment later
+            # self.linear
             self.mimeMail
             self.MissingH
             self.modularArithmetic
@@ -103,7 +104,6 @@
             self.templateDefault
             self.thyme
             self.tls
-            self.tlsExtra
             self.unixTime
             self.utf8String
             self.utilityHt

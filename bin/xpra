@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install_bin("xpra", nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'gcnrhn7rph78yqhlgb1wyc6y88p7py8f-python2.7-xpra-0.9.5.drv', out => '0fnicch980d02wwfxpjq9vwzqcnmpj9q-python2.7-xpra-0.9.5');
+ceh_nixpkgs_install_bin("xpra", nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'bc82c86s2fk0rmrixs2s3q6hcmsipvm0-xpra-0.9.5.drv', out => '2sjbcs6zmxxik3nhsg8pmwamrzvqgdl5-xpra-0.9.5');
 
 exec "$ceh_nix_install_root/bin/xpra", @ARGV;

@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install_bin('python3', nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => '8fva391ca2wlqfy20dcdp0zh7dwirx2i-python3-3.3.2.drv', out => 'llp4ahffk826ix8zz06grbpks46bpsrn-python3-3.3.2');
+ceh_nixpkgs_install_bin('python3', nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'k81l0vpahfj4xp0a78ccc9i6sv1f4kri-python3-3.3.3.drv', out => 'yk2913074z5hpq8xc94vjybsxk4lhzrn-python3-3.3.3');
 
 exec "$ceh_nix_install_root/bin/python3", @ARGV;

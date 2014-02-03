@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install_bin('coq', nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => '51swla22yz9hxmgzr4l7cgbcrmbh530z-coq-8.4pl2.drv', out => 'jid3gi6x70zakqfra5498xp7qzwkxfvg-coq-8.4pl2');
+ceh_nixpkgs_install_bin('coq', nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'x23wa88lp5krkxgfqapr0aa59dqfwf7p-coq-8.4pl2.drv', out => '11vmhyg1vq458m3iz1g2zcchmxx5fjvi-coq-8.4pl2');
 
 exec "$ceh_nix_install_root/bin/coqtop", @ARGV;

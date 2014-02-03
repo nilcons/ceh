@@ -15,26 +15,26 @@ sub ceh_nixpkgs_install_ghcbuildbin {
     return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-build-bin", %opts);
 }
 
-ceh_nixpkgs_install_ghcbuildbin("perl", nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'qdpy0c5a6w04q63zw70phgal7z4xk5wq-perl-5.16.3.drv', out => 'x39yy4fg60qqgdrjhbwzrjs8r7w5wmzy-perl-5.16.3');
-ceh_nixpkgs_install_ghcbuildbin("gnumake", nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'phspbj3bkgbh4jspyg170v1v5hkvb4cd-gnumake-3.82.drv', out => '057196vxl4ksams9fjfcgq00w9y4avdh-gnumake-3.82');
-ceh_nixpkgs_install_ghcbuildbin("m4", nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'pb0vakgfhwzll3546pm0i7fa16b772v7-gnum4-1.4.16.drv', out => '4p4j7jrxw5bvc74vxla5y64wcjiznz74-gnum4-1.4.16');
+ceh_nixpkgs_install_ghcbuildbin("perl", nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'crx2adcsw1h3nhqhrz6vv7sdqc1j08x4-perl-5.16.3.drv', out => 'b15kvbqyfbb6np5d7lrjsjz5vwbs7126-perl-5.16.3');
+ceh_nixpkgs_install_ghcbuildbin("gnumake", nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'f2ij3n9idcpfy9wz7zg4nd94nmdzi6ms-gnumake-3.82.drv', out => '589lxrnab3yrg1mn3vhg2p30f4r0kyhd-gnumake-3.82');
+ceh_nixpkgs_install_ghcbuildbin("m4", nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'c9r0v937cf6j69rhdwx64lpaqbz8cqn2-gnum4-1.4.17.drv', out => 'fgi8my3g0zzfrvifn61s5087458p77js-gnum4-1.4.17');
 
 # stupid info collission between autoconf and binutils
 systemdie("$CEH_NIX/bin/nix-env -p /nix/var/nix/profiles/ceh/ghc-build-bin --set-flag priority 1 autoconf >&2");
 systemdie("$CEH_NIX/bin/nix-env -p /nix/var/nix/profiles/ceh/ghc-build-bin --set-flag priority 2 binutils >&2");
-ceh_nixpkgs_install_ghcbuildbin("autoconf", nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'jz3bgk7vy1ds6pi1bwjs175krkk6i1p8-autoconf-2.69.drv', out => 'ca8ycvpcbmgjbm90ba0a5ny61kfl12d1-autoconf-2.69');
-ceh_nixpkgs_install_ghcbuildbin("automake", nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => '4204n9q10i2fbfdf89kmb57fl5f49bmw-automake-1.12.4.drv', out => '4bf7jxmqk5sr0i01aw3mb45ikdndr17n-automake-1.12.4');
+ceh_nixpkgs_install_ghcbuildbin("autoconf", nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'w9xn0ysj7bw9p2mvlrpnxca65gdj33k2-autoconf-2.69.drv', out => 'svv52l4g0arspp537m5jrvcjjjns0yqp-autoconf-2.69');
+ceh_nixpkgs_install_ghcbuildbin("automake", nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'k2v82zzbnyiq04zav4yps6drv47f1c1y-automake-1.12.4.drv', out => 'mmh1vwwnvzkqmljw8m1w6y5y0356r0ps-automake-1.12.4');
 systemdie("$CEH_NIX/bin/nix-env -p /nix/var/nix/profiles/ceh/ghc-build-bin --set-flag priority 1 autoconf >&2");
 systemdie("$CEH_NIX/bin/nix-env -p /nix/var/nix/profiles/ceh/ghc-build-bin --set-flag priority 2 binutils >&2");
 
 # TODO(errge): get rid of this conditional
 # https://github.com/NixOS/nixpkgs/pull/857 hits the nixpkgs
 if ($ENV{CEH_GHC64}) {
-    ceh_nixpkgs_install("binutils", "/nix/var/nix/profiles/ceh/ghc-build-bin64", bit64 => 1, nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'q5y2qpasbzhdii13yays1g5qyin920j3-binutils-2.23.1.drv', out => '46595bx2k3yjznihv898592qnzirbvgm-binutils-2.23.1');
+    ceh_nixpkgs_install("binutils", "/nix/var/nix/profiles/ceh/ghc-build-bin64", bit64 => 1, nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'p5lhnw2hxshhdn1b65j0ihyjl9m90p3y-binutils-2.23.1.drv', out => 'dyb8q2dx4dnbxpajf9inycjh49mabmdy-binutils-2.23.1');
     path_prepend("/nix/var/nix/profiles/ceh/ghc-build-bin/bin");
     path_prepend("/nix/var/nix/profiles/ceh/ghc-build-bin64/bin");
 } else {
-    ceh_nixpkgs_install_ghcbuildbin("binutils", nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'm8znks1f71rl183f9ql41f505czsxzpd-binutils-2.23.1.drv', out => 'if62bg6a0g5kv2xqjk54hmpl5y0r8dzh-binutils-2.23.1');
+    ceh_nixpkgs_install_ghcbuildbin("binutils", nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'vgi9sgbg986knvkr2f5ncng2w6dcwh62-binutils-2.23.1.drv', out => 'vbkccaycpd4p64ldw0m7nynlkkrwpglm-binutils-2.23.1');
     path_prepend("/nix/var/nix/profiles/ceh/ghc-build-bin/bin");
 }
 
@@ -42,11 +42,11 @@ if ($ENV{CEH_GHC64}) {
 my $outncurses;
 my $outgmp;
 if ($ENV{CEH_GHC64}) {
-    $outncurses = ceh_nixpkgs_install_ghcbuildbin('ncurses', bit64 => 1, nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'bdbzkzw4aagfw6rj3p6nkwsmwqach02v-ncurses-5.9.drv', out => 'q96qckiwzh055rd2b0fsnkd0a4xr5nis-ncurses-5.9');
-    $outgmp = ceh_nixpkgs_install_ghcbuildbin('gmp', bit64 => 1, nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => '6yl8rr3byk9hfkh0vxg1bzhpwjcq1jss-gmp-5.0.5.drv', out => 'xhi96qw8i4ms3q1z1grh6jsgwgz3sm4i-gmp-5.0.5');
+    $outncurses = ceh_nixpkgs_install_ghcbuildbin('ncurses', bit64 => 1, nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => '76xb370c0ia1pmpw5xcnyd8p77yfn5yr-ncurses-5.9.drv', out => '9ixnhyfnypvh85pr6qx8a5cljc6q2ya0-ncurses-5.9');
+    $outgmp = ceh_nixpkgs_install_ghcbuildbin('gmp', bit64 => 1, nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'klacrrxpxhjk9kikljaxfrb7sgbs9pg5-gmp-5.1.3.drv', out => '45i1saazxy68pkygdqzllbxg83py4928-gmp-5.1.3');
 } else {
-    $outncurses = ceh_nixpkgs_install_ghcbuildbin('ncurses', nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => '9yybsrlzb4vggql130als53c30yiw05d-ncurses-5.9.drv', out => 'hc4rlhbd7rfyx5l44kdhly6ckam1b3rg-ncurses-5.9');
-    $outgmp = ceh_nixpkgs_install_ghcbuildbin('gmp', nixpkgs_version => '50f482288857f679acf10cd8a9b3f35a76466730', derivation => 'cssxdw5xlh0znli6mcqg6cnvdhfswb4d-gmp-5.0.5.drv', out => 'c9qp80wg4qc2dnphpl49fa3kn1kx7802-gmp-5.0.5');
+    $outncurses = ceh_nixpkgs_install_ghcbuildbin('ncurses', nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => '6iqf8v3agvzkhcfrqss5gd62nkm03nvi-ncurses-5.9.drv', out => 'xybmnq4cy1swgazlp7hck5q8s4q7hgn1-ncurses-5.9');
+    $outgmp = ceh_nixpkgs_install_ghcbuildbin('gmp', nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'z113xgpyaa455yw7y9dfabk2bm6r2pqc-gmp-5.1.3.drv', out => 'bdnnw6lj1r6fhap8215yqyr7i62z8sr4-gmp-5.1.3');
 }
 $ENV{NIX_LDFLAGS}="-L $outncurses/lib -L $outgmp/lib";
 $ENV{NIX_CFLAGS_COMPILE}="-idirafter $outncurses/include -idirafter $outgmp/include";
