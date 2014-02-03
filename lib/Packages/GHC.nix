@@ -67,6 +67,7 @@
             self.dataMemocombinators
             self.deepseqTh
             self.digest
+            self.directSqlite
             self.elerea
             self.Glob
             self.gloss
@@ -99,9 +100,11 @@
             self.regexTdfa
             self.regexTdfaText
             self.SafeSemaphore
+            self.snap
             self.statistics
             self.statvfs
             self.templateDefault
+            self.temporary
             self.thyme
             self.tls
             self.unixTime
