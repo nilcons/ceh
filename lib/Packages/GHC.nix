@@ -100,7 +100,9 @@
             self.regexTdfa
             self.regexTdfaText
             self.SafeSemaphore
+            # TODO(errge): self.simpleSqlite
             self.snap
+            # TODO(errge): self.snapBlaze
             self.statistics
             self.statvfs
             self.templateDefault
