@@ -9,4 +9,4 @@ use CehBase;
 
 path_prepend('/nix/var/nix/profiles/ceh/ghc-libs/lib', 'LD_LIBRARY_PATH');
 
-exec "$ceh_ghc_root/bin/ghc-mod", "-g", "-package-db=$ceh_ghc_root/lib/package.conf.d", @ARGV;
+exec "$ceh_ghc_root/bin/ghc-mod", "-g", "-package-db=$ceh_ghc_root/lib/ghc-7.6.3/package.conf.d", @ARGV;
