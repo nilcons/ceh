@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install_bin('skype', nixpkgs_version => 'ba4461f96f14b322ebd03d9cbcf4e0fdc206d595', derivation => 'vigwd1s0c3yg0d6wjxrjbd9qzanwfiqf-skype-4.2.0.11.drv', out => '3374q69ny5i4q4myslanggx580db1cvx-skype-4.2.0.11');
+
+exec "$ceh_nix_install_root/bin/skype", @ARGV;
