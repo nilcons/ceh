@@ -82,8 +82,7 @@
             self.hspec
             self.lens
             self.lensDatetime
-            # TODO(errge): broken in nixpkgs because of lens-4 transition, uncomment later
-            # self.linear
+            self.linear
             self.mimeMail
             self.MissingH
             self.modularArithmetic
@@ -100,9 +99,9 @@
             self.regexTdfa
             self.regexTdfaText
             self.SafeSemaphore
-            # TODO(errge): self.simpleSqlite
+            self.sqliteSimple
             self.snap
-            # TODO(errge): self.snapBlaze
+            self.snapBlaze
             self.statistics
             self.statvfs
             self.templateDefault

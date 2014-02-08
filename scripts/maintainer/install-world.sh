@@ -36,8 +36,12 @@ fi
     nix-store --add-fixed sha256 jdk-6u45-linux-i586.bin
     wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin"
     nix-store --add-fixed sha256 jdk-6u45-linux-x64.bin
-    wget -c http://ftp.tw.freebsd.org/distfiles/flashplugin/11.2r202.297/install_flash_player_11_linux.i386.tar.gz
-    nix-store --add-fixed sha256 install_flash_player_11_linux.i386.tar.gz
+
+    # Now we're using a flash player that is downloadable from adobe,
+    # but this may change in the future, so leave the hack here as a
+    # reference.
+    # wget -c http://ftp.tw.freebsd.org/distfiles/flashplugin/11.2r202.297/install_flash_player_11_linux.i386.tar.gz
+    # nix-store --add-fixed sha256 install_flash_player_11_linux.i386.tar.gz
 )
 
 # Firefox first, because mozilla CDN is sucky -> we want to fail fast
