@@ -80,9 +80,10 @@
             self.hslogger
             self.HsOpenSSL
             self.hspec
-            self.lens
+            # self.lens
             self.lensDatetime
-            self.linear
+            # linear depends on lens4, causing cabal hell
+            # self.linear
             self.mimeMail
             self.MissingH
             self.modularArithmetic
