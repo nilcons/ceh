@@ -4,7 +4,7 @@
   packageOverrides = pkgs:
     {
       tws = pkgs.callPackage (
-      	{stdenv, fetchurl, unzip, jre, jrePlugin}: stdenv.mkDerivation rec {
+      	{stdenv, fetchurl, unzip}: stdenv.mkDerivation rec {
 	name = "tws-20130211";
 
 	jts = fetchurl {
@@ -17,10 +17,7 @@
 	  sha1 = "348755c2f21c32f93ce423527c6255c813650fb6";
 	};
 
-	jre = pkgs.jre;
-	sunjre = pkgs.jrePlugin;
-
-	buildInputs = [ unzip jre sunjre ];
+	buildInputs = [ unzip ];
 
 	unpackPhase = ''
 	  ensureDir $out/share/tws-jars
@@ -30,26 +27,20 @@
 
 	installPhase = ''
 	  ensureDir $out/bin
-	  cat >$out/bin/tws-ui <<EOF
+	  cat >$out/bin/tws-ui <<'EOF'
 #!/bin/sh
 
 export TZ=America/New_York
-if [ "\$CEH_TWSSUN" = "1" ]; then
-  exec $sunjre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/Jts
-else
-  exec $jre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx2000m -XX:MaxPermSize=512m jclient.LoginFrame /opt/ceh/home/Jts
-fi
+exec /opt/ceh/bin/java -cp ''${CEH_TWS_CLASSPATH:+$CEH_TWS_CLASSPATH:}${jts}:${total} -Xmx2000m \
+  -XX:MaxPermSize=512m ''${CEH_TWS_UI_MAINCLASS:-jclient.LoginFrame} /opt/ceh/home/Jts
 EOF
 	  chmod a+x $out/bin/tws-ui
-	  cat >$out/bin/tws-api <<EOF
+	  cat >$out/bin/tws-api <<'EOF'
 #!/bin/sh
 
 export TZ=America/New_York
-if [ "\$CEH_TWSSUN" = "1" ]; then
-  exec $sunjre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx512m ibgateway.GWClient /opt/ceh/home/Jts
-else
-  exec $jre/bin/java -cp $out/share/tws-jars/total.jar:$out/share/tws-jars/jts.jar -Xmx512m ibgateway.GWClient /opt/ceh/home/Jts
-fi
+exec /opt/ceh/bin/java -cp ''${CEH_TWS_CLASSPATH:+$CEH_TWS_CLASSPATH:}${jts}:${total} -Xmx512m \
+  ''${CEH_TWS_API_MAINCLASS:-ibgateway.GWClient} /opt/ceh/home/Jts
 EOF
 	  chmod a+x $out/bin/tws-api
 	'';
