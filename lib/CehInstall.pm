@@ -122,6 +122,7 @@ sub ceh_nixpkgs_checkout($) {
 # %nixpkgs_version: nixpkgs version to use
 # %derivation: resulting derivation in /nix/store, excludes AUTOINIT
 # %out: output path in /nix/store, excludes AUTOINIT
+# %outFilter: filters outputs from the derivation
 sub ceh_nixpkgs_install($$%) {
     my ($pkgattr, $profile, %opts) = @_;
     my $autoinit = $opts{autoinit};
@@ -130,6 +131,7 @@ sub ceh_nixpkgs_install($$%) {
     my $nixpkgs_version = $opts{nixpkgs_version};
     my $derivation = $opts{derivation};
     my $out = $opts{out};
+    my $outFilter = $opts{outFilter};
     my $old_nixpkgs_version = $opts{nixpkgs_version};
     my $old_derivation = $opts{derivation};
     my $old_out = $opts{out};
@@ -219,11 +221,15 @@ sub ceh_nixpkgs_install($$%) {
     }
     my @outs = `$CEH_NIX/bin/nix-store -q /nix/store/$current_derivation`;
     $? and croak;
-    ($#outs == 0) or croak("nix-store -q didn't reply with exactly one out path");
-    $_ = $outs[0];
-    chomp;
-    s,/nix/store/,,;
-    my $current_out = $_;
+    foreach (@outs) {
+	chomp;
+	s,^/nix/store/,,;
+    }
+    if ($outFilter) {
+	@outs = grep { &$outFilter($_) } @outs;
+    }
+    ($#outs == 0) or croak("nix-store -q didn't reply with exactly one out path, maybe use outFilter?");
+    my $current_out = $outs[0];
     if (not $out) {
 	$out = $current_out;
 	debug "*** Autoguessed out: $out";
