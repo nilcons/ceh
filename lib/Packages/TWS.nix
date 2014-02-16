@@ -43,6 +43,12 @@ exec /opt/ceh/bin/java -cp ''${CEH_TWS_CLASSPATH:+$CEH_TWS_CLASSPATH:}${jts}:${t
   ''${CEH_TWS_API_MAINCLASS:-ibgateway.GWClient} /opt/ceh/home/Jts
 EOF
 	  chmod a+x $out/bin/tws-api
+	  cat >$out/bin/tws-javac <<'EOF'
+#!/bin/sh
+
+exec /opt/ceh/bin/javac -cp ''${CEH_TWS_CLASSPATH:+$CEH_TWS_CLASSPATH:}${jts}:${total} "$@"
+EOF
+	  chmod a+x $out/bin/tws-javac
 	'';
 
 	}) { };
