@@ -1,0 +1,12 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehCache;
+use CehBase;
+
+ensure_nix_installed_in_bin_profile();
+
+exec "${CEH_NIX}/bin/nix-shell", @ARGV;
