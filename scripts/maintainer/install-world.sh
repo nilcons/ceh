@@ -48,6 +48,7 @@ fi
 install firefox "Mozilla Firefox"
 
 install ack "Andy Lester"
+install agda "Agda version 2."
 install alex "Simon Marlow"
 install cabal "cabal-install version"
 install cabal2nix "url-to-cabal-file"
