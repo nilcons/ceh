@@ -1,13 +1,14 @@
 #!/opt/ceh/lib/perl
 # -*- mode: perl; -*-
 
-# Clone/fetch the /opt/ceh/nixpkgs/git directory.
+# Checkout the current baseline nixpkgs to /opt/ceh/nixpkgs.
 #
 # Used from ceh-init.sh.
 
 use strict;
 use warnings;
 use lib "/opt/ceh/lib";
+use CehBase;
 use CehInstall;
 
-ceh_nixpkgs_clone();
+ceh_nixpkgs_checkout($CEH_BASELINE_NIXPKGS);
