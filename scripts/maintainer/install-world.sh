@@ -48,6 +48,9 @@ fi
     # nix-store --add-fixed sha256 install_flash_player_11_linux.i386.tar.gz
 )
 
+# Let's don't depend on X.
+export DISPLAY=
+
 # Firefox first, because mozilla CDN is sucky -> we want to fail fast
 install firefox "Mozilla Firefox"
 
@@ -72,7 +75,7 @@ CEH_JAVA64= CEH_JAVAFLAVOR=sun7 install javac  "javac: invalid flag: --version"
 CEH_JAVA64=1 CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
 CEH_JAVA64=1 CEH_JAVAFLAVOR=sun6 install javac "javac: invalid flag: --version"
 CEH_JAVA64=1 CEH_JAVAFLAVOR=sun7 install javac "javac: invalid flag: --version"
-install nc-indicators "Show CPU and MEM"
+install nc-indicators "nc-indicators: Cannot initialize GUI."
 install haddock "Haddock version 2"
 install happy "Happy Version 1"
 install hlint "Neil Mitchell"
