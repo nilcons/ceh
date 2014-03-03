@@ -36,6 +36,10 @@ fi
     nix-store --add-fixed sha256 jdk-6u45-linux-i586.bin
     wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin"
     nix-store --add-fixed sha256 jdk-6u45-linux-x64.bin
+    wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-i586.tar.gz"
+    nix-store --add-fixed sha256 jdk-7u51-linux-i586.tar.gz
+    wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz"
+    nix-store --add-fixed sha256 jdk-7u51-linux-x64.tar.gz
 
     # Now we're using a flash player that is downloadable from adobe,
     # but this may change in the future, so leave the hack here as a
@@ -49,6 +53,7 @@ install firefox "Mozilla Firefox"
 
 install ack "Andy Lester"
 install agda "Agda version 2."
+install agda-mode "Agda version 2."
 install alex "Simon Marlow"
 install cabal "cabal-install version"
 install cabal2nix "url-to-cabal-file"
@@ -61,6 +66,13 @@ CEH_GHC64= install ghc "Glorious Glasgow Haskell Compilation System"
 CEH_GHC64= /opt/ceh/scripts/ghc-build-shell.pl </dev/null || true
 install gitceh "git version 1"
 install git-annex "Usage: git-annex command"
+CEH_JAVA64= CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
+CEH_JAVA64= CEH_JAVAFLAVOR=sun6 install javac  "javac: invalid flag: --version"
+CEH_JAVA64= CEH_JAVAFLAVOR=sun7 install javac  "javac: invalid flag: --version"
+CEH_JAVA64=1 CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
+CEH_JAVA64=1 CEH_JAVAFLAVOR=sun6 install javac "javac: invalid flag: --version"
+CEH_JAVA64=1 CEH_JAVAFLAVOR=sun7 install javac "javac: invalid flag: --version"
+install nc-indicators "Show CPU and MEM"
 install haddock "Haddock version 2"
 install happy "Happy Version 1"
 install hlint "Neil Mitchell"
