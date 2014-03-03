@@ -5,11 +5,12 @@
 # Let's try to keep this file compatible with shells that are used on
 # power-user desktops.  Since the user is supposed to source this in
 # her .bashrc, this also should run fast (and not fork).  Currently
-# tested with zsh and bash.
+# tested with bash, but we aim to support zsh and dash, feel free to
+# help us.
 
 . /opt/ceh/lib/base.sh
 
-[ -d $CEH_NIX ] || {
+[[ -d $CEH_NIX ]] || {
     echo >&2 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
     echo >&2 "Ceh is not properly initialized, the base package is missing:"
     echo >&2 "  $CEH_NIX"

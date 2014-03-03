@@ -303,15 +303,15 @@ have =/opt/ceh/home= as an absolute path for the user's home directory,
 
 =/opt/ceh/scripts/maintainer=: Ceh maintainer scripts,
 
+=/opt/ceh/nixpkgs=: contains checked out versions of the nixpkgs
+package collection, used and maintained by =lib/CehInstall.pm=,
+
 =/nix=: not in Git, but doesn't store any important data.  Deleting
 all the content and reinstalling Ceh will result in some compilation
 and downloading, but everything will be recreated eventually,
 
 =/nix/store=: contains the installed package roots.  Managed by nix
 commands, like =nix-store=, =nix-env= and =nix-instantiate=,
-
-=/nix/var/ceh_nixpkgs=: contains checked out versions of the nixpkgs
-package collection, used and maintained by =lib/CehInstall.pm=,
 
 =/nix/var/nix/profiles/ceh=: nix user environments (or profiles for
 short).  A nix profile is a set of installed packages from
@@ -343,7 +343,7 @@ itself (e.g. =which=).
   http://nixos.org/releases/nixpkgs/, by choosing the most recent
   release and getting the git commit id from there (in my case b253eb0).
   To get the long hash id for that commit, do this:
-: cd /nix/var/ceh_nixpkgs/git
+: cd /opt/ceh/nixpkgs/git
 : git fetch origin master:master
 : git log -1 --format=oneline b253eb0 -- | cat
 

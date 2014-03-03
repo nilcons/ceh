@@ -14,7 +14,7 @@ our @EXPORT = qw($CEH_NIX $CEH_NIXPKGS_GITURL $CEH_NIXPKGS_GIT
 
 our $CEH_NIX='/nix/store/z2khn1qwap8lmxgg9iyvljcnrw6vi8zr-nix-1.6.1';
 our $CEH_NIXPKGS_GITURL='http://github.com/NixOS/nixpkgs';
-our $CEH_NIXPKGS_GIT='/nix/var/ceh_nixpkgs';
+our $CEH_NIXPKGS_GIT='/opt/ceh/nixpkgs';
 our $CEH_BASELINE_NIXPKGS='db12d783ffd753145119c22a34ca5945e9a7a4ce';
 
 sub done($) {

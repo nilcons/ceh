@@ -1,0 +1,13 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+# Clone/fetch the /opt/ceh/nixpkgs/git directory.
+#
+# Used from ceh-init.sh.
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_clone();
