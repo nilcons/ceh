@@ -95,6 +95,7 @@
             self.pipesBytestring
             self.pipesParse
             self.pipesSafe
+            self.pipesZlib
             self.prettyShow
             self.randomFu
             self.regexTdfa
