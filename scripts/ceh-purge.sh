@@ -1,4 +1,7 @@
-#!/bin/bash -ex
+#!/bin/sh
+
+set -e
+set -x
 
 chmod -R +w /nix
 shopt -s dotglob

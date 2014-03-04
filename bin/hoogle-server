@@ -1,4 +1,7 @@
-#!/bin/bash -ex
+#!/bin/sh
+
+set -e
+set -x
 
 cd ~/.hoogle
 hoogle server --local --port=1080

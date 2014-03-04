@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash
+
+set -e
 
 # This script makes sure that everything is installable that is
 # currently provided by ceh.

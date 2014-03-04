@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
-set -o pipefail
 
 export CEH_NIX_DOWNLOAD=http://hydra.nixos.org/build/6695693/download/1/nix-1.6.1-i686-linux.tar.bz2
 

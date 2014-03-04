@@ -1,10 +1,11 @@
-#!/bin/bash -e
-if ! [[ -x "$ENSURE_BASE_PERL" ]]; then echo >&2 "ENSURE_BASE_PERL env var not set"; exit 1; fi
-if ! [[ -d "$ENSURE_BASE_NIXPATH" ]]; then echo >&2 "ENSURE_BASE_NIXPATH env var not set"; exit 1; fi
+#!/bin/sh
+set -e
+if ! [ -x "$ENSURE_BASE_PERL" ]; then echo >&2 "ENSURE_BASE_PERL env var not set"; exit 1; fi
+if ! [ -d "$ENSURE_BASE_NIXPATH" ]; then echo >&2 "ENSURE_BASE_NIXPATH env var not set"; exit 1; fi
 exec $ENSURE_BASE_PERL -x $0
 #! -*- mode: perl -*-
 
-#line 7
+#line 8
 # ^^^^^ This is needed, because perl -x is buggy.
 
 # This perl script is used in ceh-init.sh to install the correct

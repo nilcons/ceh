@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash
+
+set -e
 
 # Gathers the derivation paths for currently not installed packages
 # using install-world and then asks the nix-store for realising all of

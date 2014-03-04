@@ -6,4 +6,4 @@ use warnings;
 use lib "/opt/ceh/lib";
 use Packages::GHC;
 
-exec "/bin/bash", @ARGV;
+exec "bash", @ARGV;

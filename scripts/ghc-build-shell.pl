@@ -53,4 +53,4 @@ $ENV{NIX_CFLAGS_COMPILE}="-idirafter $outncurses/include -idirafter $outgmp/incl
 # the GHC build process uses the built
 path_prepend("$outgmp/lib", 'LD_LIBRARY_PATH');
 
-exec "/bin/bash", @ARGV;
+exec "bash", @ARGV;
