@@ -10,13 +10,16 @@ use Carp;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(ceh_nix_update_cache ensure_nix_installed_in_bin_profile);
+our @EXPORT = qw(ceh_nix_update_cache);
 use CehBase;
 
-# This creates a cache to make it cheaper to check if a derivation is
+# This creates a cache to make it cheaper to check if an outpath is
 # installed in a profile.  The idea is that profiles are immutable, so
 # we can create an installed_derivations top-level dir in them with
 # one file touched for each package.
+#
+# The installed_derivations directory should really be called
+# installed_outputs.
 #
 # $1 is the profile path
 sub ceh_nix_update_cache($) {
@@ -35,7 +38,7 @@ sub ceh_nix_update_cache($) {
     not -e "$profile/installed_derivations" or croak;
     mkdir "$profile/installed_derivations" or croak;
 
-    my @paths = `$CEH_NIX/bin/nix-env -p $profile --no-name --out-path -q '*'`;
+    my @paths = `$CEH_ESSPATH/bin/nix-env -p $profile --no-name --out-path -q '*'`;
     $? and croak;
     foreach (@paths) {
 	chomp;
@@ -45,22 +48,6 @@ sub ceh_nix_update_cache($) {
     touch "$profile/installed_derivations.done";
     touch "$profile/installed_derivations/done"; # for compatibility with v1
     chmod 0555, $profile or croak;
-}
-
-sub ensure_nix_installed_in_bin_profile {
-    # Don't call ceh_nixpkgs_install_bin, because that will try to install
-    # a nix from nixpkgs, we simply want to load $CEH_NIX to the bin
-    # profile (mainly for manpages).
-
-    my $profile = "/nix/var/nix/profiles/ceh/bin";
-    my $out = $CEH_NIX; $out =~ s,^/nix/store/,,;
-    if (not -e "$profile/installed_derivations/$out") {
-	if (not -d dirname($profile)) {
-	    make_path(dirname($profile)) or confess;
-	}
-        systemdie("$CEH_NIX/bin/nix-env -p $profile -i $CEH_NIX >&2");
-        ceh_nix_update_cache($profile);
-    }
 }
 
 1;

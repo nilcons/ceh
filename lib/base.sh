@@ -3,10 +3,6 @@
 # Functions here should work in any reasonable shell, because this
 # file is sourced from ceh-profile.sh.
 
-# TODO(errge): document that this is shared between perl and shell
-export CEH_NIX_DOWNLOAD=http://hydra.nixos.org/build/6695693/download/1/nix-1.6.1-i686-linux.tar.bz2
-export CEH_NIX=/nix/store/z2khn1qwap8lmxgg9iyvljcnrw6vi8zr-nix-1.6.1
-
 # Prepends $1 to the front of $2 (which should be a colon separated
 # list).  If $1 is already contained in $2, deletes the old occurrence
 # first.  $2 defaults to PATH.  No-op if $1 is not a directory.
@@ -21,3 +17,17 @@ ceh_path_prepend() {
     export $list=$new:$trimright
 }
 
+ceh_check_initialization() {
+    [ -x /nix/var/nix/profiles/ceh/essential/bin/perl ] && \
+    [ -x /nix/var/nix/profiles/ceh/essential/bin/nix-env ] || {
+        echo >&2 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+        echo >&2 "Ceh is not properly initialized, the base executables are missing:"
+        echo >&2 "  /nix/var/nix/profiles/ceh/essential/bin/nix-env"
+        echo >&2 "  /nix/var/nix/profiles/ceh/essential/bin/perl"
+        echo >&2 ""
+        echo >&2 "This can be fixed, by running:"
+        echo >&2 "  /opt/ceh/scripts/ceh-init.sh"
+        echo >&2 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+        return 1
+    }
+}

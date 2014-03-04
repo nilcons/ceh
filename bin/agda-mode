@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install_bin('haskellPackages_ghc763_profiling.Agda', nixpkgs_version => 'db12d783ffd753145119c22a34ca5945e9a7a4ce', derivation => 'mjpk40xdpfhz4l6mrzjkja5ixz02wp3x-haskell-Agda-ghc7.6.3-2.3.2.2-profiling.drv', out => '0hg8rj1hgmzms9hbk4ldqpz6j3jxz92z-haskell-Agda-ghc7.6.3-2.3.2.2-profiling');
+ceh_nixpkgs_install_bin('haskellPackages_ghc763_profiling.Agda', nixpkgs_version => 'db12d783ffd753145119c22a34ca5945e9a7a4ce', out => '0hg8rj1hgmzms9hbk4ldqpz6j3jxz92z-haskell-Agda-ghc7.6.3-2.3.2.2-profiling');
 
 exec "$ceh_nix_install_root/bin/agda-mode", @ARGV;

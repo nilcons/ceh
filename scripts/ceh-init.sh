@@ -1,4 +1,9 @@
-#!/bin/bash -e
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+export CEH_NIX_DOWNLOAD=http://hydra.nixos.org/build/6695693/download/1/nix-1.6.1-i686-linux.tar.bz2
 
 export LANG=C LC_ALL=C
 
@@ -34,29 +39,10 @@ then
   exit 1
 fi
 
-if [ -n "$(ls -A /nix)" ]
-then
-    echo "/nix is not empty. Try running the ceh-purge.sh." >&2
-    exit 1
-fi
-
 if [ "$(readlink -f /opt/ceh/home)" != "$(readlink -f $HOME)" ]
 then
     echo "/opt/ceh/home should be a symlink pointing to the user's home." >&2
     echo 'Use "ln -s $HOME /opt/ceh/home" to create it.' >&2
-    exit 1
-fi
-
-if find ~ -maxdepth 1 -name '.nix*' | grep -q .
-then
-    echo "~/.nix* found. Try running the ceh-purge.sh." >&2
-    exit 1
-fi
-
-if env | grep -v ^NIX_CONF_DIR | grep -iq ^nix_
-then
-    echo "Nix variables in env. Please remove those from bashrc." >&2
-    echo "\"env | grep -v ^NIX_CONF_DIR | grep -i ^nix_\" should have no results" >&2
     exit 1
 fi
 
@@ -65,6 +51,30 @@ then
     echo "$USER not found in /etc/passwd . This might work to fix it:" >&2
     echo "$ getent passwd $USER" >&2
     echo "$ getent passwd $USER | sudo tee -a /etc/passwd" >&2
+    exit 1
+fi
+
+if [ -L $HOME/.nix-profile ]
+then
+    rm -f $HOME/.nix-profile
+fi
+
+if [ -e $HOME/.nix-profile ]
+then
+    echo "$HOME/.nix-profile exists and it's not a (removable) symlink." >&2
+    echo "Use ceh-purge.sh to clean it!" >&2
+    exit 1
+fi
+
+if [ -L /nix/var/nix/profiles/per-user/root ]
+then
+    rm -f /nix/var/nix/profiles/per-user/root
+fi
+
+if [ -e /nix/var/nix/profiles/per-user/root ]
+then
+    echo "/nix/var/nix/profiles/per-user/root is not a (removable) symlink." >&2
+    echo "This is inconsistent with Ceh, please clean it up." >&2
     exit 1
 fi
 
@@ -81,28 +91,39 @@ fi
 cd /tmp
 wget -c $CEH_NIX_DOWNLOAD
 chmod 0700 /nix
+# We have to give write access to the stuff that we want to overwrite
+# in the nix store, but we don't want to touch symlinks, since when
+# they're dangling, chmod freaks out.  Also, we don't want to chmod
+# non-preexisting stuff, so we filter for directory or regular file.
+( cd / && tar -t -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix | (
+        while read F; do
+            if [[ -f "$F" || -d "$F" ]]; then
+                echo "$F"
+            fi
+        done
+    ) | xargs --no-run-if-empty chmod u+w)
 ( cd / && tar -x -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix )
-
-# Stolen from /usr/bin/nix-finish-install & /etc/profile.d/nix.sh
-$CEH_NIX/bin/nix-store --load-db < /nix/store/reginfo
 
 # Set up the symlinks
 mkdir -m 0755 -p /nix/var/nix/profiles/ceh
 mkdir -m 0755 -p /nix/var/nix/profiles/per-user/$USER
 ln -s /nix/var/nix/profiles/per-user/$USER/profile $HOME/.nix-profile
 ( cd /nix/var/nix/profiles/per-user ; ln -s $USER root )
-mkdir $HOME/.nix-defexpr
+mkdir -p $HOME/.nix-defexpr
 
-# Test that on-demand installation works
-/opt/ceh/bin/nix-env --version
+# This also initializes the nixpkgs git repo in /opt/ceh/nixpkgs.
+ENSURE_BASE_PERL=/nix/store/x39yy4fg60qqgdrjhbwzrjs8r7w5wmzy-perl-5.16.3/bin/perl \
+ENSURE_BASE_NIXPATH=/nix/store/z2khn1qwap8lmxgg9iyvljcnrw6vi8zr-nix-1.6.1 \
+  /opt/ceh/lib/ensure_base_installed.pl
 
 # Add channels
-$CEH_NIX/bin/nix-channel --add http://nixos.org/channels/nixpkgs-unstable
-$CEH_NIX/bin/nix-channel --update
-
-/opt/ceh/bin/ceh_nixpkgs_gitfetch
+/opt/ceh/bin/nix-channel --add http://nixos.org/channels/nixpkgs-unstable
+/opt/ceh/bin/nix-channel --update
 
     cat <<EOF
+
+
+
 Installation finished.  To ensure that the necessary environment
 variables are set, please add the line
 

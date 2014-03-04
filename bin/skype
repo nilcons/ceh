@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install_bin('skype', nixpkgs_version => 'db12d783ffd753145119c22a34ca5945e9a7a4ce', derivation => 'x49maa5qx2yd8b9v3zzqgnrhzhb24dy5-skype-4.2.0.11.drv', out => 'fl6rjl3y07pq8wbmqqryavwlszwk499m-skype-4.2.0.11');
+ceh_nixpkgs_install_bin('skype', nixpkgs_version => 'db12d783ffd753145119c22a34ca5945e9a7a4ce', out => 'fl6rjl3y07pq8wbmqqryavwlszwk499m-skype-4.2.0.11');
 
 exec "$ceh_nix_install_root/bin/skype", @ARGV;

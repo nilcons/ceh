@@ -9,13 +9,39 @@ use Carp;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw($CEH_NIX $CEH_NIXPKGS_GITURL $CEH_NIXPKGS_GIT
-  $CEH_BASELINE_NIXPKGS done debug touch systemdie path_prepend);
+our @EXPORT = qw($CEH_ESSPATH $CEH_ESSPROFILE $CEH_NIXPKGS_GITURL $CEH_NIXPKGS_GIT
+  $CEH_BASELINE_NIXPKGS $CEH_BASELINE_NIXPATH done debug touch systemdie path_prepend);
 
-our $CEH_NIX='/nix/store/z2khn1qwap8lmxgg9iyvljcnrw6vi8zr-nix-1.6.1';
+# The difference between CEH_ESSPATH and CEH_ESSPROFILE is that the
+# latter is just a constant for the essential profile, while
+# CEH_ESSPATH can be overridden to point to a directory that contains
+# a working nix-env and perl binary.  This feature is used in
+# ceh-init.sh to differentiate between NixOS and other distributions.
+our $CEH_ESSPROFILE='/nix/var/nix/profiles/ceh/essential';
+our $CEH_ESSPATH=$CEH_ESSPROFILE;
 our $CEH_NIXPKGS_GITURL='http://github.com/NixOS/nixpkgs';
 our $CEH_NIXPKGS_GIT='/opt/ceh/nixpkgs';
+
 our $CEH_BASELINE_NIXPKGS='db12d783ffd753145119c22a34ca5945e9a7a4ce';
+our $CEH_BASELINE_NIXPATH='wmxkyij7pc1k4pdym9j69flw2i952z3s-nix-1.6.1';
+# Don't forget to update CEH_BASELINE_PERL in lib/perl!
+# Don't forget to update emacs.d/nix-mode.el!
+
+sub import {
+    my $self = shift;
+    my $first = shift;
+    if (defined($first)) {
+        if ($first eq "nixpath") {
+            $CEH_ESSPATH=shift;
+        } else {
+            unshift @_, $first;
+        }
+    }
+
+    unshift @_, $self;
+    -x "${CEH_ESSPATH}/bin/nix-env" or die "*** Ceh is not initialized, run /opt/ceh/scripts/ceh-init.sh ***";
+    goto &Exporter::import;
+}
 
 sub done($) {
     return -f "$_[0].done";

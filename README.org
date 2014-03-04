@@ -70,14 +70,11 @@ and built in =/nix/store= (so don't run =nix-collect-garbage= or
 =ceh_collect_garbage= before running your favorite binaries at least
 once).
 
-Also, sometimes we have to upgrade the nix package itself inside ceh.
-The nix package manager executable itself is unpacked when
-=ceh-init.sh= is ran for the first time.  So, if we upgrade that,
-users have to run =ceh-upgrade.sh= to download and install the new
-version.  The profile script (ceh-profile.sh) tries to warn you when
-this happens, but you can check for this explicitly by checking that
-path stored in =$CEH_NIX= exists on your system.  If it doesn't, just
-go ahead and run =ceh-upgrade.sh=.
+After this operation you have to re-run =ceh-init.sh= to re-create the
+=/nix/var/nix/profiles/ceh/essential= profile.
+
+=ceh-init.sh= is idempotent, feel free to run it if you think it can
+fix up something for you.
 
 *** Disable the binary cache, for fun and profit
 You may just want to see if it's still possible to build a software
@@ -96,6 +93,22 @@ parallelized by nix.
 
 
 * Upgrade notes
+*** 2014-03-04: refactoring
+The new place for the nixpkgs checkout of Ceh is =/opt/ceh/nixpkgs=,
+you can run =rm -rf /nix/var/ceh_nixpkgs= to remove the old cruft.
+
+Also, from now on it's not necessary (or allowed) to specify
+derivation hashes when calling =ceh_nixpkgs_install_*= functions.
+Derivation hashes are always figured out automatically when on-demand
+installations is needed and only the output hash is consulted for
+binary consistency.
+
+Another change is that we made ceh-init.sh idempotent and it should
+fix up stuff from any state that is reasonable after a git pull or
+after deletion of all the profiles in =/nix/var/nix/profiles/ceh=.
+This means that =ceh-upgrade.sh= is no more and you should always use
+=ceh-init.sh= if you think Ceh should be reinitialized.
+
 *** 2014-01-07: nix channels moved
 On existing installations, run the following:
 : nix-channel --remove nixpkgs
@@ -334,25 +347,37 @@ itself (e.g. =which=).
 + use the autoinit feature to get the initial hash values:
   : ceh_nixpkgs_install_bin('newpkg', AUTOINIT);
   After running this wrapper once, the AUTOINIT will be replaced with
-  the current nixpkgs version, derivation and out hash values.
+  the current nixpkgs version and out hash value.
 + add it to =scripts/maintainer/install-world.sh=,
 + send a github pull request.
 
 *** Upgrading ceh to a new baseline
-+ Update =lib/CehBase.pm= with a new hash, that you should get from
-  http://nixos.org/releases/nixpkgs/, by choosing the most recent
-  release and getting the git commit id from there (in my case b253eb0).
-  To get the long hash id for that commit, do this:
++ Update CEH_BASELINE_NIXPKGS in =lib/CehBase.pm= with a new hash,
+  that you should get from http://nixos.org/releases/nixpkgs/, by
+  choosing the most recent release and getting the git commit id from
+  there (in my case b253eb0).  To get the long hash id for that
+  commit, do this:
 : cd /opt/ceh/nixpkgs/git
 : git fetch origin master:master
 : git log -1 --format=oneline b253eb0 -- | cat
 
++ Update the used Nix and Perl to the new baseline:
+: CEH_AUTO_UPGRADE=1 \
+: ENSURE_BASE_PERL=/nix/var/nix/profiles/ceh/essential/bin/perl \
+: ENSURE_BASE_NIXPATH=/nix/var/nix/profiles/ceh/essential/ ./ensure_base_installed.pl
+
++ Update CEH_BASELINE_PERL in =lib/perl=.
+
++ Update CEH_BASELINE_NIXPATH in =lib/CehBase.pm=.
+
++ Update =emacs.d/nix-mode.el=.
+
 + Update all the wrappers to have the new baseline versions.  For
   example to upgrade git:
 : export CEH_AUTO_UPGRADE=1
-: /opt/ceh/bin/git
+: /opt/ceh/bin/gitk
 
-This will update the hash in lib/Packages/Git.pm.
+  This will update the hash in lib/Packages/Git.pm.
 
 + To update all the packages, use scripts/maintainer/install-world.sh.
   You may also find scripts/maintainer/predict-binary-cache.sh useful
@@ -363,7 +388,12 @@ This will update the hash in lib/Packages/Git.pm.
 
 + git commit, git push.
 
-*** Upgrading nix inside ceh
+*** Upgrading nix inside ceh-init.sh
+This should only be done if you have some strong reason for this.
+E.g. it's no longer compatible with current glibc on standard linuxes
+or the communication protocol for nix-daemon changed and therefore Ceh
+is unusable on NixOS.
+
 + Choose a new release from http://nixos.org/nix/download.html, read
   release notes, etc.
 
@@ -371,13 +401,11 @@ This will update the hash in lib/Packages/Git.pm.
 
 + tar xvfj nix-x.x.x.tar.bz2 /nix (it's a tarbomb, we only want /nix from it).
 
-+ Update =lib/base.sh=, =lib/CehBase.pm= and =emacs.d/nix-mode.el=
-  with the URL and the nix store path.
++ Update =ENSURE_BASE_PERL=, =ENSURE_BASE_NIXPATH= and
+  =CEH_NIX_DOWNLOAD= in =scripts/ceh-init.sh=.
 
-+ Update the =lib/perl= wrapper to point to the current perl.
-
-+ Test if =scripts/ceh-upgrade.sh= is able to upgrade your old
-  installation to the new one.
++ Test if =scripts/ceh-init.sh= still works on a clean Debian and on a
+  clean NixOS.
 
 + git commit, git push.
 

@@ -4,9 +4,9 @@
 use strict;
 use warnings;
 use lib "/opt/ceh/lib";
-use CehCache;
 use CehBase;
+use CehInstall;
 
-ensure_nix_installed_in_bin_profile();
+check_nix_freshness();
 
-exec "${CEH_NIX}/bin/nix-prefetch-url", @ARGV;
+exec "${CEH_ESSPROFILE}/bin/nix-prefetch-url", @ARGV;

@@ -10,20 +10,9 @@
 
 . /opt/ceh/lib/base.sh
 
-[[ -d $CEH_NIX ]] || {
-    echo >&2 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
-    echo >&2 "Ceh is not properly initialized, the base package is missing:"
-    echo >&2 "  $CEH_NIX"
-    echo >&2 ""
-    echo >&2 "If ceh is not initialized at all, you can use:"
-    echo >&2 "  /opt/ceh/scripts/ceh-init.sh"
-    echo >&2 ""
-    echo >&2 "If ceh is already installed and you got this message after a"
-    echo >&2 "git pull in /opt/ceh, then most probably you have to upgrade nix:"
-    echo >&2 "  /opt/ceh/scripts/ceh-upgrade.sh"
-    echo >&2 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
-    return 1
-}
+if ! ceh_check_initialization; then
+    return
+fi
 
 ceh_path_prepend /opt/ceh/bin
 ceh_path_prepend /opt/ceh/bin-user
