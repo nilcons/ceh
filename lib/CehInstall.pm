@@ -22,7 +22,6 @@ our @EXPORT = qw(
 );
 
 use CehBase;
-use CehCache;
 use Replacer;
 
 # So we don't accidentally use git from ceh and go into an infinite loop
@@ -152,8 +151,6 @@ sub ceh_nixpkgs_install($$%) {
         $autoinit_nixpkgs_version = $autoinit_out = 1;
     }
 
-    ceh_nix_update_cache($profile);
-
     if ($ENV{CEH_AUTO_UPGRADE} and not $autoinit) {
         # if the baseline is so new that it's not currently fetched, fetch it
         `cd $CEH_NIXPKGS_GIT/git && $git rev-list --max-count=1 $CEH_BASELINE_NIXPKGS 2>/dev/null`;
@@ -176,7 +173,7 @@ sub ceh_nixpkgs_install($$%) {
     # debug "out: $out" if $out;
 
     # quick return if the package is already installed in the profile
-    if ($out and -e "$profile/installed_derivations/$out") {
+    if ($out and installed_in_profile_p($profile, $out)) {
         $ceh_nix_install_root = "/nix/store/$out";
         return $ceh_nix_install_root;
     }
@@ -239,7 +236,6 @@ sub ceh_nixpkgs_install($$%) {
     }
     print "$CEH_ESSPATH/bin/nix-env -p $profile -i /nix/store/$out\n";
     systemdie("$CEH_ESSPATH/bin/nix-env -p $profile -i /nix/store/$out >&2");
-    ceh_nix_update_cache($profile);
 
     if ($autoinit) {
         not $autoupgrade or croak("autoupgrade and autoinit at once?");
@@ -319,11 +315,22 @@ sub ensure_base_installed {
 }
 
 sub check_nix_freshness {
-    if (not -e "$CEH_ESSPROFILE/installed_derivations/$CEH_BASELINE_NIXPATH") {
+    if (not installed_in_profile_p($CEH_ESSPROFILE, $CEH_BASELINE_NIXPATH)) {
         debug "Nix is outdated in the essential Ceh profile, let's reinstall it!";
         debug "If this fails, please run /opt/ceh/scripts/ceh-init.sh!\n";
         ensure_base_installed();
     }
+}
+
+sub installed_in_profile_p($$) {
+    my ($profile, $out) = @_;
+
+    open my $fd, '<', "$profile/manifest.nix"
+        or die "Failed to open $profile/manifest.nix: $!\n";
+    local $/;
+    my $line = <$fd>;
+    close $fd;
+    return scalar($line =~ /; outPath = "\/nix\/store\/\Q$out\E"/g);
 }
 
 1;
