@@ -16,13 +16,16 @@ fi
 
 ceh_path_prepend /opt/ceh/bin
 ceh_path_prepend /opt/ceh/bin-user
-if [ -r /usr/lib/locale/locale-archive ]; then
-  export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
-else
-  export LOCPATH=/usr/lib/locale
-fi
-export FONTCONFIG_FILE=/etc/fonts/fonts.conf
-export TZDIR=/usr/share/zoneinfo
-export NIX_CONF_DIR=/opt/ceh/lib
-
 ceh_path_prepend /nix/var/nix/profiles/ceh/bin/share/man MANPATH
+
+if ! [ -e /run/current-system ]; then
+    # non NixOS
+    if [ -r /usr/lib/locale/locale-archive ]; then
+	export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+    else
+	export LOCPATH=/usr/lib/locale
+    fi
+    export FONTCONFIG_FILE=/etc/fonts/fonts.conf
+    export TZDIR=/usr/share/zoneinfo
+    export NIX_CONF_DIR=/opt/ceh/lib
+fi

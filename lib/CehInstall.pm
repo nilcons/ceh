@@ -25,7 +25,7 @@ use CehBase;
 use Replacer;
 
 # So we don't accidentally use git from ceh and go into an infinite loop
-our $git='/usr/bin/git';
+our $git='git';
 
 # Return variables
 our $ceh_nix_install_root = '';
@@ -234,7 +234,6 @@ sub ceh_nixpkgs_install($$%) {
     if (not -d dirname($profile)) {
         make_path(dirname($profile)) or confess;
     }
-    print "$CEH_ESSPATH/bin/nix-env -p $profile -i /nix/store/$out\n";
     systemdie("$CEH_ESSPATH/bin/nix-env -p $profile -i /nix/store/$out >&2");
 
     if ($autoinit) {
