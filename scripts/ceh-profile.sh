@@ -16,7 +16,7 @@ fi
 
 ceh_path_prepend /opt/ceh/bin
 ceh_path_prepend /opt/ceh/bin-user
-if [[ -r /usr/lib/locale/locale-archive ]]; then
+if [ -r /usr/lib/locale/locale-archive ]; then
   export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
 else
   export LOCPATH=/usr/lib/locale

@@ -96,7 +96,7 @@ chmod 0700 /nix
 # non-preexisting stuff, so we filter for directory or regular file.
 ( cd / && tar -t -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix | (
         while read F; do
-            if [[ -f "$F" || -d "$F" ]]; then
+            if [ -f "$F" -o -d "$F" ]; then
                 echo "$F"
             fi
         done
