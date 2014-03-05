@@ -325,6 +325,12 @@ sub check_nix_freshness {
 sub installed_in_profile_p($$) {
     my ($profile, $out) = @_;
 
+    # If the profile doesn't exist, then we have to return false.
+    # It's intentional that this is not an error, so we can call this
+    # update function from anywhere even if the first package is just
+    # being installed to a new profile.
+    return undef unless -l $profile;
+
     open my $fd, '<', "$profile/manifest.nix"
         or die "Failed to open $profile/manifest.nix: $!\n";
     local $/;
