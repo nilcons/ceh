@@ -101,10 +101,7 @@ CEH_NO_BIN_CACHE= CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl </dev/null || 
 # Needs investigation: doesn't compile from source, because openjdk doesn't compile.
 # Binary cache installation is OK.
 CEH_NO_BIN_CACHE= install adb "Android Debug Bridge"
-CEH_NO_BIN_CACHE= CEH_TWS64= CEH_TWSSUN= install tws-ui "TWS successfully installed"
-CEH_NO_BIN_CACHE= CEH_TWS64= CEH_TWSSUN=1 install tws-ui "TWS successfully installed"
-CEH_NO_BIN_CACHE= CEH_TWS64=1 CEH_TWSSUN= install tws-ui "TWS successfully installed"
-CEH_NO_BIN_CACHE= CEH_TWS64=1 CEH_TWSSUN=1 install tws-ui "TWS successfully installed"
+CEH_NO_BIN_CACHE= install tws-ui "TWS successfully installed"
 
 # very slow, so do it last to see early results from other packages.
 install coqtop "Coq Proof Assistant"
