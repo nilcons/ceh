@@ -91,6 +91,7 @@ install python3 "Python 3"
 install tmux "usage: tmux"
 install vanitygen "Generates a bitcoin"
 install vbutil_kernel "This program creates, signs"
+install vncviewer "TigerVNC Viewer 32-bit"
 install xpra "xpra v0."
 
 # Needs investigation: doesn't compile from source, because gcc doesn't compile in 64-bit mode.
