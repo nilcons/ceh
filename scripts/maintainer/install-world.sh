@@ -34,13 +34,17 @@ fi
 
 (
     cd /tmp
-    wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-i586.bin"
+    #wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-i586.bin"
+    wget -c http://ghaffarian.net/downloads/Java/JDK/jdk-6u45-linux-i586.bin
     nix-store --add-fixed sha256 jdk-6u45-linux-i586.bin
-    wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin"
+    #wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin"
+    wget -c http://www.reucon.com/cdn/java/jdk-6u45-linux-x64.bin
     nix-store --add-fixed sha256 jdk-6u45-linux-x64.bin
-    wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-i586.tar.gz"
+    #wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-i586.tar.gz"
+    wget -c http://enos.itcollege.ee/~jpoial/download/jdk7/jdk-7u51-linux-i586.tar.gz
     nix-store --add-fixed sha256 jdk-7u51-linux-i586.tar.gz
-    wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz"
+    #wget -c --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" "http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz"
+    wget -c http://www.reucon.com/cdn/java/jdk-7u51-linux-x64.tar.gz
     nix-store --add-fixed sha256 jdk-7u51-linux-x64.tar.gz
 
     # Now we're using a flash player that is downloadable from adobe,
