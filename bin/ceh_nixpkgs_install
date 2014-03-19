@@ -27,4 +27,6 @@ if (not $ARGV[0]) {
     die "Please provide a package name, run ceh_nixpkgs_avail to get a list to choose from!";
 }
 
-ceh_nixpkgs_install($ARGV[0], "/nix/var/nix/profiles/per-user/$ENV{USER}/profile", autoinit => 1);
+my $pkg = shift @ARGV;
+
+ceh_nixpkgs_install($pkg, "/nix/var/nix/profiles/per-user/$ENV{USER}/profile", autoinit => 1, @ARGV);
