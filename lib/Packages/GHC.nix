@@ -108,6 +108,10 @@
             self.statvfs
             self.templateDefault
             self.temporary
+            self.testFramework
+            self.testFrameworkHunit
+            self.testFrameworkQuickcheck2
+            self.testFrameworkTh
             self.thyme
             self.tls
             self.unixTime
