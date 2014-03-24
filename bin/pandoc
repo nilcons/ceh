@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install_bin('haskellPackages_ghc763_profiling.pandoc', nixpkgs_version => 'db12d783ffd753145119c22a34ca5945e9a7a4ce', out => '1df7qjqshbgsbdcqnvpbbng7kgz5lc6l-haskell-pandoc-ghc7.6.3-1.12.3.3-profiling');
+
+exec "$ceh_nix_install_root/bin/pandoc", @ARGV;
