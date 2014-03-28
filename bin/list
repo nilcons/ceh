@@ -1,0 +1,5 @@
+#!/opt/ceh/lib/perl -w
+
+# To separate args with comman, e.g. "list /etc/*".
+
+print join(',', @ARGV), "\n"

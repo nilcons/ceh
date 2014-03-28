@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# E.g. can be used with /proc/self/environ
+
+cat $1 | tr '\0' '\n'
