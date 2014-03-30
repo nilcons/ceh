@@ -31,9 +31,9 @@
             self.zlib
             self.cabalInstall_1_18_0_2
             self.Cabal_1_18_1_2
-            self.alex_3_1_3
+            self.alex
             # seems to be not needed anymore, because nix auto inserts it: self.haddock
-            self.happy_1_19_3
+            self.happy
             self.primitive
 
             # command line tools
@@ -44,6 +44,8 @@
             self.ghcMod
             self.ghcVis
             self.ghcHeapView
+            self.hakyll
+            self.pandoc
 
             # compilation tools
             self.c2hs
