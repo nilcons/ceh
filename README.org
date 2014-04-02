@@ -358,17 +358,17 @@ itself (e.g. =which=).
   there (in my case b253eb0).  To get the long hash id for that
   commit, do this:
 : cd /opt/ceh/nixpkgs/git
-: git fetch origin master:master
+: git fetch --all
 : git log -1 --format=oneline b253eb0 -- | cat
 
 + Update the used Nix and Perl to the new baseline:
 : CEH_AUTO_UPGRADE=1 \
 : ENSURE_BASE_PERL=/nix/var/nix/profiles/ceh/essential/bin/perl \
-: ENSURE_BASE_NIXPATH=/nix/var/nix/profiles/ceh/essential/ ./ensure_base_installed.pl
+: ENSURE_BASE_NIXPATH=/nix/var/nix/profiles/ceh/essential/ /opt/ceh/lib/ensure_base_installed.pl
 
-+ Update CEH_BASELINE_PERL in =lib/perl=.
++ Update CEH_BASELINE_PERL in =lib/perl= (peek from CehInstall.pl:ensure_base_installed).
 
-+ Update CEH_BASELINE_NIXPATH in =lib/CehBase.pm=.
++ Update CEH_BASELINE_NIXPATH in =lib/CehBase.pm= (peek from CehInstall.pl:ensure_base_installed).
 
 + Update =emacs.d/nix-mode.el=.
 

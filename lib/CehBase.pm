@@ -22,7 +22,7 @@ our $CEH_ESSPATH=$CEH_ESSPROFILE;
 our $CEH_NIXPKGS_GITURL='http://github.com/NixOS/nixpkgs';
 our $CEH_NIXPKGS_GIT='/opt/ceh/nixpkgs';
 
-our $CEH_BASELINE_NIXPKGS='db12d783ffd753145119c22a34ca5945e9a7a4ce';
+our $CEH_BASELINE_NIXPKGS='9a396b38405c951bc4f8a5aaebf5262789e2a325';
 our $CEH_BASELINE_NIXPATH='wmxkyij7pc1k4pdym9j69flw2i952z3s-nix-1.6.1';
 # Don't forget to update CEH_BASELINE_PERL in lib/perl!
 # Don't forget to update emacs.d/nix-mode.el!

@@ -29,10 +29,11 @@
             self.vector
             self.xhtml
             self.zlib
-            self.cabalInstall_1_18_0_2
-            self.Cabal_1_18_1_2
+            self.cabalInstall_1_18_0_3
+            self.Cabal_1_18_1_3
             self.alex
-            # seems to be not needed anymore, because nix auto inserts it: self.haddock
+            # don't specify haddock, it's shipped with ghc in Nix, if
+            # specified again, we get collissions
             self.happy
             self.primitive
 
@@ -59,7 +60,7 @@
             self.ChartGtk
             self.colour
             self.conduit
-            self.criterion
+            #buggy, ftbfs, try again later: self.criterion
             self.cryptoApi
             self.cryptohash
             self.curl
@@ -74,6 +75,7 @@
             self.Glob
             self.gloss
             self.gtk
+            self.haskeline
             self.haskellSrcExts
             self.HFuse
             self.hmatrix
@@ -82,10 +84,9 @@
             self.hslogger
             self.HsOpenSSL
             self.hspec
-            # self.lens
+            self.lens
             self.lensDatetime
-            # linear depends on lens4, causing cabal hell
-            # self.linear
+            self.linear
             self.mimeMail
             self.MissingH
             self.modularArithmetic
