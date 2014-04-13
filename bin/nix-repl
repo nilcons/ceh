@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install_bin('nix-repl', nixpkgs_version => '9a396b38405c951bc4f8a5aaebf5262789e2a325', out => 'lkh0xw30a6rdfsv9vpzfl5dzxldr7r98-nix-repl-1.6.1-81d658f');
+
+exec "$ceh_nix_install_root/bin/nix-repl", @ARGV;
