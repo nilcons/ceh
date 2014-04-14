@@ -3,7 +3,7 @@
 set -e
 
 # Has to be updated when we update the baseline.
-CEH_BASELINE_PERL=/nix/store/b15kvbqyfbb6np5d7lrjsjz5vwbs7126-perl-5.16.3
+CEH_BASELINE_PERL=/nix/store/b36q0vglgaxinmirvcgp525fqfdziia7-perl-5.16.3
 
 . /opt/ceh/lib/base.sh
 

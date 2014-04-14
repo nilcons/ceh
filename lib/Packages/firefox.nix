@@ -1,6 +1,7 @@
 # Used by bin/firefox.
 
 {
+  allowUnfree = true;
   packageOverrides = pkgs:
     {
       firefoxCeh = pkgs.callPackage (

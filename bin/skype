@@ -6,6 +6,7 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install_bin('skype', nixpkgs_version => '9a396b38405c951bc4f8a5aaebf5262789e2a325', out => 'c8lvhra6m0g5gw3yffn212rjxxiyww4z-skype-4.2.0.13');
+$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/allownonfree.nix";
+ceh_nixpkgs_install_bin('skype', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'vlk7b04niz631bkp0ini93xjks1p4hq1-skype-4.2.0.13');
 
 exec "$ceh_nix_install_root/bin/skype", @ARGV;

@@ -307,10 +307,10 @@ sub ceh_nixpkgs_install_essential {
 }
 
 sub ensure_base_installed {
-    ceh_nixpkgs_install_essential('nix', nixpkgs_version => '9a396b38405c951bc4f8a5aaebf5262789e2a325', out => 'wmxkyij7pc1k4pdym9j69flw2i952z3s-nix-1.6.1');
-    ceh_nixpkgs_install_essential('perl', nixpkgs_version => '9a396b38405c951bc4f8a5aaebf5262789e2a325', out => 'b15kvbqyfbb6np5d7lrjsjz5vwbs7126-perl-5.16.3');
+    ceh_nixpkgs_install_essential('nix', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'g9nwwkg1l0y4jakzzph7xg0jbmg22hiz-nix-1.6.1');
+    ceh_nixpkgs_install_essential('perl', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'b36q0vglgaxinmirvcgp525fqfdziia7-perl-5.16.3');
     # for manpages
-    ceh_nixpkgs_install_bin('nix', nixpkgs_version => '9a396b38405c951bc4f8a5aaebf5262789e2a325', out => 'wmxkyij7pc1k4pdym9j69flw2i952z3s-nix-1.6.1');
+    ceh_nixpkgs_install_bin('nix', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'g9nwwkg1l0y4jakzzph7xg0jbmg22hiz-nix-1.6.1');
 }
 
 sub check_nix_freshness {
