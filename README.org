@@ -366,9 +366,9 @@ itself (e.g. =which=).
 : ENSURE_BASE_PERL=/nix/var/nix/profiles/ceh/essential/bin/perl \
 : ENSURE_BASE_NIXPATH=/nix/var/nix/profiles/ceh/essential/ /opt/ceh/lib/ensure_base_installed.pl
 
-+ Update CEH_BASELINE_PERL in =lib/perl= (peek from CehInstall.pl:ensure_base_installed).
-
 + Update CEH_BASELINE_NIXPATH in =lib/CehBase.pm= (peek from CehInstall.pl:ensure_base_installed).
+
++ Update CEH_BASELINE_PERL in =lib/CehBase.pm= (peek from CehInstall.pl:ensure_base_installed).
 
 + Update =emacs.d/nix-mode.el=.
 

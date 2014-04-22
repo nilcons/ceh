@@ -314,8 +314,9 @@ sub ensure_base_installed {
 }
 
 sub check_nix_freshness {
-    if (not installed_in_profile_p($CEH_ESSPROFILE, $CEH_BASELINE_NIXPATH)) {
-        debug "Nix is outdated in the essential Ceh profile, let's reinstall it!";
+    if (not installed_in_profile_p($CEH_ESSPROFILE, $CEH_BASELINE_NIXPATH) ||
+        not installed_in_profile_p($CEH_ESSPROFILE, $CEH_BASELINE_PERL)) {
+        debug "Nix or Perl is outdated in the essential Ceh profile, let's reinstall them!";
         debug "If this fails, please run /opt/ceh/scripts/ceh-init.sh!\n";
         ensure_base_installed();
     }

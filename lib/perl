@@ -2,11 +2,8 @@
 
 set -e
 
-# Has to be updated when we update the baseline.
-CEH_BASELINE_PERL=/nix/store/b36q0vglgaxinmirvcgp525fqfdziia7-perl-5.16.3
-
 . /opt/ceh/lib/base.sh
 
 ceh_check_initialization
 
-exec ${CEH_BASELINE_PERL}/bin/perl "$@"
+exec /nix/var/nix/profiles/ceh/essential/bin/perl "$@"

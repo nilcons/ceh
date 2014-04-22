@@ -10,7 +10,8 @@ use Carp;
 require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw($CEH_ESSPATH $CEH_ESSPROFILE $CEH_NIXPKGS_GITURL $CEH_NIXPKGS_GIT
-  $CEH_BASELINE_NIXPKGS $CEH_BASELINE_NIXPATH done debug touch systemdie path_prepend);
+  $CEH_BASELINE_NIXPKGS $CEH_BASELINE_NIXPATH $CEH_BASELINE_PERL
+  done debug touch systemdie path_prepend);
 
 # The difference between CEH_ESSPATH and CEH_ESSPROFILE is that the
 # latter is just a constant for the essential profile, while
@@ -24,7 +25,7 @@ our $CEH_NIXPKGS_GIT='/opt/ceh/nixpkgs';
 
 our $CEH_BASELINE_NIXPKGS='8392c8ba9f5eefbd13a0956b75f7253405135ec8';
 our $CEH_BASELINE_NIXPATH='g9nwwkg1l0y4jakzzph7xg0jbmg22hiz-nix-1.6.1';
-# Don't forget to update CEH_BASELINE_PERL in lib/perl!
+our $CEH_BASELINE_PERL='b36q0vglgaxinmirvcgp525fqfdziia7-perl-5.16.3';
 # Don't forget to update emacs.d/nix-mode.el!
 
 sub import {
