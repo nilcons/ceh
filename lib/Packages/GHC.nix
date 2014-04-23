@@ -60,7 +60,7 @@
             self.ChartGtk
             self.colour
             self.conduit
-            #buggy, ftbfs, try again later: self.criterion
+            self.criterion
             self.cryptoApi
             self.cryptohash
             self.curl
