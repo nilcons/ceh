@@ -1,130 +1,140 @@
 # Used by ghc and co.
 
 {
-    packageOverrides = self : rec {
-        cehGHC = self.haskellPackages_ghc763_profiling.ghcWithPackages (self : [
-            # Selected from Haskell Platform:
-            self.attoparsec
-            self.fgl
-            self.haskellSrc
-            self.hashable
-            self.html
-            self.HTTP
-            self.HUnit
-            self.mtl
-            self.network
-            self.parallel
-            self.parsec
-            self.QuickCheck
-            self.random
-            self.regexBase
-            self.regexCompat
-            self.regexPosix
-            self.split
-            self.stm
-            self.syb
-            self.text
-            self.transformers
-            self.unorderedContainers
-            self.vector
-            self.xhtml
-            self.zlib
-            self.cabalInstall_1_18_0_3
-            self.Cabal_1_18_1_3
-            self.alex
-            # don't specify haddock, it's shipped with ghc in Nix, if
-            # specified again, we get collissions
-            self.happy
-            self.primitive
+  packageOverrides = pkgs: {
+    cehGHC = pkgs.haskellPackages_ghc763_profiling.ghcWithPackages (hs:
+      let
+        tzdata = hs.callPackage ./nilcons/tzdata.nix {};
+        tz = hs.callPackage (import ./nilcons/tz.nix tzdata) {};
+      in [
+        # Selected from Haskell Platform:
+        hs.attoparsec
+        hs.fgl
+        hs.haskellSrc
+        hs.hashable
+        hs.html
+        hs.HTTP
+        hs.HUnit
+        hs.mtl
+        hs.network
+        hs.parallel
+        hs.parsec
+        hs.QuickCheck
+        hs.random
+        hs.regexBase
+        hs.regexCompat
+        hs.regexPosix
+        hs.split
+        hs.stm
+        hs.syb
+        hs.text
+        hs.transformers
+        hs.unorderedContainers
+        hs.vector
+        hs.xhtml
+        hs.zlib
+        hs.cabalInstall_1_18_0_3
+        hs.Cabal_1_18_1_3
+        hs.alex
+        # don't specify haddock, it's shipped with ghc in Nix, if
+        # specified again, we get collissions
+        hs.happy
+        hs.primitive
 
-            # command line tools
-            self.hlint
-            self.hoogle
-            self.cabal2nix
-            self.cabalGhci
-            self.ghcMod
-            self.ghcVis
-            self.ghcHeapView
-            self.hakyll
-            self.pandoc
+        # command line tools
+        hs.hlint
+        hs.hoogle
+        hs.cabal2nix
+        hs.cabalGhci
+        hs.ghcMod
+        hs.ghcVis
+        hs.ghcHeapView
+        hs.hakyll
+        hs.pandoc
 
-            # compilation tools
-            self.c2hs
-            self.hscolour
+        # compilation tools
+        hs.c2hs
+        hs.hscolour
 
-            # Selected by CEH
-            self.async
-            self.bindingsPosix
-            self.bytedump
-            self.unixBytestring
-            self.ChartGtk
-            self.colour
-            self.conduit
-            self.criterion
-            self.cryptoApi
-            self.cryptohash
-            self.curl
-            self.dataAccessor
-            self.dataAccessorTemplate
-            self.dataDefault
-            self.dataMemocombinators
-            self.deepseqTh
-            self.digest
-            self.directSqlite
-            self.elerea
-            self.Glob
-            self.gloss
-            self.gtk
-            self.haskeline
-            self.haskellSrcExts
-            self.HFuse
-            self.hmatrix
-            self.hflags
-            self.hit
-            self.hslogger
-            self.HsOpenSSL
-            self.hspec
-            self.lens
-            self.lensDatetime
-            self.linear
-            self.mimeMail
-            self.MissingH
-            self.modularArithmetic
-            self.monadLoops
-            self.ncurses
-            self.networkConduit
-            self.networkProtocolXmpp
-            self.pipes
-            self.pipesBytestring
-            self.pipesParse
-            self.pipesSafe
-            self.pipesZlib
-            self.prettyShow
-            self.randomFu
-            self.regexTdfa
-            self.regexTdfaText
-            self.SafeSemaphore
-            self.sqliteSimple
-            self.snap
-            self.snapBlaze
-            self.statistics
-            self.statvfs
-            self.templateDefault
-            self.temporary
-            self.testFramework
-            self.testFrameworkHunit
-            self.testFrameworkQuickcheck2
-            self.testFrameworkTh
-            self.thyme
-            self.tls
-            self.unixTime
-            self.utf8String
-            self.utilityHt
-            self.vectorAlgorithms
-            self.vectorThUnbox
-            self.zipArchive
-            self.X11
-            self.xtest
-        ]);
-    };
+        # Selected by CEH
+        hs.async
+        hs.bindingsPosix
+        hs.bytedump
+        hs.unixBytestring
+        hs.ChartGtk
+        hs.colour
+        hs.conduit
+        hs.criterion
+        hs.cryptoApi
+        hs.cryptohash
+        hs.curl
+        hs.dataAccessor
+        hs.dataAccessorTemplate
+        hs.dataDefault
+        hs.dataMemocombinators
+        hs.deepseqTh
+        hs.digest
+        hs.directSqlite
+        hs.elerea
+        hs.filemanip
+        hs.Glob
+        hs.gloss
+        hs.gtk
+        hs.haskeline
+        hs.haskellSrcExts
+        hs.HFuse
+        hs.hmatrix
+        hs.hflags
+        hs.hit
+        hs.hslogger
+        hs.HsOpenSSL
+        hs.hspec
+        hs.lens
+        hs.lensDatetime
+        hs.linear
+        hs.mimeMail
+        hs.MissingH
+        hs.modularArithmetic
+        hs.monadLoops
+        hs.ncurses
+        hs.networkConduit
+        hs.networkProtocolXmpp
+        hs.pipes
+        hs.pipesBytestring
+        hs.pipesParse
+        hs.pipesSafe
+        hs.pipesZlib
+        hs.prettyShow
+        hs.randomFu
+        hs.regexTdfa
+        hs.regexTdfaText
+        hs.SafeSemaphore
+        hs.sqliteSimple
+        hs.snap
+        hs.snapBlaze
+        hs.statistics
+        hs.statvfs
+        hs.templateDefault
+        hs.temporary
+        hs.testFramework
+        hs.testFrameworkHunit
+        hs.testFrameworkQuickcheck2
+        hs.testFrameworkTh
+        hs.thyme
+        hs.tls
+        hs.unixTime
+        hs.utf8String
+        hs.utilityHt
+        hs.vectorAlgorithms
+        hs.vectorThUnbox
+        hs.zipArchive
+        hs.X11
+        hs.xtest
+
+        # nilcons.com packages still in development
+        tzdata
+        tz
+      ]
+    );
+  };
 }
