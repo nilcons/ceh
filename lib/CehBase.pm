@@ -9,7 +9,8 @@ use Carp;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw($CEH_ESSPATH $CEH_ESSPROFILE $CEH_NIXPKGS_GITURL $CEH_NIXPKGS_GIT
+our @EXPORT = qw($CEH_ESSPATH $CEH_ESSPROFILE $CEH_BINPROFILE
+  $CEH_NIXPKGS_GITURL $CEH_NIXPKGS_GIT
   $CEH_BASELINE_NIXPKGS $CEH_BASELINE_NIXPATH $CEH_BASELINE_PERL
   done debug touch systemdie path_prepend);
 
@@ -20,6 +21,7 @@ our @EXPORT = qw($CEH_ESSPATH $CEH_ESSPROFILE $CEH_NIXPKGS_GITURL $CEH_NIXPKGS_G
 # ceh-init.sh to differentiate between NixOS and other distributions.
 our $CEH_ESSPROFILE='/nix/var/nix/profiles/ceh/essential';
 our $CEH_ESSPATH=$CEH_ESSPROFILE;
+our $CEH_BINPROFILE='/nix/var/nix/profiles/ceh/bin';
 our $CEH_NIXPKGS_GITURL='http://github.com/NixOS/nixpkgs';
 our $CEH_NIXPKGS_GIT='/opt/ceh/nixpkgs';
 
