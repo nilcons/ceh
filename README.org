@@ -1,4 +1,4 @@
-[[https://travis-ci.org/errge/ceh][https://travis-ci.org/errge/ceh.png]]
+[[https://travis-ci.org/nilcons/ceh][https://travis-ci.org/nilcons/ceh.png]]
 
 * Power-user environment to share
 + Agreements and a repository for a shared GNU/Linux power-user environment.
@@ -38,7 +38,7 @@
 : sudo chown $USER. /opt/ceh /nix
 : chmod 0700 /opt/ceh /nix
 : cd /opt/ceh
-: git clone git://github.com/errge/ceh.git .
+: git clone git://github.com/nilcons/ceh.git .
 : ln -s $HOME home
 : /opt/ceh/scripts/ceh-init.sh
 

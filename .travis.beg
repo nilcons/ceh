@@ -9,6 +9,6 @@ shopt -s dotglob
 mv * /opt/ceh
 cd /opt/ceh
 # Travis already checks this out for us...
-# git clone git://github.com/errge/ceh.git .
+# git clone git://github.com/nilcons/ceh.git .
 ln -s $HOME home
 /opt/ceh/scripts/ceh-init.sh
