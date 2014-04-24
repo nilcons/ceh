@@ -1,17 +1,20 @@
-first time source setup: http://hackage.haskell.org/trac/ghc/wiki/Building/GettingTheSources
-  git clone http://git.haskell.org/ghc
-  cd ghc
+First time source setup:
+  (http://ghc.haskell.org/trac/ghc/wiki/Building/GettingTheSources)
+  git clone http://git.haskell.org/ghc src
+  cd src
   ./sync-all get
 
-to get new stuff later:
+To get new stuff later:
   ./sync-all pull
+  ./sync-all get (to get the new packages too, if any)
 
-building docs: http://hackage.haskell.org/trac/ghc/wiki/Building/Hacking
+Building:
+  (docs: http://ghc.haskell.org/trac/ghc/wiki/Building/Hacking)
   export LANG=en_US.UTF-8     (ghc only builds on utf-8)
   perl --version >/dev/null   (if this has output, you don't have locales, fix it!)
 
   /opt/ceh/scripts/ghc-build-shell.pl
-  (or CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl, if building 64-bit GHC)
+    (or CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl, if building 64-bit GHC)
     (This gets you a shell that is properly set up to use ceh's ghc as
      the bootstrap compiler and provides also the other needed tools:
      perl, gnumake, m4, autoconf, automake.)
@@ -19,33 +22,55 @@ building docs: http://hackage.haskell.org/trac/ghc/wiki/Building/Hacking
     (After this, do everything in the resulting shell!)
 
     cp mk/build.mk.sample mk/build.mk
-    vi mk/build.mk (change BuildFlavour to quick)
+    vi mk/build.mk
+      (change V = 1 to V = 0)
+      (change BuildFlavour to quick)
+      (sorry, but add:
+       libraries/integer-gmp_CONFIGURE_OPTS += \
+         --configure-option=--with-gmp-libraries=$(shell \
+           dirname `readlink -f /nix/var/nix/profiles/ceh/ghc-build-bin/lib/libgmp.so`)
+      )
+      (or ghc-build-bin64 if building 64 bit)
+      (add GhcLibWay += p to quick if want library profiling)
+
+    cd ..
+    mkdir build
+    cd build
+    lndir ../src
+    ln -s ../src/.git .   (otherwise no date in version number)
+    (read more about build dirs at: https://ghc.haskell.org/trac/ghc/wiki/Building/Using#Sourcetreesandbuildtrees)
 
     perl boot
     ./configure --prefix=$HOME/wherever-i-want
-    grep -r with-cc=.usr.bin.gcc .       (should have no results, if everything is properly using ceh)
-    make -j 4                            (parallel building seems to be a bit buggy, so run again if fails)
+    grep -r with-cc=.usr.bin.gcc .       (should have no results, because of ceh)
+    make -j 4                            (parallel make sometimes buggy, run again if fails)
 
     inplace/bin/ghc-stage2 --version
-
-    (if you want to run ghci, do this:)
-    export LD_LIBRARY_PATH=/nix/var/nix/profiles/ceh/ghc-build-bin/lib
     inplace/bin/ghc-stage2 --interactive
 
-    make install (if you want)
+To get a list of build files (ideas to clean):
+    find \! -type l \! -type d
 
-To install a package in the new ghc:
-  /opt/ceh/scripts/ghc-build-shell.pl
-  (or CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl, if building 64-bit GHC)
-    export PATH=$HOME/wherever-i-want:$PATH
-    cabal update
-    # quick doesn't provide library profiling
-    cabal --disable-library-profiling install stm
+Installing the built GHC to its final location given by --prefix:
+    make install
+
+Rebuilding stage 2 after changes:
+    (edit mk/build.mk to contain "stage=2")
+    make -C compiler fast
+    (or if that fails: make -C ghc 2)
+    make install
 
 To run the testsuite:
   /opt/ceh/scripts/ghc-build-shell.pl
   (or CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl, if building 64-bit GHC)
-    CPUS=4 sh validate
+    make test
+    make TEST="ann01 ann02" test
+
+To install a package in the new ghc:
+    export PATH=$HOME/wherever-i-want:$PATH
+    cabal update
+    # quick doesn't provide library profiling
+    cabal --disable-library-profiling install pipes
 
 Stuff to read while hacking GHC:
   http://hackage.haskell.org/trac/ghc/wiki/Building/Hacking

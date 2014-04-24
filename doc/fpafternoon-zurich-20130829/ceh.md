@@ -9,7 +9,7 @@ Agenda
     + Nix, the package manager and programming language
     + Nixpkgs, the package collection
     + NixOS, the operating system
-- Ceh ([http://github.com/errge/ceh/](http://github.com/errge/ceh/))
+- Ceh ([http://github.com/nilcons/ceh/](http://github.com/nilcons/ceh/))
     + the Git synchronized, sharable and reproducible power-user
       environment based on Nix and Nixpkgs
 - Nix details.  Nix language example: vanitygen
@@ -109,7 +109,7 @@ sudo mkdir /opt/ceh /nix
 sudo chown $USER. /opt/ceh /nix
 chmod 0700 /opt/ceh /nix
 cd /opt/ceh
-git clone git://github.com/errge/ceh.git .
+git clone git://github.com/nilcons/ceh.git .
 ln -s $HOME home
 /opt/ceh/scripts/ceh-init.sh
 ~~~~
@@ -117,7 +117,7 @@ ln -s $HOME home
     + if you're really worried, look into LXC mount namespaces,
     + but don't hold onto your abstractions if you don't need them anymore,
 - /opt/ceh/bin goes to your PATH and
-  [/opt/ceh/bin/tmux](https://github.com/errge/ceh/blob/master/bin/tmux)
+  [/opt/ceh/bin/tmux](https://github.com/nilcons/ceh/blob/master/bin/tmux)
   installs tmux on-demand.
 
 Haskell integration, included tools
@@ -181,7 +181,7 @@ sudo mkdir /opt/ceh /nix
 sudo chown $USER. /opt/ceh /nix
 chmod 0700 /opt/ceh /nix
 cd /opt/ceh
-git clone git://github.com/errge/ceh.git .
+git clone git://github.com/nilcons/ceh.git .
 ln -s $HOME home
 /opt/ceh/scripts/ceh-init.sh
 ~~~~
@@ -232,4 +232,4 @@ Questions, remarks?
 I'm also available during the Zurihac to answer your questions or help
 with installing/using/abusing Ceh.
 
-[http://github.com/errge/ceh](http://github.com/errge/ceh)
+[http://github.com/nilcons/ceh](http://github.com/nilcons/ceh)
