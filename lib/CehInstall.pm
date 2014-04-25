@@ -192,10 +192,7 @@ sub ceh_nixpkgs_install($$%) {
 
     ceh_nixpkgs_checkout $nixpkgs_version;
 
-    # This is to not loop on checkfreshness -> install -> checkfreshness -> ...
-    if ($profile ne $CEH_ESSPROFILE) {
-        check_nix_freshness();
-    }
+    check_nix_freshness();
 
     $_ = `$CEH_ESSPATH/bin/nix-instantiate $nixsystem '<ceh_nixpkgs>' -A $pkgattr`;
     $? and confess;
@@ -313,12 +310,15 @@ sub ensure_base_installed {
     ceh_nixpkgs_install_bin('nix', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'g9nwwkg1l0y4jakzzph7xg0jbmg22hiz-nix-1.6.1');
 }
 
+our $freshness_being_ensured;
 sub check_nix_freshness {
-    if (not installed_in_profile_p($CEH_ESSPROFILE, $CEH_BASELINE_NIXPATH) ||
-        not installed_in_profile_p($CEH_ESSPROFILE, $CEH_BASELINE_PERL) ||
+    return if ($freshness_being_ensured);
+    if (not installed_in_profile_p($CEH_ESSPROFILE, $CEH_BASELINE_NIXPATH) or
+        not installed_in_profile_p($CEH_ESSPROFILE, $CEH_BASELINE_PERL) or
         not installed_in_profile_p($CEH_BINPROFILE, $CEH_BASELINE_NIXPATH)) {
         debug "Nix or Perl is outdated in the essential Ceh profile, let's reinstall them!";
         debug "If this fails, please run /opt/ceh/scripts/ceh-init.sh!\n";
+        local $freshness_being_ensured = 1;
         ensure_base_installed();
     }
 }
