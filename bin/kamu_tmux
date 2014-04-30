@@ -1,0 +1,12 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/kamu_tmux.nix";
+ceh_nixpkgs_install_bin('kamu_tmux', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'vnyn3ngwk4yqiqfl0sxlr66j3qqjn6hq-proba');
+
+exec "$ceh_nix_install_root/bin/kamu_tmux", @ARGV;
