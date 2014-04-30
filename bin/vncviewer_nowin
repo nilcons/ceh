@@ -1,0 +1,12 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/tigervnc_nowin_wrap.nix";
+ceh_nixpkgs_install_bin('tigervncNoWin', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'mhzs3y6763d7943b21bkv9qv9x671q9v-tigervnc-r5129');
+
+exec "$ceh_nix_install_root/bin/vncviewer", @ARGV;
