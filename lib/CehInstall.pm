@@ -120,6 +120,8 @@ sub ceh_nixpkgs_checkout($) {
 # %nixpkgs_version: nixpkgs version to use
 # %out: output path in /nix/store, excludes AUTOINIT
 # %outFilter: filters outputs
+# %set_nix_path: export NIX_PATH environment variable (before the build phase),
+#   so that <nixpkgs> points to a checkout of %nixpkgs_version of nixpkgs
 sub ceh_nixpkgs_install($$%) {
     my ($pkgattr, $profile, %opts) = @_;
     my $autoinit = $opts{autoinit};
@@ -172,6 +174,16 @@ sub ceh_nixpkgs_install($$%) {
     # debug "nixpkgs_version: $nixpkgs_version" if $nixpkgs_version;
     # debug "out: $out" if $out;
 
+    if (not $nixpkgs_version) {
+        $nixpkgs_version = $CEH_BASELINE_NIXPKGS;
+        debug "*** Autoguessed nixpkgs version: $nixpkgs_version";
+    }
+
+    # Set the NIX_PATH env var if requested:
+    if ($opts{set_nix_path}) {
+        $ENV{NIX_PATH} = "nixpkgs=" . ceh_nixpkgs_checkout($nixpkgs_version);
+    }
+
     # quick return if the package is already installed in the profile
     if ($out and installed_in_profile_p($profile, $out)) {
         $ceh_nix_install_root = "/nix/store/$out";
@@ -183,11 +195,6 @@ sub ceh_nixpkgs_install($$%) {
         syscall(136, 0);
     } else {
         syscall(136, 8);
-    }
-
-    if (not $nixpkgs_version) {
-        $nixpkgs_version = $CEH_BASELINE_NIXPKGS;
-        debug "*** Autoguessed nixpkgs version: $nixpkgs_version";
     }
 
     my $nixpkgsgit = ceh_nixpkgs_checkout $nixpkgs_version;
