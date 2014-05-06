@@ -16,6 +16,6 @@ use lib "/opt/ceh/lib";
 use CehBase;
 use CehInstall;
 
-ceh_nixpkgs_checkout($CEH_BASELINE_NIXPKGS);
+my $nixpkgsgit = ceh_nixpkgs_checkout $CEH_BASELINE_NIXPKGS;
 
-exec("/opt/ceh/bin/nix-env", qw(-f <ceh_nixpkgs> -qaP *));
+exec("/opt/ceh/bin/nix-env", "-f", $nixpkgsgit, qw(-qaP *));

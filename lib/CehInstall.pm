@@ -50,7 +50,7 @@ sub ceh_nixpkgs_clone() {
 }
 
 # Downloads and initializes a specific nixpkgs version into the
-# $CEH_NIXPKGS_GIT/1, so it can be used for builds later.
+# $CEH_NIXPKGS_GIT/$1 directory, so it can be used for builds later.
 #
 # This is needed instead of simply using channels and the newest
 # version only, because we want to reproduce specific blessed versions
@@ -58,7 +58,7 @@ sub ceh_nixpkgs_clone() {
 #
 # $1: the nixpkgs commit from https://github.com/NixOS/nixpkgs/commit
 #
-# It sets NIX_PATH up, so '<ceh_nixpkgs>' points to the initialized version.
+# It returns the path where the initialized checkout can be found.
 sub ceh_nixpkgs_checkout($) {
     my $commit = shift;
 
@@ -71,7 +71,7 @@ sub ceh_nixpkgs_checkout($) {
         touch("$CEH_NIXPKGS_GIT/$commit.done");
     }
 
-    $ENV{NIX_PATH}="ceh_nixpkgs=$CEH_NIXPKGS_GIT/$commit";
+    return "$CEH_NIXPKGS_GIT/$commit";
 }
 
 # Used in wrapper scripts in bin/*.
@@ -190,11 +190,11 @@ sub ceh_nixpkgs_install($$%) {
         debug "*** Autoguessed nixpkgs version: $nixpkgs_version";
     }
 
-    ceh_nixpkgs_checkout $nixpkgs_version;
+    my $nixpkgsgit = ceh_nixpkgs_checkout $nixpkgs_version;
 
     check_nix_freshness();
 
-    $_ = `$CEH_ESSPATH/bin/nix-instantiate --show-trace $nixsystem '<ceh_nixpkgs>' -A $pkgattr`;
+    $_ = `$CEH_ESSPATH/bin/nix-instantiate --show-trace $nixsystem $nixpkgsgit -A $pkgattr`;
     $? and confess;
     chomp;
     /^\/nix\/store\// or croak($_ . " not starting with /nix/store");
