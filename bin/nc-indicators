@@ -7,6 +7,6 @@ use lib "/opt/ceh/lib";
 use CehInstall;
 
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/nc-indicators.nix";
-ceh_nixpkgs_install_bin('nc-indicators', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => '950yh8bqg43czk1va367viy4i6qv1jlw-nc-indicators-0.1');
+ceh_nixpkgs_install('nc-indicators', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => '950yh8bqg43czk1va367viy4i6qv1jlw-nc-indicators-0.1');
 
 exec "$ceh_nix_install_root/bin/nc-indicators", @ARGV;

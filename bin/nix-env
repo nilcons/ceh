@@ -9,4 +9,4 @@ use CehInstall;
 
 check_nix_freshness();
 
-exec "${CEH_ESSPROFILE}/bin/nix-env", @ARGV;
+exec "${CEH_ESSNIXPATH}/bin/nix-env", @ARGV;

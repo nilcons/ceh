@@ -131,7 +131,7 @@ then
   ( cd / && tar -x -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix )
 
   # Set up the symlinks
-  mkdir -m 0755 -p /nix/var/nix/profiles/ceh
+  mkdir -m 0755 -p /nix/var/nix/gcroots/auto/ceh
   mkdir -m 0755 -p /nix/var/nix/profiles/per-user/$USER
   ln -s /nix/var/nix/profiles/per-user/$USER/profile $HOME/.nix-profile
   ( cd /nix/var/nix/profiles/per-user ; ln -s $USER root )
@@ -147,11 +147,11 @@ then
   /opt/ceh/bin/nix-channel --update
 else
   # if we're on NixOS
-  if ! [ -d /nix/var/nix/profiles/ceh ] || ! [ -O /nix/var/nix/profiles/ceh ]
+  if ! [ -d /nix/var/nix/gcroots/auto/ceh ] || ! [ -O /nix/var/nix/gcroots/auto/ceh ]
   then
-    echo "/nix/var/nix/profiles/ceh directory should be owned by the user. Try:" >&2
-    echo "$ sudo mkdir -p /nix/var/nix/profiles/ceh" >&2
-    echo "$ sudo chown $USER. /nix/var/nix/profiles/ceh" >&2
+    echo "/nix/var/nix/gcroots/auto/ceh directory should be owned by the user. Try:" >&2
+    echo "$ sudo mkdir -p /nix/var/nix/gcroots/auto/ceh" >&2
+    echo "$ sudo chown $USER. /nix/var/nix/gcroots/auto/ceh" >&2
     exit 1
   fi
 

@@ -9,19 +9,18 @@ use Carp;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw($CEH_ESSPATH $CEH_ESSPROFILE $CEH_BINPROFILE
+our @EXPORT = qw($CEH_ESSNIXPATH $CEH_ESSGCLINKDIR
   $CEH_NIXPKGS_GITURL $CEH_NIXPKGS_GIT
   $CEH_BASELINE_NIXPKGS $CEH_BASELINE_NIXPATH $CEH_BASELINE_PERL
   done debug touch systemdie path_prepend);
 
-# The difference between CEH_ESSPATH and CEH_ESSPROFILE is that the
-# latter is just a constant for the essential profile, while
-# CEH_ESSPATH can be overridden to point to a directory that contains
-# a working nix-env and perl binary.  This feature is used in
-# ceh-init.sh to differentiate between NixOS and other distributions.
-our $CEH_ESSPROFILE='/nix/var/nix/profiles/ceh/essential';
-our $CEH_ESSPATH=$CEH_ESSPROFILE;
-our $CEH_BINPROFILE='/nix/var/nix/profiles/ceh/bin';
+# The difference between CEH_ESSNIXPATH and CEH_ESSGCLINKDIR is that the
+# latter is just a constant for the essential gc link dir, while
+# CEH_ESSNIXPATH can be overridden to point to a directory that contains
+# a working set of nix- binaries.  This feature is used in ceh-init.sh
+# to handle NixOS and other distributions differently.
+our $CEH_ESSGCLINKDIR='/opt/ceh/installed/essential';
+our $CEH_ESSNIXPATH="$CEH_ESSGCLINKDIR/nix";
 our $CEH_NIXPKGS_GITURL='http://github.com/NixOS/nixpkgs';
 our $CEH_NIXPKGS_GIT='/opt/ceh/nixpkgs';
 
@@ -35,14 +34,14 @@ sub import {
     my $first = shift;
     if (defined($first)) {
         if ($first eq "nixpath") {
-            $CEH_ESSPATH=shift;
+            $CEH_ESSNIXPATH=shift;
         } else {
             unshift @_, $first;
         }
     }
 
     unshift @_, $self;
-    -x "${CEH_ESSPATH}/bin/nix-env" or die "*** Ceh is not initialized, run /opt/ceh/scripts/ceh-init.sh ***";
+    -x "${CEH_ESSNIXPATH}/bin/nix-env" or die "*** Ceh is not initialized, run /opt/ceh/scripts/ceh-init.sh ***";
     goto &Exporter::import;
 }
 

@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install_bin('tmux', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'wq23zmspsfh40byxrgwcwm386mmbwanb-tmux-1.8');
+ceh_nixpkgs_install('tmux', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'wq23zmspsfh40byxrgwcwm386mmbwanb-tmux-1.8');
 
 exec "$ceh_nix_install_root/bin/tmux", @ARGV;

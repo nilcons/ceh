@@ -1,0 +1,9 @@
+# This directory contains symlinks to all the installed derivations.
+# These symlinks are symlinked from /nix/var/nix/gcroots/auto/ceh,
+# therefore these packages are defended from the garbage collector.
+# If you want to delete a package from your local machine (e.g. you
+# need the disk space), just delete the symlink here and run
+# "nix-collect-garbage -d".
+
+# Since this is machine state, everything is ignored gitwise.
+*

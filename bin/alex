@@ -11,6 +11,6 @@ use CehInstall;
 # (and therefore hakyll) depends on the haskell platform happy and
 # alex in Nixpkgs, we can't provide a new happy and alex in GHC.nix
 # (because that would cause binary conflicts in the profile).
-ceh_nixpkgs_install('haskellPackages_ghc763_profiling.alex_3_1_3', '/nix/var/nix/profiles/ceh/ghc-build-bin', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => '5ah3r72lyv81nz9caw69qcr37q1jgj60-alex-3.1.3');
+ceh_nixpkgs_install('haskellPackages_ghc763_profiling.alex_3_1_3', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => '5ah3r72lyv81nz9caw69qcr37q1jgj60-alex-3.1.3');
 
 exec "$ceh_nix_install_root/bin/alex", @ARGV;

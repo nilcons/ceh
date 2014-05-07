@@ -6,4 +6,4 @@ set -e
 
 ceh_check_initialization
 
-exec /nix/var/nix/profiles/ceh/essential/bin/perl "$@"
+exec /opt/ceh/installed/essential/perl/bin/perl "$@"

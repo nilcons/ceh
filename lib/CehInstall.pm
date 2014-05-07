@@ -13,13 +13,12 @@ our @EXPORT = qw(
   ceh_nixpkgs_checkout
   ceh_nixpkgs_install
   ceh_nixpkgs_install_tools
-  ceh_nixpkgs_install_bin ceh_nixpkgs_install_bin64
-  ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_for_ghc64
-  ceh_nixpkgs_install_ghctools ceh_nixpkgs_install_ghctools64
   check_nix_freshness
   ensure_base_installed
   $ceh_nix_install_root
 );
+
+  # ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_for_ghc64
 
 use CehBase;
 use Replacer;
@@ -108,22 +107,24 @@ sub ceh_nixpkgs_checkout($) {
 # will be written to the calling script.
 #
 # $1: package name (attribute path),
-# $2: target profile (e.g. /nix/var/nix/profiles/ceh/bin),
 # %bit64: build/install for x86_64-linux if 1,
 # %autoinit: autocomplete the function invocation with default values,
-#    Example: ceh_nixpkgs_install_bin('git', AUTOINIT);
+#    Example: ceh_nixpkgs_install('git', AUTOINIT);
 #      AUTOINIT will be replaced with correct values for
 #      nixpkgs_version and out.
-#    Example: ceh_nixpkgs_install_bin('git', nixpkgs_version => '3abc135', AUTOINIT);
+#    Example: ceh_nixpkgs_install('git', nixpkgs_version => '3abc135', AUTOINIT);
 #      AUTOINIT will be replaced with correct value for out using
 #      the specified nixpkgs git commit.
 # %nixpkgs_version: nixpkgs version to use
 # %out: output path in /nix/store, excludes AUTOINIT
 # %outFilter: filters outputs
+# %gclink: full abspath of symlink location to protect against GC removal and facilitate caching
+#          (defaults to /opt/ceh/installed/packages/$1)
+#          a .64 suffix automatically gets appended if the bit64 parameter is on
 # %set_nix_path: export NIX_PATH environment variable (before the build phase),
 #   so that <nixpkgs> points to a checkout of %nixpkgs_version of nixpkgs
-sub ceh_nixpkgs_install($$%) {
-    my ($pkgattr, $profile, %opts) = @_;
+sub ceh_nixpkgs_install($%) {
+    my ($pkgattr, %opts) = @_;
     my $autoinit = $opts{autoinit};
     my $autoupgrade = 0;
     my $nixsystem = $opts{bit64} ? "--option system x86_64-linux" : "--option system i686-linux";
@@ -134,6 +135,8 @@ sub ceh_nixpkgs_install($$%) {
     my $old_out = $opts{out};
     my $autoinit_nixpkgs_version = 0;
     my $autoinit_out = 0;
+    my $gclink = ($opts{gclink} ? $opts{gclink} : "/opt/ceh/installed/packages/$pkgattr") .
+                 ($opts{bit64} ? ".64" : "");
 
     # some sanity checks
     if (defined($opts{derivation})) {
@@ -168,7 +171,7 @@ sub ceh_nixpkgs_install($$%) {
     }
 
     # debug "pkgattr: $pkgattr";
-    # debug "profile: $profile";
+    # debug "gclink: $gclink";
     # debug "autoinit: $autoinit" if $autoinit;
     # debug "autoupgrade: $autoupgrade";
     # debug "nixpkgs_version: $nixpkgs_version" if $nixpkgs_version;
@@ -184,8 +187,8 @@ sub ceh_nixpkgs_install($$%) {
         $ENV{NIX_PATH} = "nixpkgs=" . ceh_nixpkgs_checkout($nixpkgs_version);
     }
 
-    # quick return if the package is already installed in the profile
-    if ($out and installed_in_profile_p($profile, $out)) {
+    # quick return if the package is already installed
+    if ($out and nix_symlinked_p($gclink, "$out")) {
         $ceh_nix_install_root = "/nix/store/$out";
         return $ceh_nix_install_root;
     }
@@ -201,7 +204,7 @@ sub ceh_nixpkgs_install($$%) {
 
     check_nix_freshness();
 
-    $_ = `$CEH_ESSPATH/bin/nix-instantiate --show-trace $nixsystem $nixpkgsgit -A $pkgattr`;
+    $_ = `$CEH_ESSNIXPATH/bin/nix-instantiate --show-trace $nixsystem $nixpkgsgit -A $pkgattr`;
     $? and confess;
     chomp;
     /^\/nix\/store\// or croak($_ . " not starting with /nix/store");
@@ -213,7 +216,7 @@ sub ceh_nixpkgs_install($$%) {
         debug "CEH_GATHER_DERIVATIONS_ONLY: /nix/store/$current_derivation\n";
         exit 0;
     }
-    my @outs = `$CEH_ESSPATH/bin/nix-store -q /nix/store/$current_derivation`;
+    my @outs = `$CEH_ESSNIXPATH/bin/nix-store -q /nix/store/$current_derivation`;
     $? and croak;
     foreach (@outs) {
         chomp;
@@ -234,11 +237,8 @@ sub ceh_nixpkgs_install($$%) {
     $extraopts .= " --option use-binary-caches false" if ($ENV{CEH_NO_BIN_CACHE});
     $extraopts .= " --option build-max-jobs $ENV{CEH_BUILD_MAX_JOBS}" if ($ENV{CEH_BUILD_MAX_JOBS});
     $extraopts .= " -K" if ($ENV{CEH_BUILD_KEEP_FAILED});
-    systemdie("$CEH_ESSPATH/bin/nix-store $extraopts $nixsystem --cores 0 -r /nix/store/$current_derivation >&2");
-    if (not -d dirname($profile)) {
-        make_path(dirname($profile)) or confess;
-    }
-    systemdie("$CEH_ESSPATH/bin/nix-env -p $profile -i /nix/store/$out >&2");
+    systemdie("$CEH_ESSNIXPATH/bin/nix-store $extraopts $nixsystem --cores 0 -r /nix/store/$current_derivation >&2");
+    nix_symlink($gclink, "$out");
 
     if ($autoinit) {
         not $autoupgrade or croak("autoupgrade and autoinit at once?");
@@ -262,89 +262,76 @@ sub ceh_nixpkgs_install($$%) {
     return $ceh_nix_install_root;
 }
 
-# This is the main profile for ceh executables (wrappers in /opt/ceh/bin).
-sub ceh_nixpkgs_install_bin {
-    my ($pkgattr, %opts) = @_;
-    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/bin", %opts);
-}
+# # Profile for libraries for GHC FFI packages.
+# sub ceh_nixpkgs_install_for_ghc {
+#     my ($pkgattr, %opts) = @_;
+#     return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-libs", %opts);
+# }
 
-# This is the main profile for 64-bit ceh executables (wrappers in /opt/ceh/bin).
-sub ceh_nixpkgs_install_bin64 {
-    my ($pkgattr, %opts) = @_;
-    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/bin64", bit64 => 1, %opts);
-}
-
-# Profile for libraries for GHC FFI packages.
-sub ceh_nixpkgs_install_for_ghc {
-    my ($pkgattr, %opts) = @_;
-    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-libs", %opts);
-}
-
-# Profile for libraries for GHC64 FFI packages.
-sub ceh_nixpkgs_install_for_ghc64 {
-    my ($pkgattr, %opts) = @_;
-    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-libs64", bit64 => 1, %opts);
-}
+# # Profile for libraries for GHC64 FFI packages.
+# sub ceh_nixpkgs_install_for_ghc64 {
+#     my ($pkgattr, %opts) = @_;
+#     return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-libs64", bit64 => 1, %opts);
+# }
 
 # Use this profile when you're installing packages used only by the
 # functions in these files.  E.g. the which package for ceh_exclude.
 sub ceh_nixpkgs_install_tools {
     my ($pkgattr, %opts) = @_;
-    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/tools", %opts);
-}
-
-# Profile for stuff needed to properly wrap GHC, used by ceh internally.
-sub ceh_nixpkgs_install_ghctools {
-    my ($pkgattr, %opts) = @_;
-    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-tools", %opts);
-}
-
-# Profile for stuff needed to properly wrap GHC on 64-bit, used by ceh internally.
-sub ceh_nixpkgs_install_ghctools64 {
-    my ($pkgattr, %opts) = @_;
-    return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-tools64", bit64 => 1, %opts);
+    return ceh_nixpkgs_install($pkgattr, gclink => "/opt/ceh/installed/tools/$pkgattr", %opts);
 }
 
 sub ceh_nixpkgs_install_essential {
     my ($pkgattr, %opts) = @_;
-    return ceh_nixpkgs_install($pkgattr, $CEH_ESSPROFILE, %opts);
+    return ceh_nixpkgs_install($pkgattr, gclink => "$CEH_ESSGCLINKDIR/$pkgattr", %opts);
 }
 
 sub ensure_base_installed {
     ceh_nixpkgs_install_essential('nix', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'g9nwwkg1l0y4jakzzph7xg0jbmg22hiz-nix-1.6.1');
     ceh_nixpkgs_install_essential('perl', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'b36q0vglgaxinmirvcgp525fqfdziia7-perl-5.16.3');
-    # for manpages
-    ceh_nixpkgs_install_bin('nix', nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'g9nwwkg1l0y4jakzzph7xg0jbmg22hiz-nix-1.6.1');
 }
 
 our $freshness_being_ensured;
 sub check_nix_freshness {
     return if ($freshness_being_ensured);
-    if (not installed_in_profile_p($CEH_ESSPROFILE, $CEH_BASELINE_NIXPATH) or
-        not installed_in_profile_p($CEH_ESSPROFILE, $CEH_BASELINE_PERL) or
-        not installed_in_profile_p($CEH_BINPROFILE, $CEH_BASELINE_NIXPATH)) {
-        debug "Nix or Perl is outdated in the essential Ceh profile, let's reinstall them!";
+    if (not nix_symlinked_p("$CEH_ESSGCLINKDIR/nix", "$CEH_BASELINE_NIXPATH") or
+        not nix_symlinked_p("$CEH_ESSGCLINKDIR/perl", "$CEH_BASELINE_PERL")) {
+        debug "Nix or Perl is outdated in the essential Ceh directory, let's reinstall them!";
         debug "If this fails, please run /opt/ceh/scripts/ceh-init.sh!\n";
         local $freshness_being_ensured = 1;
         ensure_base_installed();
     }
 }
 
-sub installed_in_profile_p($$) {
-    my ($profile, $out) = @_;
+sub ensure_dir_of_path {
+    my ($dir) = @_;
+    if (not -d dirname($dir)) {
+        make_path(dirname($dir)) or confess;
+    }
+}
 
-    # If the profile doesn't exist, then we have to return false.
-    # It's intentional that this is not an error, so we can call this
-    # update function from anywhere even if the first package is just
-    # being installed to a new profile.
-    return undef unless -l $profile;
+my $autoroot = "/nix/var/nix/gcroots/auto/ceh";
+# Creates an indirect gc entry. (see nix-store(1))
+sub nix_symlink($$) {
+    my ($gclink, $out) = @_;
+    $out = "/nix/store/$out";
+    my $autogclink = "$autoroot$gclink";
+    ensure_dir_of_path($gclink);
+    ensure_dir_of_path($autogclink);
+    systemdie("ln -sfn $out $gclink >&2");
+    systemdie("ln -sfn $gclink $autogclink >&2");
+}
 
-    open my $fd, '<', "$profile/manifest.nix"
-        or die "Failed to open $profile/manifest.nix: $!\n";
-    local $/;
-    my $line = <$fd>;
-    close $fd;
-    return scalar($line =~ /; outPath = "\/nix\/store\/\Q$out\E"/g);
+# Verifies the existence of an entry created with nix_symlink
+sub nix_symlinked_p($$) {
+    my ($gclink, $out) = @_;
+    $out = "/nix/store/$out";
+    my $autogclink = "$autoroot$gclink";
+    my $o = readlink("$gclink");
+    $o = "" if !defined($o);
+    my $oo = readlink("$autogclink");
+    $oo = "" if !defined($oo);
+    return ($o eq "$out" && $oo eq "$gclink");
 }
 
 1;
