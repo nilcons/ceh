@@ -1,9 +1,11 @@
 #!/opt/ceh/lib/perl
 # -*- mode: perl; -*-
 
-# This script can be used to install packages to the special
-# "ghc-libs" profile, that is used by Ceh ghc (ex. when you cabal
-# install packages that link to C libraries etc.).
+# This script can be used to install packages to
+# /opt/ceh/installed/ghclibs directory, that is used by Ceh's GHC
+# (ex. when you cabal install packages that link to C libraries etc.).
+#
+# Read more about this in /opt/ceh/README.org
 
 use strict;
 use warnings;
@@ -15,7 +17,7 @@ if (not $ARGV[0]) {
 }
 
 if ($ENV{CEH_GHC64}) {
-    ceh_nixpkgs_install_for_ghc64($ARGV[0], autoinit => 1);
+    ceh_nixpkgs_install_ghclibs($ARGV[0], bit64 => 1, autoinit => 1);
 } else {
-    ceh_nixpkgs_install_for_ghc($ARGV[0], autoinit => 1);
+    ceh_nixpkgs_install_ghclibs($ARGV[0], autoinit => 1);
 }

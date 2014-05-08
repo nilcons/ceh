@@ -13,12 +13,12 @@ our @EXPORT = qw(
   ceh_nixpkgs_checkout
   ceh_nixpkgs_install
   ceh_nixpkgs_install_tools
+  ceh_nixpkgs_install_ghclibs
   check_nix_freshness
   ensure_base_installed
   $ceh_nix_install_root
 );
 
-  # ceh_nixpkgs_install_for_ghc ceh_nixpkgs_install_for_ghc64
 
 use CehBase;
 use Replacer;
@@ -80,10 +80,10 @@ sub ceh_nixpkgs_checkout($) {
 # ceh_nix_install_root to /nix/store/outhash, so it's easy to refer to
 # the binaries in the wrapper scripts.
 #
-# Nix internally uses a binary cache, so may not necessarily build.
+# Nix itself uses a binary cache, so it may be not necessarily build.
 #
 # There are three ways to call this function:
-#  - without AUTOINIT and providing all four package properties:
+#  - without AUTOINIT and providing all three package properties:
 #    - pkgattr (the name of the package from ceh_nixpkgs_avail),
 #    - the nixpkgs_version,
 #    - the out path hash;
@@ -97,9 +97,11 @@ sub ceh_nixpkgs_checkout($) {
 #    - the out path hash will be autoguessed.
 #
 # In the latter two cases the autoguess results will be written back
-# to the calling script by some Perl magic.  So on the second run, no
-# autoguessing will be needed, because the call will be already
-# rewritten to be in the first form.
+# to the calling script by some Perl magic (Replacer.pm).  So on the
+# second run, no autoguessing will be needed, because the call will be
+# already rewritten to be in the first form.  If you want autoguessing
+# continuously (while testing a nix expression), use 'autoinit => 1'
+# instead of AUTOINIT.
 #
 # If the CEH_AUTO_UPGRADE envvar is set to 1, and all of the three
 # arguments are specified, but the nixpkgs_version is outdated, then
@@ -262,20 +264,14 @@ sub ceh_nixpkgs_install($%) {
     return $ceh_nix_install_root;
 }
 
-# # Profile for libraries for GHC FFI packages.
-# sub ceh_nixpkgs_install_for_ghc {
-#     my ($pkgattr, %opts) = @_;
-#     return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-libs", %opts);
-# }
+# Libraries for GHC FFI packages.
+sub ceh_nixpkgs_install_ghclibs {
+    my ($pkgattr, %opts) = @_;
+    return ceh_nixpkgs_install($pkgattr, gclink => "/opt/ceh/installed/ghclibs/$pkgattr", %opts);
+}
 
-# # Profile for libraries for GHC64 FFI packages.
-# sub ceh_nixpkgs_install_for_ghc64 {
-#     my ($pkgattr, %opts) = @_;
-#     return ceh_nixpkgs_install($pkgattr, "/nix/var/nix/profiles/ceh/ghc-libs64", bit64 => 1, %opts);
-# }
-
-# Use this profile when you're installing packages used only by the
-# functions in these files.  E.g. the which package for ceh_exclude.
+# Use this when you're installing packages used internally by Ceh.
+# E.g. the which package for ceh_exclude.
 sub ceh_nixpkgs_install_tools {
     my ($pkgattr, %opts) = @_;
     return ceh_nixpkgs_install($pkgattr, gclink => "/opt/ceh/installed/tools/$pkgattr", %opts);

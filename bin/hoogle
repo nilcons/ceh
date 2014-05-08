@@ -7,7 +7,7 @@ use lib "/opt/ceh/lib";
 use Packages::GHC;
 use CehBase;
 
-path_prepend('/nix/var/nix/profiles/ceh/ghc-libs/lib', 'LD_LIBRARY_PATH');
+foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
 
 chdir "$ENV{HOME}/.hoogle";
 exec "$ceh_ghc_root/bin/hoogle", @ARGV;
