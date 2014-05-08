@@ -15,7 +15,11 @@
   distribution that you use as a base system, we recommend i686 Debian
   (maybe with amd64 kernel, if you sometimes need the extra registers
   and stuff for your own programs).  But the point is that this should
-  work on any modern GNU/Linux, we also tested Ubuntu lucid and precise.
+  work on any modern GNU/Linux, we also tested Ubuntu trusty and precise
+  both i686 and amd64.
++ When it makes sense, we provide 64-bit version of packages too,
+  e.g. you can use 64-bit haskell by setting the =CEH_GHC64=
+  environment variable to 1.
 
 
 * Requirements
@@ -23,6 +27,8 @@
 + Intel architecture (i686 or amd64, no arm).
 + The machine only has one user who wants to use ceh and nix and she
   will be the owner of the files in =/opt/ceh= and =/nix=.
++ If the machine is running NixOS already, then =/nix= should exist
+  already of course and Ceh is able to handle that.
 + Root privileges for the installation.  Actually only needed for the
   creation of =/opt/ceh= and =/nix=, not needed for everyday usage or
   package installation.
@@ -43,6 +49,16 @@
 : /opt/ceh/scripts/ceh-init.sh
 
 
+* Installation instructions for NixOS
+: sudo mkdir /opt/ceh /nix/var/nix/gcroots/auto/ceh
+: sudo chown $USER. /opt/ceh /nix/var/nix/gcroots/auto/ceh
+: chmod 0700 /opt/ceh /nix/var/nix/gcroots/auto/ceh
+: cd /opt/ceh
+: git clone git://github.com/nilcons/ceh.git .
+: ln -s $HOME home
+: /opt/ceh/scripts/ceh-init.sh
+
+
 * Everyday usage
 In the =/opt/ceh/bin= directory there are small wrapper scripts.  Those
 install the required pacakages for the wrapped binaries on first run.
@@ -57,30 +73,33 @@ you can use the =ceh_exclude= script to create a symlink from
 
 If you don't want the exclusion anymore, just delete the symlink.
 
+*** Removing packages that got installed on-demand
+As previously mentioned, the scripts in =/opt/ceh/bin= just install
+the programs on demand as you run them.  Therefore once ran, they take
+up disk space on your machine.  If you tried out something big and
+would like to get rid of it, then go to =/opt/ceh/installed= and feel
+free to delete any symlinks there.  After deleting the symlinks, run
+=nix-garbage-collect= to free up the disk space.  If you decide to use
+some deleted software again, it will be redownloaded.
+
+If you delete from =/opt/ceh/installed/essential=, then you will have
+to run =ceh-init.sh=, but Ceh will show a warning message on stderr
+about that.
+
 *** Troubleshooting if something is broken after git pull
-Sometimes there are package name changes and other complications that
-can cause filename collissions or dynamic linking issues after a =git
-pull= in =/opt/ceh=.  The easiest thing to try in that case is to
-remove all the nix profiles that is used by ceh.  This will ensure
-that we can install all the packages afresh:
-: rm /nix/var/nix/profiles/ceh/*
+Sometimes there are changes that are not backward compatible with the
+previous =ceh-init.sh=.  In those cases we do our best to provide
+warning messages on stderr from scripts, and those messages will ask
+you to rerun =ceh-init.sh=.  That operation is idempotent, feel free
+to run it you think it can fix up something for you.
 
-This operation will be cheap, because everything is already downloaded
-and built in =/nix/store= (so don't run =nix-collect-garbage= or
-=ceh_collect_garbage= before running your favorite binaries at least
-once).
-
-After this operation you have to re-run =ceh-init.sh= to re-create the
-=/nix/var/nix/profiles/ceh/essential= profile.
-
-=ceh-init.sh= is idempotent, feel free to run it if you think it can
-fix up something for you.
+You can also read the "Upgrade notes" section to know about changes.
 
 *** Disable the binary cache, for fun and profit
 You may just want to see if it's still possible to build a software
 from source, instead of using the nix binary cache.  Or the nix binary
 cache is down and you still want to install packages instead of having
-a break until it's back.
+to wait until it's back.
 
 In both cases, you can just set =$CEH_NO_BIN_CACHE= to 1 and then the
 wrapper scripts will start building packages instead of using the
@@ -93,6 +112,26 @@ parallelized by nix.
 
 
 * Upgrade notes
+*** 2014-05-08: refactoring
+From now on, we don't use profiles for Ceh's internal purposes.
+Instead we use the =/opt/ceh/installed= directory.
+
+Profiles essentially give you two features.  First, it's a way to
+track different states of what is installed and an easy way to roll
+back and forward between those states.  As we have git, we don't need
+this.  The other feature is that profiles give you a huge symlink farm
+that mimics a directory tree where only the currently installed
+packages are seen.  We don't need this feature either, because we have
+the wrappers in =/opt/ceh/bin= and we can just introduce a constant
+symlink farm for the manpages in =/opt/ceh/man=.
+
+This refactoring will also solve the constant issue around file
+collissions in profiles and package renames in upstream nixpkgs.
+
+You can safely delete =/nix/var/nix/profiles/ceh= and run a
+=nix-garbage-collect= to get rid of some old stuff that never would be
+deleted otherwise.
+
 *** 2014-03-04: refactoring
 The new place for the nixpkgs checkout of Ceh is =/opt/ceh/nixpkgs=,
 you can run =rm -rf /nix/var/ceh_nixpkgs= to remove the old cruft.
@@ -164,25 +203,21 @@ section, this is causes a filename collision.  This can be fixed:
 Ceh usually installs 32-bit binaries.  64-bit is very nice, but there
 are still a lot of environments with i686 machines not in amd64 mode.
 E.g. on a barebone VPS with standard servers (apache, exim, etc.) you
-can save a lot of memory and disk by choosing 32-bit.  Memory of these
-two is especially expensive.
+can save a lot of memory and disk by choosing 32-bit.  Memory at VPS
+providers can be especially expensive.
 
 On the other hand, not having a 64-bit GHC is pain when you're trying
 to write well performing code with bigger integers than 32-bit
-(e.g. project euler).
+(e.g. project euler).  Or when you just want to test your Haskell
+program on both architecture.
 
-For this reason, as an exception for GHC, we support turning to 64-bit
-via an envvar.  If =$CEH_GHC64= is 1, then ghc, cabal, etc. will be
+For this reason, as an exception for GHC, we support turning on 64-bit
+via an envvar.  If =$CEH_GHC64= is 1, then GHC, Cabal, etc. will be
 installed in 64-bit mode.  This of course only works, if your kernel
 is amd64.  But note, that your userspace doesn't have to be amd64.
 E.g. Debian ships amd64 kernel packages even for i686 installations.
 So you can save memory on standard apps, but still perform well in
 64-bit mode for project euler code.
-
-If you're switching between ghc 32-bit and 64-bit mode, then it's
-recommended to add =-$arch= to =install-dirs= user prefix in your
-=~/.cabal/config= file, so the installed packages for the two
-different architecture will land in different directories.
 
 *** Builtin packages, shipped with ceh
 The list can be found in =/opt/ceh/lib/Packages/GHC.nix=, feel free to
@@ -190,13 +225,11 @@ send pull requests if you need something.
 
 *** Installation of pure haskell, non-FFI packages
 The =/opt/ceh/bin/ghc= and =/opt/ceh/bin/cabal= scripts are wrapped in
-a way that the whole toolchain (ghc, gcc, ld) is used from Nix.
+a way that the whole toolchain (GHC, GCC, the linker) is used from Nix.
 
 This means that simple, non-FFI packages should just work out-of-the-box:
 : cabal update
 : vi ~/.cabal/config    (enable library-profiling if you want)
-                        (and add -$arch to install-dirs user -> prefix,
-                         if you want to use CEH_GHC64)
 : cabal install hflags
 
 But again, if we miss some basic, important package from the default
@@ -205,9 +238,10 @@ own machines.
 
 *** Installation of FFI packages
 For FFI packages to work, you of course need to have the required libs
-installed, so the package can link against them.  There is a special
-nix profile where we install all the nix packages for these libs to.
-To install a new package to this profile, you can do this:
+installed, so the package can link against them.  These packages are
+searched for in =/opt/ceh/installed/ghclibs(64)=.
+
+To install a new package there, you can do this:
 #+BEGIN_SRC perl
 #!/opt/ceh/lib/perl
 
@@ -216,7 +250,10 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install_for_ghc('openssl', AUTOINIT);
+# BerkeleyDB
+ceh_nixpkgs_install_ghclibs('db', AUTOINIT);
+# BerkeleyDB for CEH_GHC64=1
+ceh_nixpkgs_install_ghclibs('db', bit64 => 1, AUTOINIT);
 #+END_SRC
 
 AUTOINIT will be replaced by the current nixpkgs version and the
@@ -229,8 +266,8 @@ recorded, just want to install a lib to the correct profile for a
 quick =cabal install=, you can use the
 =/opt/ceh/bin/ceh_nixpkgs_install_ghclibs= script.
 
-After that you will be able to simply call cabal install:
-: cabal install HsOpenSSL
+After that you will be able to simply call =cabal install=:
+: cabal install --user BerkeleyDB
 
 *** Hoogle usage
 To use hoogle for all the installed packages, first you have to
@@ -287,10 +324,9 @@ there.
 * Design and other info for Ceh hackers, maintainers
 *** Directory structure
 =/opt/ceh/bin/=: wrapper scripts, they make sure that the wanted
-package is already installed into ceh's bin nix profile
-(=/nix/var/nix/profiles/ceh/bin=) and into the nix store
-(=/nix/store=).  After this initialization they just exec the binary
-from =/nix/store=,
+package is already installed into =/nix/store= and symlinked from
+=/opt/ceh/installed=.  After this initialization they just exec
+the binary from =/nix/store=,
 
 =/opt/ceh/bin-user/=: gitignored directory for local exclusions, so the
 end-user has the final say.  The =scripts/ceh-profile.sh= script puts
@@ -306,7 +342,7 @@ extremely useful, because if Ceh is installed, you can simply use
 without using the tilde expansion of the shell (that doesn't work in
 syscalls or on the shebang line),
 
-=/opt/ceh/lib/=: the Ceh (mainly Perl) internals,
+=/opt/ceh/lib/=: the Ceh (mainly written in Perl) internals,
 
 =/opt/ceh/p/=: gitignored symlinks to the user's projects, so every project can
 have an absolute symlink in =/opt/ceh/p/whatever-project=, like we
@@ -318,6 +354,7 @@ have =/opt/ceh/home= as an absolute path for the user's home directory,
 
 =/opt/ceh/nixpkgs=: contains checked out versions of the nixpkgs
 package collection, used and maintained by =lib/CehInstall.pm=,
+gitignored,
 
 =/nix=: not in Git, but doesn't store any important data.  Deleting
 all the content and reinstalling Ceh will result in some compilation
@@ -326,21 +363,22 @@ and downloading, but everything will be recreated eventually,
 =/nix/store=: contains the installed package roots.  Managed by nix
 commands, like =nix-store=, =nix-env= and =nix-instantiate=,
 
-=/nix/var/nix/profiles/ceh=: nix user environments (or profiles for
-short).  A nix profile is a set of installed packages from
-=/nix/store=.  The packages are merged together as a symlink farm in
-the profile to show a unixish prefix root with =bin/=, =share/= and
-other usual directories.  Old versions of the profiles can be garbage
-collected by running =ceh_collect_garbage=,
+=/opt/ceh/installed/packages=: gitignored directory storing the currently
+installed packages on a machine.  The state is stored as symlinks to
+=/nix/store= and there are symlinks to here from
+=/nix/var/nix/gcroots/auto/ceh=.  So the purpose of this directory is
+two-fold: first, it protects the packages that the user use from being
+garbage collected.  Secondly, we can determine with a simple =stat=
+whether a package is already installed.
 
-=/nix/var/nix/profiles/ceh/bin=: the profile for packages installed by
-wrapper scripts in =/opt/ceh/bin=,
+=/opt/ceh/installed/essential=: nix and perl that is used by Ceh,
 
-=/nix/var/nix/profiles/ceh/ghc-libs=: the profile for clibs that are
-needed to install FFI libraries with cabal,
+=/opt/ceh/installed/ghctools=: gcc and pkgconfig used by GHC,
 
-=/nix/var/nix/profiles/ceh/tools=: the profile for tools used by ceh
-itself (e.g. =which=).
+=/opt/ceh/installed/ghclibs=: clibs that are needed for the user to
+=cabal install FFI= libraries, see above,
+
+=/opt/ceh/installed/tools=: the tools used by Ceh itself (e.g. =which=).
 
 *** Adding a new package to ceh
 + Simply create a wrapper script in =/opt/ceh/bin=, use =tmux= as an example,
@@ -349,6 +387,7 @@ itself (e.g. =which=).
   After running this wrapper once, the AUTOINIT will be replaced with
   the current nixpkgs version and out hash value.
 + add it to =scripts/maintainer/install-world.sh=,
++ symlink manpages in =/opt/ceh/man= if appropriate,
 + send a github pull request.
 
 *** Upgrading ceh to a new baseline
@@ -363,8 +402,8 @@ itself (e.g. =which=).
 
 + Update the used Nix and Perl to the new baseline:
 : CEH_AUTO_UPGRADE=1 \
-: ENSURE_BASE_PERL=/nix/var/nix/profiles/ceh/essential/bin/perl \
-: ENSURE_BASE_NIXPATH=/nix/var/nix/profiles/ceh/essential/ /opt/ceh/lib/ensure_base_installed.pl
+: ENSURE_BASE_PERL=/opt/ceh/installed/essential/perl/bin/perl \
+: ENSURE_BASE_NIXPATH=/opt/ceh/installed/essential/nix /opt/ceh/lib/ensure_base_installed.pl
 
 + Update CEH_BASELINE_NIXPATH in =lib/CehBase.pm= (peek from CehInstall.pl:ensure_base_installed).
 
