@@ -9,8 +9,8 @@ exec $ENSURE_BASE_PERL -x $0
 # ^^^^^ This is needed, because perl -x is buggy.
 
 # This perl script is used in ceh-init.sh to install the correct
-# version of nix and perl into the essential profile by only using nix
-# tools given in ENSURE_BASE_NIXPATH:
+# version of nix and perl into /opt/ceh/installed/essential by only
+# using nix tools given in ENSURE_BASE_NIXPATH:
 #  - in the case of Ubuntu, Debian, etc. this is a minimal
 #    bootstrap.tar.gz downloaded from hydra,
 #  - in the case of NixOS, this is simply /run/current_system/sw.

@@ -1,19 +1,22 @@
 #!/opt/ceh/lib/perl
 # -*- mode: perl; -*-
 
-# This script can be used to install packages to the user's nix
-# profile quickly from the current nixpkgs baseline.  Of course,
-# without wrappers the resulting installation is not as useful as
-# something that is included in ceh, but you can still access the
-# executables through ~/.nix-profile/bin, so good for quick
-# experimentation.
+# This script can be used to install packages to
+# /opt/ceh/installed/user quickly from the current nixpkgs baseline.
+# Of course, without wrappers the resulting installation is not as
+# useful as something that is included in Ceh, but you can still
+# access the executables through /opt/ceh/installed/user/whatever/bin,
+# so good for quick experimentation.
 #
 # Available packages can be listed  with: ceh_nixpkgs_avail
-# Installed packages can be listed  with: nix-env -q '*'
-# Installed packages can be deleted with: nix-env -e foobar
+# To install a package: ceh_nixpkgs_install zsh
+# To install a package's amd64 version: ceh_nixpkgs_install zsh bit64 1
+# Installed packages can be listed  with: ls -l /opt/ceh/installed/user
+# Installed packages can be deleted with: rm /opt/ceh/installed/user/zsh
 #
 # If instead of the current ceh baseline of nixpkgs, you want to use
-# the most up-to-date nixpkgs, use nix commands to do that:
+# the most up-to-date nixpkgs, use nix commands to do that and simply
+# use nix-env (which will install into ~/.nix-profile):
 #   nix-channel --add http://nixos.org/channels/nixpkgs-unstable
 #   nix-channel --update
 #   nix-env -i vim
@@ -29,4 +32,4 @@ if (not $ARGV[0]) {
 
 my $pkg = shift @ARGV;
 
-ceh_nixpkgs_install($pkg, "/nix/var/nix/profiles/per-user/$ENV{USER}/profile", autoinit => 1, @ARGV);
+ceh_nixpkgs_install($pkg, gclink => "/opt/ceh/installed/user/$pkg", autoinit => 1, @ARGV);
