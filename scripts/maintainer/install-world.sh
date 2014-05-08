@@ -7,8 +7,12 @@ set -e
 
 install () {
     echo Installing $1
+    date1=$(date +"%s")
     /opt/ceh/bin/$1 --version >$CEH_INSTALLWORLDDIR/$1.out 2>&1 || true
     if [ "$CEH_GATHER_DERIVATIONS_ONLY" = "" ]; then
+        date2=$(date +"%s")
+        diff=$(($date2-$date1))
+        echo "FINISHED $1: $(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed."
         fgrep -q -- "$2" $CEH_INSTALLWORLDDIR/$1.out
     fi
 }
