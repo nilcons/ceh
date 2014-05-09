@@ -16,6 +16,7 @@ fi
 
 ceh_path_prepend /opt/ceh/bin
 ceh_path_prepend /opt/ceh/bin-user
+ceh_path_prepend /opt/ceh/man MANPATH
 
 if ! [ -e /run/current-system ]; then
     # non NixOS
