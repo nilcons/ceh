@@ -26,11 +26,15 @@ Building:
       (change V = 1 to V = 0)
       (change BuildFlavour to quick)
       (sorry, but add:
+
        libraries/integer-gmp_CONFIGURE_OPTS += \
          --configure-option=--with-gmp-libraries=$(shell \
-           dirname `readlink -f /nix/var/nix/profiles/ceh/ghc-build-bin/lib/libgmp.so`)
+           readlink -f /opt/ceh/installed/ghcbuild/gmp/lib) \
+         --configure-option=--with-gmp-includes=$(shell \
+           readlink -f /opt/ceh/installed/ghcbuild/gmp/include)
+
       )
-      (or ghc-build-bin64 if building 64 bit)
+        (or /opt/ceh/installed/ghcbuild/gmp.64/{lib,include} if building for 64 bits)
       (add GhcLibWay += p to quick if want library profiling)
 
     cd ..
