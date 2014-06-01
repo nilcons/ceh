@@ -5,11 +5,11 @@
     {
       coursera-dl = pkgs.callPackage (
         {stdenv, fetchurl, makeWrapper, pythonPackages}: stdenv.mkDerivation {
-          name = "coursera-dl-20130825";
+          name = "coursera-dl-20140529";
 
           src = fetchurl {
-            url = "https://github.com/jplehmann/coursera/archive/01cdfdecb008ce410195148c888439b65f1fe142.tar.gz";
-            sha256 = "0vpwwj7whpgkirx39xrwz1k15b0k17qxbngzg599xzmql9fvqi3j";
+            url = "https://github.com/coursera-dl/coursera/archive/031b7835b26a7347c6ac4b88dea781de82789c01.tar.gz";
+            sha256 = "0yykxf6dh3mrn87p2nlsv3cgalqxs4vyi3gdj4fjlv3y2f91lnm0";
           };
 
           buildInputs = [ makeWrapper pythonPackages.python
@@ -18,7 +18,7 @@
             pythonPackages.html5lib ];
 
           patchPhase = ''
-            sed -i "s|PATH_CACHE = os\.path\.join(ROOT, '_cache')|PATH_CACHE = '/opt/ceh/home/.courseradl_cache/'|" coursera/define.py
+            sed -i "s|PATH_CACHE = os\.path\.join(.*\$|PATH_CACHE = '/opt/ceh/home/.courseradl_cache'|" coursera/define.py
           '';
 
           installPhase = ''
