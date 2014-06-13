@@ -9,6 +9,6 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw($ceh_nix_install_root);
 
-ceh_nixpkgs_install("vboot_reference", nixpkgs_version => '8392c8ba9f5eefbd13a0956b75f7253405135ec8', out => 'c39k06q6b0a3d28l826zwq38yqfgvchw-vboot_reference-20130507');
+ceh_nixpkgs_install("vboot_reference", nixpkgs_version => 'c6261157f812eff0cdecc7cba3ee29be9224c4eb', out => 'rbx8v45kc3mh8jwxwn91r096540z70g7-vboot_reference-20130507');
 
 1;

@@ -2,7 +2,7 @@
 
 {
   packageOverrides = pkgs: {
-    cehGHC = pkgs.haskellPackages_ghc763_profiling.ghcWithPackages (hs:
+    cehGHC = pkgs.haskellPackages_ghc763_profiling.ghcWithPackagesOld (hs:
       let
         tzdata = hs.callPackage ./nilcons/tzdata.nix {};
         tz = hs.callPackage (import ./nilcons/tz.nix tzdata) {};
