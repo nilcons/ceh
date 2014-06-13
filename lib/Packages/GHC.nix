@@ -3,10 +3,7 @@
 {
   packageOverrides = pkgs: {
     cehGHC = pkgs.haskellPackages_ghc763_profiling.ghcWithPackagesOld (hs:
-      let
-        tzdata = hs.callPackage ./nilcons/tzdata.nix {};
-        tz = hs.callPackage (import ./nilcons/tz.nix tzdata) {};
-      in [
+      [
         # Selected from Haskell Platform:
         hs.attoparsec
         hs.fgl
@@ -122,6 +119,8 @@
         hs.testFrameworkTh
         hs.thyme
         hs.tls
+        hs.tz
+        hs.tzdata
         hs.unixTime
         hs.utf8String
         hs.utilityHt
@@ -130,10 +129,6 @@
         hs.zipArchive
         hs.X11
         hs.xtest
-
-        # nilcons.com packages still in development
-        tzdata
-        tz
       ]
     );
   };
