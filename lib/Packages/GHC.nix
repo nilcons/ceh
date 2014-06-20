@@ -109,7 +109,10 @@
         hs.sqliteSimple
         hs.snap
         hs.snapBlaze
-        hs.statistics
+        # Have to uncomment statistics, otherwise we get broken
+        # packages.  Statistics will still be installed, because
+        # criterion depends on it.  We should investigate this WTF.
+        # hs.statistics
         hs.statvfs
         hs.templateDefault
         hs.temporary
