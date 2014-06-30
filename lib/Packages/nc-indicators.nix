@@ -7,8 +7,8 @@
 
       cabal.mkDerivation (args: {
         pname = "nc-indicators";
-        version = "0.1";
-        sha256 = "19amwfcbwfxcj0gr7w0vgxl427l43q3l2s3n3zsxhqwkfblxmfy5";
+        version = "0.2";
+        sha256 = "0z3h0d3cl0xapysq5sh1rnbp8fg8adlq0x3i4ql9xin9in29q27q";
         isLibrary = false;
         isExecutable = true;
         buildDepends = [ attoparsec gtk hflags lens pipes stm ];
