@@ -86,6 +86,7 @@
         hs.hslogger
         hs.HsOpenSSL
         hs.hspec
+        hs.hybridVectors
         hs.kanExtensions
         hs.lens
         hs.lensDatetime
