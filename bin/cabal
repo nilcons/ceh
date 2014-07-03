@@ -6,7 +6,10 @@ use warnings;
 use lib "/opt/ceh/lib";
 use Packages::GHC;
 use CehBase;
+use CehInstall;
 
 foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
 
-exec "$ceh_ghc_root/bin/cabal", @ARGV;
+ceh_nixpkgs_install('haskellPackages.cabalInstall', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => '1hpaq3m6kzxamynq9kk48iplirxlb258-cabal-install-1.20.0.3');
+
+exec "$ceh_nix_install_root/bin/cabal", @ARGV;

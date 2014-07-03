@@ -4,10 +4,9 @@
 use strict;
 use warnings;
 use lib "/opt/ceh/lib";
-use Packages::GHC;
-use CehBase;
+use CehInstall;
 
-foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
+ceh_nixpkgs_install('haskellPackages.hoogle', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'szvna221jzryhlmyqv3sfp2d5kf5irmz-haskell-hoogle-ghc7.6.3-4.2.33');
 
 chdir "$ENV{HOME}/.hoogle";
-exec "$ceh_ghc_root/bin/hoogle", @ARGV;
+exec "$ceh_nix_install_root/bin/hoogle", @ARGV;

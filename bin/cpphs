@@ -6,7 +6,10 @@ use warnings;
 use lib "/opt/ceh/lib";
 use Packages::GHC;
 use CehBase;
+use CehInstall;
 
 foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
 
-exec "$ceh_ghc_root/bin/cpphs", @ARGV;
+ceh_nixpkgs_install('haskellPackages.cpphs', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'bw4dx194w47ii6q2bn4yznfixk5ywwkl-haskell-cpphs-ghc7.6.3-1.18.4');
+
+exec "$ceh_nix_install_root/bin/cpphs", @ARGV;

@@ -12,8 +12,6 @@ our @EXPORT = qw($ceh_ghc_root @ceh_ghc_libs);
 our $ceh_ghc_root = '';
 our @ceh_ghc_libs = ();
 
-$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/GHC.nix";
-
 sub ceh_nixpkgs_install_ghctools {
     my ($pkgattr, %opts) = @_;
     return ceh_nixpkgs_install($pkgattr, gclink => "/opt/ceh/installed/ghctools/$pkgattr", %opts);
@@ -68,10 +66,23 @@ if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {
     path_prepend("$outpkg/bin");
     $ENV{CEH_GCC_WRAPPER_FLAGS_SET}=1;
 }
-if ($ENV{CEH_GHC64}) {
-    $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", bit64 => 1, nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'l54ivgy18gx628ajx4np9ag53wlq5p1b-haskell-env-ghc-7.6.3');
+
+if ($ENV{CEH_GHC78}) {
+    $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/GHC78.nix";
+
+    if ($ENV{CEH_GHC64}) {
+        $ceh_ghc_root=ceh_nixpkgs_install("cehGHC78", bit64 => 1, nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'qxihwk2iqqg47y4iq2xkrb91la8na2yq-ghc-7.8.2');
+    } else {
+        $ceh_ghc_root=ceh_nixpkgs_install("cehGHC78", nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'spsj4v61pv4g8ywvrcpk0n6almb8x76m-ghc-7.8.2');
+    }
 } else {
-    $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => '76i51q1y1zlyw7j9024vzvg0imlfmjqg-haskell-env-ghc-7.6.3');
+    $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/GHC.nix";
+
+    if ($ENV{CEH_GHC64}) {
+        $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", bit64 => 1, nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => '9iqkjcjpfsdywz3nmd9wci61v22nhz1d-haskell-env-ghc-7.6.3');
+    } else {
+        $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => '2rcbh725yyayfvgvk02bybs0s51h5vzw-haskell-env-ghc-7.6.3');
+    }
 }
 
 1;

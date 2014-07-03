@@ -4,6 +4,8 @@
 use strict;
 use warnings;
 use lib "/opt/ceh/lib";
-use Packages::GHC;
+use CehInstall;
 
-exec "$ceh_ghc_root/bin/haddock", @ARGV;
+ceh_nixpkgs_install('haskellPackages.haddock', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'pr61m0wqn0si2fql1qp89jgg70p86r3p-haskell-haddock-ghc7.6.3-2.13.2');
+
+exec "$ceh_nix_install_root/bin/haddock", @ARGV;

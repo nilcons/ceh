@@ -30,28 +30,15 @@
         hs.vector
         hs.xhtml
         hs.zlib
-        hs.cabalInstall_1_18_0_3
         hs.Cabal_1_18_1_3
         hs.alex
-        # don't specify haddock, it's shipped with ghc in Nix, if
-        # specified again, we get collissions
         hs.happy
         hs.primitive
 
         # command line tools
-        hs.hlint
-        hs.hoogle
-        hs.cabal2nix
-        hs.cabalGhci
         hs.ghcMod
         hs.ghcVis
         hs.ghcHeapView
-        hs.hakyll
-        hs.pandoc
-
-        # compilation tools
-        hs.c2hs
-        hs.hscolour
 
         # Selected by CEH
         hs.async

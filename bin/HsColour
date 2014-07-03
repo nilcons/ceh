@@ -4,6 +4,8 @@
 use strict;
 use warnings;
 use lib "/opt/ceh/lib";
-use Packages::GHC;
+use CehInstall;
 
-exec "$ceh_ghc_root/bin/HsColour", @ARGV;
+ceh_nixpkgs_install('haskellPackages.hscolour', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'mlkzwzyfpwsvr4hjn4khl1y3y5qsyigj-haskell-hscolour-ghc7.6.3-1.20.3');
+
+exec "$ceh_nix_install_root/bin/HsColour", @ARGV;
