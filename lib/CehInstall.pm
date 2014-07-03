@@ -283,8 +283,8 @@ sub ceh_nixpkgs_install_essential {
 }
 
 sub ensure_base_installed {
-    ceh_nixpkgs_install_essential('nix', nixpkgs_version => 'c6261157f812eff0cdecc7cba3ee29be9224c4eb', out => 'a6yq7k4963v7f466ggg0fwsggjddnm5h-nix-1.7');
-    ceh_nixpkgs_install_essential('perl', nixpkgs_version => 'c6261157f812eff0cdecc7cba3ee29be9224c4eb', out => '6mw6078n0lj5h90l7qpqfdz0f93hk9jc-perl-5.16.3');
+    ceh_nixpkgs_install_essential('nix', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'wwglvkr68djk1x6ihvb8hw7d2k96igls-nix-1.7');
+    ceh_nixpkgs_install_essential('perl', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => '9b1pb98rgdw550wlcdmy6aafyasqz7mj-perl-5.16.3');
 }
 
 our $freshness_being_ensured;

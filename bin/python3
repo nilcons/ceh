@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('python3', nixpkgs_version => 'c6261157f812eff0cdecc7cba3ee29be9224c4eb', out => 'zil814kj2zql603apdq7482xifmwr1jp-python3-3.4.1');
+ceh_nixpkgs_install('python3', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'hq0vv89h0dmwfcca0xd54vl5qb25k35c-python3-3.4.1');
 
 exec "$ceh_nix_install_root/bin/python3", @ARGV;

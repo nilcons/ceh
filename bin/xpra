@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install("xpra", nixpkgs_version => 'c6261157f812eff0cdecc7cba3ee29be9224c4eb', out => '6ici6ng79fvhqxzjzbhqgvdhpivfd3lv-xpra-0.12.5');
+ceh_nixpkgs_install("xpra", nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'sajl20jmjaqxdrjv67i9b6nv6ijbwjk5-xpra-0.11.6');
 
 exec "$ceh_nix_install_root/bin/xpra", @ARGV;

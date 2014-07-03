@@ -6,7 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/nc-indicators.nix";
-ceh_nixpkgs_install('nc-indicators', nixpkgs_version => 'c6261157f812eff0cdecc7cba3ee29be9224c4eb', out => 'jfcwm31j60zgic441aiwmfn4dwhv3is8-nc-indicators-0.2');
+ceh_nixpkgs_install('haskellPackages_ghc763_profiling.nc-indicators', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'j4h4cgwlq5skjghb7lyclkf4dcwflwp4-nc-indicators-0.2');
 
 exec "$ceh_nix_install_root/bin/nc-indicators", @ARGV;

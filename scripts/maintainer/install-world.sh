@@ -46,10 +46,10 @@ fi
     nix-store --add-fixed sha256 jdk-6u45-linux-x64.bin
 
     # Java 7
-    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u55-b13/jdk-7u55-linux-i586.tar.gz
-    nix-store --add-fixed sha256 jdk-7u55-linux-i586.tar.gz
-    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u55-b13/jdk-7u55-linux-x64.tar.gz
-    nix-store --add-fixed sha256 jdk-7u55-linux-x64.tar.gz
+    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u60-b19/jdk-7u60-linux-i586.tar.gz
+    nix-store --add-fixed sha256 jdk-7u60-linux-i586.tar.gz
+    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u60-b19/jdk-7u60-linux-x64.tar.gz
+    nix-store --add-fixed sha256 jdk-7u60-linux-x64.tar.gz
 
     # Now we're using a flash player that is downloadable from adobe,
     # but this may change in the future, so leave the hack here as a

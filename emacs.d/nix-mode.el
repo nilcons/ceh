@@ -1,2 +1,2 @@
-(let ((nix-mode-hash "a6yq7k4963v7f466ggg0fwsggjddnm5h-nix-1.7"))
+(let ((nix-mode-hash "wwglvkr68djk1x6ihvb8hw7d2k96igls-nix-1.7"))
   (load (concat "/nix/store/" nix-mode-hash "/share/emacs/site-lisp/nix-mode.el")))
