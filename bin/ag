@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install("silver-searcher", nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'vf9q7736gkk13ykp4m0g31g0akv0iwbf-silver-searcher-0.21.0');
+
+exec "$ceh_nix_install_root/bin/ag", @ARGV;
