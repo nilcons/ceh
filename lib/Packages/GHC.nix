@@ -111,6 +111,7 @@
         hs.testFrameworkTh
         hs.thyme
         hs.tls
+        hs.trifecta
         hs.tz
         hs.tzdata
         hs.unixTime
