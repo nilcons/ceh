@@ -77,7 +77,7 @@ install cpphs "cpphs 1"
 install emacs "GNU Emacs"
 CEH_GHC64= install ghc "Glorious Glasgow Haskell Compilation System"
 CEH_GHC64= /opt/ceh/scripts/ghc-build-shell.pl </dev/null || true
-install gitceh "git version 1"
+install gitceh "git version 2"
 install git-annex "Usage: git-annex command"
 CEH_JAVA64= CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
 CEH_JAVA64= CEH_JAVAFLAVOR=sun6 install javac  "javac: invalid flag: --version"
