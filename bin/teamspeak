@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install('teamspeak_client', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'j7slqngyyhvyzj6ja8b9vwks6azdchml-teamspeak-client-3.0.13.1');
+
+exec "$ceh_nix_install_root/bin/ts3client", @ARGV;
