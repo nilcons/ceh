@@ -9,6 +9,6 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw($ceh_nix_install_root);
 
-ceh_nixpkgs_install("emacs", nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => '0nylryx8gl2whjcd29icsgxci217qrl5-emacs-24.3');
+ceh_nixpkgs_install("emacs", nixpkgs_version => '0852d9e3643458ebd435b366bb3ecd79b0f47400', out => 'jvda9lybbp3daagph5axxpw0wp8yp2rn-emacs-24.3');
 
 1;

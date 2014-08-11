@@ -7,6 +7,6 @@ use lib "/opt/ceh/lib";
 use CehInstall;
 
 $ENV{NIXPKGS_CONFIG}='/opt/ceh/lib/Packages/coursera.nix';
-ceh_nixpkgs_install('coursera-dl', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'fmv8p67kk8h9cxfl92ng1vk8dribn9z5-coursera-dl-20140529');
+ceh_nixpkgs_install('coursera-dl', nixpkgs_version => '0852d9e3643458ebd435b366bb3ecd79b0f47400', out => '2yq6pgz4xk3d37ka625qsjb124cb9gmw-coursera-dl-20140529');
 
 exec "$ceh_nix_install_root/bin/coursera-dl", @ARGV;

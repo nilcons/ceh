@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('haskellPackages.hscolour', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'mlkzwzyfpwsvr4hjn4khl1y3y5qsyigj-haskell-hscolour-ghc7.6.3-1.20.3');
+ceh_nixpkgs_install('haskellPackages.hscolour', nixpkgs_version => '0852d9e3643458ebd435b366bb3ecd79b0f47400', out => 'dyj78fzj9bliclsri7a35w0spg5n0b2h-haskell-hscolour-ghc7.8.3-1.20.3-shared');
 
 exec "$ceh_nix_install_root/bin/HsColour", @ARGV;

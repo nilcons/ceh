@@ -9,6 +9,6 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw($ceh_nix_install_root);
 
-ceh_nixpkgs_install("gitAndTools.gitFull", nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'np0s05j80jz414lknjmzbiny4g79pfhb-git-2.0.1');
+ceh_nixpkgs_install("gitAndTools.gitFull", nixpkgs_version => '0852d9e3643458ebd435b366bb3ecd79b0f47400', out => '3sc6b2lmwv0yfazzm3vka6abp8xhqriv-git-2.0.2');
 
 1;

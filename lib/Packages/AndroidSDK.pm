@@ -9,6 +9,6 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw($ceh_nix_install_root);
 
-ceh_nixpkgs_install("androidsdk_4_1", nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => '2bfkymdlifszhihail28rc1x5infylsr-android-sdk-22.6.2');
+ceh_nixpkgs_install("androidsdk_4_1", nixpkgs_version => '0852d9e3643458ebd435b366bb3ecd79b0f47400', out => 'ix791hsjaa23ld4k216vjbqraqb77d1w-android-sdk-22.6.2');
 
 1;

@@ -8,5 +8,6 @@
 :def doc \x -> return $ ":!hoogle --info \"" ++ x ++ "\""
 
 -- supplied with ceh, isn't this cool?
-:script /opt/ceh/installed/packages/cehGHC/share/ghci/ghc-heap-view
-:script /opt/ceh/installed/packages/cehGHC/share/ghci/ghc-vis
+-- not supported by ghc 7.8
+-- :script /opt/ceh/installed/packages/cehGHC/share/ghci/ghc-heap-view
+-- :script /opt/ceh/installed/packages/cehGHC/share/ghci/ghc-vis

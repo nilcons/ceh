@@ -6,11 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-# TODO(errge): This is a temporary hack, until we convert to ghc
-# 7.8.1, where happy 1.19 and alex 3.1 is the default.  Since pandoc
-# (and therefore hakyll) depends on the haskell platform happy and
-# alex in Nixpkgs, we can't provide a new happy and alex in GHC.nix
-# (because that would cause binary conflicts in the profile).
-ceh_nixpkgs_install('haskellPackages_ghc763_profiling.alex_3_1_3', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'b0fdwadik3wr88lqvrlwhzj0c8cscq2r-alex-3.1.3');
+ceh_nixpkgs_install('haskellPackages_ghc783_profiling.alex', nixpkgs_version => '0852d9e3643458ebd435b366bb3ecd79b0f47400', out => '23jd5zbd9g98f62ij4njwik5xkci2lpa-alex-3.1.3');
 
 exec "$ceh_nix_install_root/bin/alex", @ARGV;

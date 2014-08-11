@@ -2,7 +2,7 @@
 
 {
   packageOverrides = pkgs: {
-    cehGHC = pkgs.haskellPackages_ghc763_profiling.ghcWithPackagesOld (hs:
+    cehGHC = pkgs.haskellPackages_ghc783_profiling.ghcWithPackagesOld (hs:
       [
         # Selected from Haskell Platform:
         hs.attoparsec
@@ -30,15 +30,14 @@
         hs.vector
         hs.xhtml
         hs.zlib
-        hs.Cabal_1_18_1_3
         hs.alex
         hs.happy
         hs.primitive
 
         # command line tools
         hs.ghcMod
-        hs.ghcVis
-        hs.ghcHeapView
+        #hs.ghcVis
+        #hs.ghcHeapView
 
         # Selected by CEH
         hs.async
@@ -62,7 +61,8 @@
         hs.elerea
         hs.filemanip
         hs.Glob
-        hs.gloss
+        # TODO: temporarily broken nar.xz file in the binary cache
+        #hs.gloss
         hs.gtk
         hs.haskeline
         hs.haskellSrcExts
@@ -98,10 +98,7 @@
         hs.sqliteSimple
         hs.snap
         hs.snapBlaze
-        # Have to uncomment statistics, otherwise we get broken
-        # packages.  Statistics will still be installed, because
-        # criterion depends on it.  We should investigate this WTF.
-        # hs.statistics
+        hs.statistics
         hs.statvfs
         hs.templateDefault
         hs.temporary
