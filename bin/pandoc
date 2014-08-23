@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('haskellPackages.pandoc', nixpkgs_version => '0852d9e3643458ebd435b366bb3ecd79b0f47400', out => 'qzw3z9sabflva5db7jwj99xrrqvln9m0-haskell-pandoc-ghc7.8.3-1.12.4.2-shared');
+ceh_nixpkgs_install('haskellPackages.pandoc', nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => 'y93vyh3k6bp98fsg1h36j9cbpfqabb3x-haskell-pandoc-ghc7.8.3-1.12.4.2-shared');
 
 exec "$ceh_nix_install_root/bin/pandoc", @ARGV;

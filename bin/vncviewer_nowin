@@ -7,6 +7,6 @@ use lib "/opt/ceh/lib";
 use CehInstall;
 
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/tigervnc_nowin.nix";
-ceh_nixpkgs_install('tigervncNoWin', nixpkgs_version => '0852d9e3643458ebd435b366bb3ecd79b0f47400', out => 'za9rwckyk57kr35zhalipyskjcsl367d-tigervnc-r5129');
+ceh_nixpkgs_install('tigervncNoWin', nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => '88wi2crpnfgsljgwzdvs500n1qg178ws-tigervnc-r5129');
 
 exec "$ceh_nix_install_root/bin/vncviewer", @ARGV;

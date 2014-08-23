@@ -10,6 +10,6 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw($ceh_nix_install_root);
 
 # TODO: https://github.com/NixOS/nixpkgs/pull/3376
-ceh_nixpkgs_install("gitAndTools.gitAnnex", nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => '9zbsd3b1kqf13icwy892g5ar16y7sfyw-git-annex-5.20140613');
+ceh_nixpkgs_install("gitAndTools.gitAnnex", nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => 'zqgs3ld4w69smxzy7zp867ql48rnw8hx-git-annex-5.20140717');
 
 1;

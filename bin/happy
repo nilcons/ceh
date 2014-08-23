@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('haskellPackages_ghc783_profiling.happy', nixpkgs_version => '0852d9e3643458ebd435b366bb3ecd79b0f47400', out => 'brl4mr6r4dvvdhcdshn3hvmkrgclqf1j-happy-1.19.4');
+ceh_nixpkgs_install('haskellPackages_ghc783_profiling.happy', nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => 'cgvvl2i4dd5k25m7ni2834afq2ldw7sj-happy-1.19.4');
 
 exec "$ceh_nix_install_root/bin/happy", @ARGV;

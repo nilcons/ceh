@@ -7,6 +7,6 @@ use lib "/opt/ceh/lib";
 use CehInstall;
 
 # TODO: update when version 0.3 is in nix
-ceh_nixpkgs_install('haskellPackages_ghc763_profiling.nc-indicators', nixpkgs_version => 'f666bf4ddf3f5f50cad6e17907dae53d545444d0', out => 'j4h4cgwlq5skjghb7lyclkf4dcwflwp4-nc-indicators-0.2');
+ceh_nixpkgs_install('haskellPackages_ghc783_profiling.nc-indicators', nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => 'mn2pi9am1s05qavch7x0dwj3m0ccnq0r-nc-indicators-0.3');
 
 exec "$ceh_nix_install_root/bin/nc-indicators", @ARGV;
