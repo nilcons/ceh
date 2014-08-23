@@ -6,6 +6,7 @@ set -e
 
 cd /opt/ceh
 
+export CEH_BUILD_MAX_JOBS=32
 if [ "$TRAVIS_BRANCH" = "travis-baseline" ]; then
     export CEH_AUTO_UPGRADE=1
     echo '------------------------------  PREDICT BINARY CACHE ------------------------------'
