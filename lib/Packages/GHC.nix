@@ -61,8 +61,7 @@
         hs.elerea
         hs.filemanip
         hs.Glob
-        # TODO: temporarily broken nar.xz file in the binary cache
-        #hs.gloss
+        hs.gloss
         hs.gtk
         hs.haskeline
         hs.haskellSrcExts
@@ -119,6 +118,28 @@
         hs.zipArchive
         hs.X11
         hs.xtest
+
+        # Selected by FP Complete
+        hs.basicPrelude
+        hs.classyPreludeConduit
+        hs.conduitCombinators
+        hs.conduitExtra
+        hs.doubleConversion
+        hs.hamlet
+        hs.httpClient
+        hs.httpClientTls
+        hs.httpConduit
+        hs.httpTypes
+        hs.pathPieces
+        hs.persistent
+        hs.persistentTemplate
+        hs.shakespeare
+        hs.shakespeareCss
+        hs.uuid
+        hs.xmlConduit
+        hs.yesod
+        hs.yesodStatic
+        hs.zlibConduit
       ]
     );
   };
