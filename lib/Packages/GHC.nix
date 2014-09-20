@@ -118,6 +118,7 @@
         hs.zipArchive
         hs.X11
         hs.xtest
+        hs.zeromq4Haskell
 
         # Selected by FP Complete
         hs.basicPrelude
