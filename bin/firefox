@@ -24,6 +24,7 @@ use CehInstall;
 
 # To enable google talk plugin and jre plugin.
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/firefox.nix";
-ceh_nixpkgs_install('firefoxCeh', nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => 'i37lcwm779w6rzspdvi0i5bgfj7kkb1k-firefox-ceh');
+# TODO(errge): normal baseline, once we update the baseline in 2014-October
+ceh_nixpkgs_install('firefoxCeh', nixpkgs_version => '64c156d1987ca2012275384f2d9e1cdfbf7c1a7f', out => 'bxyrawvq7lkhcsqfzkrdl1wlnx6wbrxl-firefox-ceh');
 
 exec "$ceh_nix_install_root/bin/firefox", @ARGV;
