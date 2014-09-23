@@ -18,4 +18,10 @@ if [ "$TRAVIS_TEST_RESULT" != 0 ]; then
     cd /tmp/installworld*
     ls -lart
     tail -n 100 `ls -1rt | tail -n1`
+
+    echo DF AFTER THE FAILURE:
+    df
+
+    echo FREE AFTER THE FAILURE:
+    free
 fi
