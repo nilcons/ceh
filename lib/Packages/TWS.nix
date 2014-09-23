@@ -20,13 +20,13 @@
 	buildInputs = [ unzip ];
 
 	unpackPhase = ''
-	  mkdir $out/share/tws-jars
+	  mkdir -p $out/share/tws-jars
 	  cp $jts $out/share/tws-jars/jts.jar
 	  cp $total $out/share/tws-jars/total.jar
 	'';
 
 	installPhase = ''
-	  mkdir $out/bin
+	  mkdir -p $out/bin
 	  cat >$out/bin/tws-ui <<'EOF'
 #!/bin/sh
 

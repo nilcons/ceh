@@ -22,9 +22,9 @@
           '';
 
           installPhase = ''
-            mkdir $out/bin/.wrapped
+            mkdir -p $out/bin/.wrapped
             cp -av coursera-dl $out/bin/.wrapped/coursera-dl
-            mkdir $out/lib/${pythonPackages.python.libPrefix}/site-packages/coursera
+            mkdir -p $out/lib/${pythonPackages.python.libPrefix}/site-packages/coursera
             cp -av coursera/*.py $out/lib/${pythonPackages.python.libPrefix}/site-packages/coursera
             makeWrapper ${pythonPackages.python}/bin/python $out/bin/coursera-dl \
               --prefix PYTHONPATH : $PYTHONPATH \
