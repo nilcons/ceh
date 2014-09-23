@@ -1,7 +1,7 @@
 source $stdenv/setup
 
 echo "unpacking $src..."
-ensureDir $out/share
+mkdir $out/share
 cd $out/share
 tar xvfa $src   # -> firefox
 
@@ -15,7 +15,7 @@ for bin in `find -perm +0100 -type f | grep -v '\.s[oh]$'` ; do
              --set-rpath $libPath:$out/firefox $bin
 done
 
-ensureDir $out/bin
+mkdir $out/bin
 cd $out/bin
 cat >firefox <<EOF
 #!/bin/sh
