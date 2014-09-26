@@ -17,9 +17,9 @@
         builder = ./firefox-builder.sh;
 
         src = fetchurl {
-          url = "https://download.mozilla.org/?product=firefox-32.0.2&os=linux&lang=en-US";
+          url = "https://download.mozilla.org/?product=firefox-32.0.3&os=linux&lang=en-US";
           name = "firefox.tar.bz2";
-          sha256 = "0qyljclqk3m80ai1djxry7ndqh4kwmw5x2w489b6z462jd7b6rql";
+          sha256 = "10kr068ghvyhf59khw5dn1phz4phbpjcvg88inpdwbjz3bgyani6";
         };
 
         flashplayer_path = flashplayer;
