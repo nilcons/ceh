@@ -60,6 +60,7 @@
         hs.directSqlite
         hs.elerea
         hs.filemanip
+        hs.foldl
         hs.Glob
         hs.gloss
         hs.gtk
@@ -141,6 +142,11 @@
         hs.yesod
         hs.yesodStatic
         hs.zlibConduit
+
+        # Selected for Cloud Haskell
+        hs.networkTransportTcp
+        hs.distributedProcess
+        hs.multimap
       ]
     );
   };
