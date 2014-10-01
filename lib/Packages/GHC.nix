@@ -159,6 +159,8 @@
         hs.distributedProcess
         hs.multimap
         hs.networkTransportTcp
+        hs.tasty
+        hs.tastyHunit
         hs.safecopy
         hs.sodium
         hs.unboundedDelays
