@@ -153,9 +153,10 @@
         hs.zlibConduit
 
         # Selected for Cloud Haskell
-        hs.networkTransportTcp
+        hs.clock
         hs.distributedProcess
         hs.multimap
+        hs.networkTransportTcp
         hs.sodium
       ]
     );
