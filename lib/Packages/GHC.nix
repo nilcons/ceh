@@ -102,6 +102,7 @@
         hs.prettyShow
         hs.randomFu
         hs.regexTdfa
+        hs.regexTdfaRc
         hs.regexTdfaText
         hs.SafeSemaphore
         hs.sqliteSimple
@@ -153,11 +154,14 @@
         hs.zlibConduit
 
         # Selected for Cloud Haskell
+        hs.acidState
         hs.clock
         hs.distributedProcess
         hs.multimap
         hs.networkTransportTcp
+        hs.safecopy
         hs.sodium
+        hs.unboundedDelays
       ]
     );
   };
