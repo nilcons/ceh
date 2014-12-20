@@ -4,6 +4,7 @@ set -e
 
 export CEH_NIX_DOWNLOAD=http://hydra.nixos.org/build/17897582/download/1/nix-1.8-i686-linux.tar.bz2
 export NIX_TARDIR_NAME=nix-1.8-i686-linux
+export CEH_NIX=/nix/store/a1kr8kds4jdvvfl6z4gj0gr9w27awhnd-nix-1.8
 
 export LANG=C LC_ALL=C
 
@@ -144,6 +145,9 @@ then
   ln -s /nix/var/nix/profiles/per-user/$USER/profile $HOME/.nix-profile
   ( cd /nix/var/nix/profiles/per-user ; ln -s $USER root )
   mkdir -p $HOME/.nix-defexpr
+
+  # Initialize the nix store
+  $CEH_NIX/bin/nix-store --load-db < $NIX_TARDIR_NAME/.reginfo
 
   # This also initializes the nixpkgs git repo in /opt/ceh/nixpkgs.
   ENSURE_BASE_PERL=/nix/store/p0kbl09j5q88d9i96ap4arffsd5ybjwx-perl-5.20.1/bin/perl \
