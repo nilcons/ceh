@@ -425,8 +425,8 @@ whether a package is already installed.
 
 + Update the used Nix and Perl to the new baseline:
 : CEH_AUTO_UPGRADE=1 \
-: ENSURE_BASE_PERL=/opt/ceh/installed/essential/perl/bin/perl \
-: ENSURE_BASE_NIXPATH=/opt/ceh/installed/essential/nix /opt/ceh/lib/ensure_base_installed.pl
+: ENSURE_BASE_PERL=/opt/ceh/installed/essential/perl.32/bin/perl \
+: ENSURE_BASE_NIXPATH=/opt/ceh/installed/essential/nix.32 /opt/ceh/lib/ensure_base_installed.pl
 
 + Update CEH_BASELINE_NIXPATH in =lib/CehBase.pm= (peek from CehInstall.pl:ensure_base_installed).
 

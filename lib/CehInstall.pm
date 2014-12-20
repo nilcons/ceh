@@ -290,8 +290,8 @@ sub ensure_base_installed {
 our $freshness_being_ensured;
 sub check_nix_freshness {
     return if ($freshness_being_ensured);
-    if (not nix_symlinked_p("$CEH_ESSGCLINKDIR/nix", "$CEH_BASELINE_NIXPATH") or
-        not nix_symlinked_p("$CEH_ESSGCLINKDIR/perl", "$CEH_BASELINE_PERL")) {
+    if (not nix_symlinked_p("$CEH_ESSGCLINKDIR/nix.32", "$CEH_BASELINE_NIXPATH") or
+        not nix_symlinked_p("$CEH_ESSGCLINKDIR/perl.32", "$CEH_BASELINE_PERL")) {
         debug "Nix or Perl is outdated in the essential Ceh directory, let's reinstall them!";
         debug "If this fails, please run /opt/ceh/scripts/ceh-init.sh!\n";
         local $freshness_being_ensured = 1;

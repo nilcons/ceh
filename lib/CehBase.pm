@@ -20,7 +20,7 @@ our @EXPORT = qw($CEH_ESSNIXPATH $CEH_ESSGCLINKDIR
 # a working set of nix- binaries.  This feature is used in ceh-init.sh
 # to handle NixOS and other distributions differently.
 our $CEH_ESSGCLINKDIR='/opt/ceh/installed/essential';
-our $CEH_ESSNIXPATH="$CEH_ESSGCLINKDIR/nix";
+our $CEH_ESSNIXPATH="$CEH_ESSGCLINKDIR/nix.32";
 our $CEH_NIXPKGS_GITURL='http://github.com/NixOS/nixpkgs';
 our $CEH_NIXPKGS_GIT='/opt/ceh/nixpkgs';
 
