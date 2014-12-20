@@ -11,20 +11,18 @@
   instead of abstractions (e.g. =/opt/ceh/home= has to be a symlink
   for the user's home directory, no need to =$HOME= or tilde lookups
   anymore).
-+ We use i686 Nix for package management and if you can decide the
-  distribution that you use as a base system, we recommend i686 Debian
-  (maybe with amd64 kernel, if you sometimes need the extra registers
-  and stuff for your own programs).  But the point is that this should
-  work on any modern GNU/Linux, we also tested Ubuntu trusty and precise
-  both i686 and amd64.
-+ When it makes sense, we provide 64-bit version of packages too,
-  e.g. you can use 64-bit haskell by setting the =CEH_GHC64=
++ We use amd64 Nix for package management and if you can decide on the
+  distribution that you use as a base system, we recommend amd64 Debian.
+  But the point is that this should work on any modern amd64
+  GNU/Linux, we also tested Ubuntu trusty and precise.
++ When it makes sense, we provide 32-bit version of packages too,
+  e.g. you can use 32-bit haskell by setting the =CEH_GHC32=
   environment variable to 1.
 
 
 * Requirements
 + Modern GNU/Linux distro (ubuntu, debian, etc.).
-+ Intel architecture (i686 or amd64, no arm).
++ Intel architecture (amd64, no i386/i686 or arm).
 + The machine only has one user who wants to use ceh and nix and she
   will be the owner of the files in =/opt/ceh= and =/nix=.
 + If the machine is running NixOS already, then =/nix= should exist
@@ -112,6 +110,41 @@ parallelized by nix.
 
 
 * Upgrade notes
+*** 2014-12-20: no more nixops
+NixOps was not working after the 32-bit -> 64-bit migration, I do not
+think this is anything to do with the architecture, something has
+changed in the bit repo.
+
+Anyways, we know of no users who uses Ceh and nixops together, so it
+was easier to remove it.  Tell us if you need it!
+
+*** 2014-12-20: 32-bit -> 64-bit migration
+I love i686, programs are so fluffy and cute.  But unfortunately the
+world started to ignore that platform and stuff is supported only on
+amd64 nowadays.  E.g. the haskell "community" ignores i686 altogether
+and unit tests routinely break.  The nix binary cache is also only
+maintained for amd64 and if the glibc is missing for i686, nobody will
+fix it and you will have to build everything from source.
+
+So we decided to move ceh to 64-bit, and live with the memory and disk
+usage of amd64.
+
+This transition should be seamless from the user point of view, but if
+something goes bad, of course you can always just purge Ceh and
+reinstall it...
+
+Also, if you want to install 32-bit stuff from some packages, you have
+to use the bit32 flag, instead of the old bit64 flag that we had for
+64-bit.  For Haskell, you can use the envvar CEH_GHC32 to get a 32-bit
+GHC and tools.
+
+As a last resort, the base perl and nix package is still i686, so you
+can run =ceh-init.sh= even on a i686 system and write your own
+wrappers by using the bit32 flag for every package.  But we are ready
+to remove this convenience the first time it causes some problems.
+
+Sorry guys, i686 is dead.
+
 *** 2014-05-08: refactoring
 From now on, we don't use profiles for Ceh's internal purposes.
 Instead we use the =/opt/ceh/installed= directory.
@@ -200,24 +233,14 @@ section, this is causes a filename collision.  This can be fixed:
 
 * Haskell support
 *** 32-bit vs 64-bit
-Ceh usually installs 32-bit binaries.  64-bit is very nice, but there
-are still a lot of environments with i686 machines not in amd64 mode.
-E.g. on a barebone VPS with standard servers (apache, exim, etc.) you
-can save a lot of memory and disk by choosing 32-bit.  Memory at VPS
-providers can be especially expensive.
+Ceh usually installs 64-bit binaries.
 
-On the other hand, not having a 64-bit GHC is pain when you're trying
-to write well performing code with bigger integers than 32-bit
-(e.g. project euler).  Or when you just want to test your Haskell
-program on both architecture.
+If you want to use a 32-bit GHC (e.g. for testing compatibility if
+your program/library with i686 or for benchmarking), you can ask Ceh
+to install and configure a 32-bit GHC with 32-bit packages.
 
-For this reason, as an exception for GHC, we support turning on 64-bit
-via an envvar.  If =$CEH_GHC64= is 1, then GHC, Cabal, etc. will be
-installed in 64-bit mode.  This of course only works, if your kernel
-is amd64.  But note, that your userspace doesn't have to be amd64.
-E.g. Debian ships amd64 kernel packages even for i686 installations.
-So you can save memory on standard apps, but still perform well in
-64-bit mode for project euler code.
+If the environment variable =$CEH_GHC32= is 1, then GHC, Cabal,
+etc. will be installed in 32-bit mode.
 
 *** Builtin packages, shipped with ceh
 The list can be found in =/opt/ceh/lib/Packages/GHC.nix=, feel free to
@@ -239,7 +262,7 @@ own machines.
 *** Installation of FFI packages
 For FFI packages to work, you of course need to have the required libs
 installed, so the package can link against them.  These packages are
-searched for in =/opt/ceh/installed/ghclibs(64)=.
+searched for in =/opt/ceh/installed/ghclibs=.
 
 To install a new package there, you can do this:
 #+BEGIN_SRC perl
@@ -252,8 +275,8 @@ use CehInstall;
 
 # BerkeleyDB
 ceh_nixpkgs_install_ghclibs('db', AUTOINIT);
-# BerkeleyDB for CEH_GHC64=1
-ceh_nixpkgs_install_ghclibs('db', bit64 => 1, AUTOINIT);
+# BerkeleyDB for CEH_GHC32=1
+ceh_nixpkgs_install_ghclibs('db', bit32 => 1, AUTOINIT);
 #+END_SRC
 
 AUTOINIT will be replaced by the current nixpkgs version and the

@@ -10,6 +10,6 @@ use CehInstall;
 
 foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
 
-ceh_nixpkgs_install('haskellPackages.cpphs', nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => 'y7zy9z9gc569vkvgphqj86rikkrbwgvr-haskell-cpphs-ghc7.8.3-1.18.5-shared');
+ceh_nixpkgs_install('haskellPackages.cpphs', nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => '806xbcs5jkd439n3jsx29xa80gwal2bb-haskell-cpphs-ghc7.8.3-1.18.6-shared');
 
 exec "$ceh_nix_install_root/bin/cpphs", @ARGV;

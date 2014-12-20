@@ -1,9 +1,0 @@
-#!/opt/ceh/lib/perl
-# -*- mode: perl; -*-
-
-use strict;
-use warnings;
-use lib "/opt/ceh/lib";
-use Packages::NixOps;
-
-exec "$ceh_nixops_root/bin/nixops", @ARGV;

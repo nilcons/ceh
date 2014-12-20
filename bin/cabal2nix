@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('haskellPackages.cabal2nix', nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => '5cv10cbbbgya60sxrlb6rjx718dlxs2x-cabal2nix-1.68');
+ceh_nixpkgs_install('haskellPackages.cabal2nix', nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'gxql3spbbq6qc0v82fpkqb2qwp7gd3zf-cabal2nix-1.72');
 
 exec "$ceh_nix_install_root/bin/cabal2nix", @ARGV;

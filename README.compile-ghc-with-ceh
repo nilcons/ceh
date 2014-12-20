@@ -14,7 +14,7 @@ Building:
   perl --version >/dev/null   (if this has output, you don't have locales, fix it!)
 
   /opt/ceh/scripts/ghc-build-shell.pl
-    (or CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl, if building 64-bit GHC)
+    (or CEH_GHC32=1 /opt/ceh/scripts/ghc-build-shell.pl, if building a 32-bit GHC)
     (This gets you a shell that is properly set up to use ceh's ghc as
      the bootstrap compiler and provides also the other needed tools:
      perl, gnumake, m4, autoconf, automake.)
@@ -34,7 +34,7 @@ Building:
            readlink -f /opt/ceh/installed/ghcbuild/gmp/include)
 
       )
-        (or /opt/ceh/installed/ghcbuild/gmp.64/{lib,include} if building for 64 bits)
+        (or /opt/ceh/installed/ghcbuild/gmp.32/{lib,include} if building for 32 bits)
       (add GhcLibWay += p to quick if want library profiling)
 
     cd ..
@@ -66,7 +66,7 @@ To get a list of build files (ideas to clean):
 
 To run the testsuite:
   /opt/ceh/scripts/ghc-build-shell.pl
-  (or CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl, if building 64-bit GHC)
+  (or CEH_GHC32=1 /opt/ceh/scripts/ghc-build-shell.pl, if building 32-bit GHC)
     make test
     make TEST="ann01 ann02" test
 

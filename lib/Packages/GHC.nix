@@ -63,14 +63,7 @@
         hs.foldl
         hs.Glob
 
-        # TODO(errge): gloss depends on bmp, that accidentally loads in a new binary
-        # having two binary in the same package db is never good, so disable gloss for now
-        # but please remember to put it back, once nixpkgs is fixed.
-        #hs.gloss
-        # but we add gloss dependencies, so at least building by hand is faster
-        hs.OpenGL
-        hs.GLUT
-        # end of gloss dependencies
+        hs.gloss
 
         hs.gtk
         hs.haskeline

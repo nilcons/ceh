@@ -109,7 +109,7 @@ sub ceh_nixpkgs_checkout($) {
 # will be written to the calling script.
 #
 # $1: package name (attribute path),
-# %bit64: build/install for x86_64-linux if 1,
+# %bit32: build/install for i686-linux if 1 (default is to install for x86_64-linux),
 # %autoinit: autocomplete the function invocation with default values,
 #    Example: ceh_nixpkgs_install('git', AUTOINIT);
 #      AUTOINIT will be replaced with correct values for
@@ -122,14 +122,14 @@ sub ceh_nixpkgs_checkout($) {
 # %outFilter: filters outputs
 # %gclink: full abspath of symlink location to protect against GC removal and facilitate caching
 #          (defaults to /opt/ceh/installed/packages/$1)
-#          a .64 suffix automatically gets appended if the bit64 parameter is on
+#          a .32 suffix automatically gets appended if the bit32 parameter is on
 # %set_nix_path: export NIX_PATH environment variable (before the build phase),
 #   so that <nixpkgs> points to a checkout of %nixpkgs_version of nixpkgs
 sub ceh_nixpkgs_install($%) {
     my ($pkgattr, %opts) = @_;
     my $autoinit = $opts{autoinit};
     my $autoupgrade = 0;
-    my $nixsystem = $opts{bit64} ? "--option system x86_64-linux" : "--option system i686-linux";
+    my $nixsystem = $opts{bit32} ? "--option system i686-linux" : "--option system x86_64-linux";
     my $nixpkgs_version = $opts{nixpkgs_version};
     my $out = $opts{out};
     my $outFilter = $opts{outFilter};
@@ -138,7 +138,7 @@ sub ceh_nixpkgs_install($%) {
     my $autoinit_nixpkgs_version = 0;
     my $autoinit_out = 0;
     my $gclink = ($opts{gclink} ? $opts{gclink} : "/opt/ceh/installed/packages/$pkgattr") .
-                 ($opts{bit64} ? ".64" : "");
+                 ($opts{bit32} ? ".32" : "");
 
     # some sanity checks
     if (defined($opts{derivation})) {
@@ -196,22 +196,22 @@ sub ceh_nixpkgs_install($%) {
     }
 
     # Change personality to match what we're building for
-    if ($opts{bit64}) {
-        syscall(136, 0);
-    } else {
+    if ($opts{bit32}) {
         syscall(136, 8);
+    } else {
+        syscall(136, 0);
     }
 
     my $nixpkgsgit = ceh_nixpkgs_checkout $nixpkgs_version;
 
     check_nix_freshness();
 
-    $_ = `$CEH_ESSNIXPATH/bin/nix-instantiate --show-trace $nixsystem $nixpkgsgit -A $pkgattr`;
+    my $cdevtmp = `$CEH_ESSNIXPATH/bin/nix-instantiate --show-trace $nixsystem $nixpkgsgit -A $pkgattr`;
     $? and confess;
-    chomp;
-    /^\/nix\/store\// or croak($_ . " not starting with /nix/store");
-    s,/nix/store/,,;
-    my $current_derivation = $_;
+    chomp($cdevtmp);
+    $cdevtmp =~ /^\/nix\/store\// or croak($cdevtmp . " not starting with /nix/store");
+    $cdevtmp =~ s,/nix/store/,,;
+    my $current_derivation = $cdevtmp;
 
     # this hack is used by /opt/ceh/scripts/maintainer/predict-binary-cache.sh
     if ($ENV{CEH_GATHER_DERIVATIONS_ONLY}) {
@@ -283,8 +283,8 @@ sub ceh_nixpkgs_install_essential {
 }
 
 sub ensure_base_installed {
-    ceh_nixpkgs_install_essential('nix', nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => 'hwh46a3yj3jv8i2js4zi147f4z7292cq-nix-1.7');
-    ceh_nixpkgs_install_essential('perl', nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => 'd11vm2pv9yx6xgq5hrwll3w7aqbslx47-perl-5.16.3');
+    ceh_nixpkgs_install_essential('nix', bit32 => 1, nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'i22jh334x91k0lbrmyxxymvd1ym7vysd-nix-1.8');
+    ceh_nixpkgs_install_essential('perl', bit32 => 1, nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'p0kbl09j5q88d9i96ap4arffsd5ybjwx-perl-5.20.1');
 }
 
 our $freshness_being_ensured;

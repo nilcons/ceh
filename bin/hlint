@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('haskellPackages.hlint', nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => '45hvbgqgl39r1j4icb6b08z6nqxpvqwn-haskell-hlint-ghc7.8.3-1.9.3-shared');
+ceh_nixpkgs_install('haskellPackages.hlint', nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'mhgr8ggwjc4n4ad8fy97lc2nidlq1vgk-haskell-hlint-ghc7.8.3-1.9.13-shared');
 
 exec "$ceh_nix_install_root/bin/hlint", @ARGV;

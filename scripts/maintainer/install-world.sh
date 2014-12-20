@@ -40,16 +40,12 @@ fi
     cd /tmp
 
     # Java 6
-    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-i586.bin
-    nix-store --add-fixed sha256 jdk-6u45-linux-i586.bin
     wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin
     nix-store --add-fixed sha256 jdk-6u45-linux-x64.bin
 
     # Java 7
-    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u65-b17/jdk-7u65-linux-i586.tar.gz
-    nix-store --add-fixed sha256 jdk-7u65-linux-i586.tar.gz
-    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u65-b17/jdk-7u65-linux-x64.tar.gz
-    nix-store --add-fixed sha256 jdk-7u65-linux-x64.tar.gz
+    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u71-b14/jdk-7u71-linux-x64.tar.gz
+    nix-store --add-fixed sha256 jdk-7u71-linux-x64.tar.gz
 
     # Now we're using a flash player that is downloadable from adobe,
     # but this may change in the future, so leave the hack here as a
@@ -75,16 +71,13 @@ install cgpt "cgpt COMMAND"
 install coursera-dl "usage: coursera-dl"
 install cpphs "cpphs 1"
 install emacs "GNU Emacs"
-CEH_GHC64= install ghc "Glorious Glasgow Haskell Compilation System"
-CEH_GHC64= /opt/ceh/scripts/ghc-build-shell.pl </dev/null || true
+CEH_GHC32= install ghc "Glorious Glasgow Haskell Compilation System"
+CEH_GHC32= /opt/ceh/scripts/ghc-build-shell.pl </dev/null || true
 install gitceh "git version 2"
 install git-annex "Usage: git-annex command"
-CEH_JAVA64= CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
-CEH_JAVA64= CEH_JAVAFLAVOR=sun6 install javac  "javac: invalid flag: --version"
-CEH_JAVA64= CEH_JAVAFLAVOR=sun7 install javac  "javac: invalid flag: --version"
-CEH_JAVA64=1 CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
-CEH_JAVA64=1 CEH_JAVAFLAVOR=sun6 install javac "javac: invalid flag: --version"
-CEH_JAVA64=1 CEH_JAVAFLAVOR=sun7 install javac "javac: invalid flag: --version"
+CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
+CEH_JAVAFLAVOR=sun6 install javac  "javac: invalid flag: --version"
+CEH_JAVAFLAVOR=sun7 install javac  "javac: invalid flag: --version"
 install nc-indicators "nc-indicators: Cannot initialize GUI."
 install haddock "Haddock version 2"
 install happy "Happy Version 1"
@@ -103,10 +96,8 @@ install vbutil_kernel "This program creates, signs"
 install vncviewer "TigerVNC Viewer 32-bit"
 install xpra "xpra v0."
 
-# Needs investigation: doesn't compile from source, because gcc doesn't compile in 64-bit mode.
-# Binary cache installation is OK.
-CEH_NO_BIN_CACHE= CEH_GHC64=1 install ghc "Glorious Glasgow Haskell Compilation System"
-CEH_NO_BIN_CACHE= CEH_GHC64=1 /opt/ceh/scripts/ghc-build-shell.pl </dev/null || true
+CEH_GHC32=1 install ghc "Glorious Glasgow Haskell Compilation System"
+CEH_GHC32=1 /opt/ceh/scripts/ghc-build-shell.pl </dev/null || true
 
 # Needs investigation: doesn't compile from source, because openjdk doesn't compile.
 # Binary cache installation is OK.

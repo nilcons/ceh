@@ -16,8 +16,8 @@ if (not $ARGV[0]) {
     die "Please provide a package name, run ceh_nixpkgs_avail to get a list to choose from!";
 }
 
-if ($ENV{CEH_GHC64}) {
-    ceh_nixpkgs_install_ghclibs($ARGV[0], bit64 => 1, autoinit => 1);
+if ($ENV{CEH_GHC32}) {
+    ceh_nixpkgs_install_ghclibs($ARGV[0], bit32 => 1, autoinit => 1);
 } else {
     ceh_nixpkgs_install_ghclibs($ARGV[0], autoinit => 1);
 }

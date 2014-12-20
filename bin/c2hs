@@ -10,6 +10,6 @@ use CehInstall;
 
 foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
 
-ceh_nixpkgs_install('haskellPackages.c2hs', nixpkgs_version => 'a38ae3c9367f9b5b2c4df437b97f3fcff294b9f7', out => '527p97mfz51hgla63dy96sva3ywbys8j-c2hs-0.17.2');
+ceh_nixpkgs_install('haskellPackages.c2hs', nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => '07v22mdz5scvlbiyn8g5bksvvsrw85w0-c2hs-0.20.1');
 
 exec "$ceh_nix_install_root/bin/c2hs", @ARGV;
