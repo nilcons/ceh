@@ -440,8 +440,8 @@ is unusable on NixOS.
 
 + tar xvfj nix-x.x.x.tar.bz2 /nix (it's a tarbomb, we only want /nix from it).
 
-+ Update =ENSURE_BASE_PERL=, =ENSURE_BASE_NIXPATH= and
-  =CEH_NIX_DOWNLOAD= in =scripts/ceh-init.sh=.
++ Update =ENSURE_BASE_PERL=, =ENSURE_BASE_NIXPATH=, =CEH_NIX_DOWNLOAD= and
+  =NIX_TARDIR_NAME= in =scripts/ceh-init.sh=.
 
 + Test if =scripts/ceh-init.sh= still works on a clean Debian and on a
   clean NixOS.

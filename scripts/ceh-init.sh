@@ -2,7 +2,8 @@
 
 set -e
 
-export CEH_NIX_DOWNLOAD=http://hydra.nixos.org/build/6695693/download/1/nix-1.6.1-i686-linux.tar.bz2
+export CEH_NIX_DOWNLOAD=http://hydra.nixos.org/build/17897582/download/1/nix-1.8-i686-linux.tar.bz2
+export NIX_TARDIR_NAME=nix-1.8-i686-linux
 
 export LANG=C LC_ALL=C
 
@@ -30,6 +31,12 @@ fi
 if ! wget --version >/dev/null 2>&1 && ! nixosp
 then
   echo "wget is needed for installation" >&2
+  exit 1
+fi
+
+if ! mktemp --version >/dev/null 2>&1 && ! nixosp
+then
+  echo "mktemp is needed for installation" >&2
   exit 1
 fi
 
@@ -114,21 +121,22 @@ then
     exit 1
   fi
 
-  cd /tmp
+  TDIR=$(mktemp -d)
+  cd $TDIR
   wget -c $CEH_NIX_DOWNLOAD
+  tar xfj `basename $CEH_NIX_DOWNLOAD`
   chmod 0700 /nix
   # We have to give write access to the stuff that we want to overwrite
   # in the nix store, but we don't want to touch symlinks, since when
   # they're dangling, chmod freaks out.  Also, we don't want to chmod
   # non-preexisting stuff, so we filter for directory or regular file.
-  ( cd / && tar -t -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix | (
+  ( cd $NIX_TARDIR_NAME && find store ) | ( cd /nix ;
       while read F; do
         if [ -f "$F" -o -d "$F" ]; then
           echo "$F"
         fi
-      done
-    ) | xargs --no-run-if-empty chmod u+w)
-  ( cd / && tar -x -j -f /tmp/`basename $CEH_NIX_DOWNLOAD` /nix )
+      done | xargs --no-run-if-empty chmod u+w )
+  ( cd $NIX_TARDIR_NAME && cp -a store /nix )
 
   # Set up the symlinks
   mkdir -m 0755 -p /nix/var/nix/gcroots/auto/ceh
@@ -138,8 +146,8 @@ then
   mkdir -p $HOME/.nix-defexpr
 
   # This also initializes the nixpkgs git repo in /opt/ceh/nixpkgs.
-  ENSURE_BASE_PERL=/nix/store/x39yy4fg60qqgdrjhbwzrjs8r7w5wmzy-perl-5.16.3/bin/perl \
-    ENSURE_BASE_NIXPATH=/nix/store/z2khn1qwap8lmxgg9iyvljcnrw6vi8zr-nix-1.6.1 \
+  ENSURE_BASE_PERL=/nix/store/p0kbl09j5q88d9i96ap4arffsd5ybjwx-perl-5.20.1/bin/perl \
+    ENSURE_BASE_NIXPATH=/nix/store/a1kr8kds4jdvvfl6z4gj0gr9w27awhnd-nix-1.8 \
     /opt/ceh/lib/ensure_base_installed.pl
 
   # Add channels
