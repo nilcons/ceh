@@ -6,10 +6,9 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-# This is a 32-bit FF install (working on both amd64 and i686) with
-# all the 3 required plugins:
+# This is a 64-bit FF install with all the 3 required plugins:
 #  - google talk,
-#  - java,
+#  - java (well, not working currently :( ),
 #  - flash,
 # please make sure to remove all the conflicting plugins from your
 # system (~/.mozilla/firefox/plugins, /usr/lib/mozilla, etc.).
@@ -17,14 +16,13 @@ use CehInstall;
 # To make sure everything is OK, use all 3 plugins while running
 # firefox from a terminal and watch stderr.
 #
-# Do not ever mix 64-bit plugins with this 32-bit firefox!
+# Do not ever mix 32-bit plugins with this 64-bit firefox!
 # TODO(errge): an ld_preload hack that purifies this plugin issue, by
 # hiding /usr/lib/mozilla, ~/.mozilla/plugins and whatever else that
 # is needed.
 
 # To enable google talk plugin and jre plugin.
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/firefox.nix";
-# TODO(errge): normal baseline, once we update the baseline in 2014-October
-ceh_nixpkgs_install('firefoxCeh', nixpkgs_version => '64c156d1987ca2012275384f2d9e1cdfbf7c1a7f', out => 'kzv7g61n5lcawqs9dh9m0z296amy81x0-firefox-ceh');
+ceh_nixpkgs_install('firefoxCeh', nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'mvb03910yh7smd3f2k31hi0wgsq29w9h-firefox-ceh');
 
 exec "$ceh_nix_install_root/bin/firefox", @ARGV;

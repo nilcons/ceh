@@ -47,6 +47,10 @@ fi
     wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u71-b14/jdk-7u71-linux-x64.tar.gz
     nix-store --add-fixed sha256 jdk-7u71-linux-x64.tar.gz
 
+    # Java 8
+    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.tar.gz
+    nix-store --add-fixed sha256 jdk-8u25-linux-x64.tar.gz
+
     # Now we're using a flash player that is downloadable from adobe,
     # but this may change in the future, so leave the hack here as a
     # reference.
