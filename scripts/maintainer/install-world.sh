@@ -6,13 +6,13 @@ set -e
 # currently provided by ceh.
 
 install () {
-    echo Installing $1
+    echo Installing $1 at $(date)
     date1=$(date +"%s")
     /opt/ceh/bin/$1 --version >$CEH_INSTALLWORLDDIR/$1.out 2>&1 || true
     if [ "$CEH_GATHER_DERIVATIONS_ONLY" = "" ]; then
         date2=$(date +"%s")
         diff=$(($date2-$date1))
-        echo "FINISHED $1: $(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed."
+        echo "FINISHED $1 at $(date): $(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed."
         fgrep -q -- "$2" $CEH_INSTALLWORLDDIR/$1.out
     fi
 }
@@ -91,7 +91,7 @@ install parallel "O. Tange"
 install tmux "usage: tmux"
 install vanitygen "Generates a bitcoin"
 install vbutil_kernel "This program creates, signs"
-install vncviewer "TigerVNC Viewer 32-bit"
+install vncviewer "TigerVNC Viewer 64-bit"
 install xpra "xpra v0."
 
 CEH_GHC32=1 install ghc "Glorious Glasgow Haskell Compilation System"
@@ -101,7 +101,9 @@ install adb "Android Debug Bridge"
 
 # Everything that depends on java is done below this comment and we
 # start with a wait for the background downloads to finish.
+echo Waiting for the java downloads to finish at $(date)
 wait
+echo Java downloads finished at $(date)
 CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
 CEH_JAVAFLAVOR=sun6 install javac  "javac: invalid flag: --version"
 CEH_JAVAFLAVOR=sun7 install javac  "javac: invalid flag: --version"
