@@ -39,16 +39,13 @@ fi
 (
     cd /tmp
 
-    # Java 6
-    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin
+    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin &
+    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u71-b14/jdk-7u71-linux-x64.tar.gz &
+    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.tar.gz &
+    wait
+
     nix-store --add-fixed sha256 jdk-6u45-linux-x64.bin
-
-    # Java 7
-    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u71-b14/jdk-7u71-linux-x64.tar.gz
     nix-store --add-fixed sha256 jdk-7u71-linux-x64.tar.gz
-
-    # Java 8
-    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.tar.gz
     nix-store --add-fixed sha256 jdk-8u25-linux-x64.tar.gz
 
     # Now we're using a flash player that is downloadable from adobe,
@@ -56,13 +53,12 @@ fi
     # reference.
     # wget -c http://ftp.tw.freebsd.org/distfiles/flashplugin/11.2r202.297/install_flash_player_11_linux.i386.tar.gz
     # nix-store --add-fixed sha256 install_flash_player_11_linux.i386.tar.gz
-)
+
+) & # we are starting this in the background, because it is slow and
+    # we will do a wait later before actually using the java.
 
 # Let's don't depend on X.
 export DISPLAY=
-
-# Firefox first, because mozilla CDN is sucky -> we want to fail fast
-install firefox "Mozilla Firefox"
 
 install ack "Andy Lester"
 install agda "Agda version 2."
@@ -72,6 +68,7 @@ install cabal "cabal-install version"
 install cabal2nix "1.72"
 install ceh_exclude "--version is not an executable"
 install cgpt "cgpt COMMAND"
+install coqtop "Coq Proof Assistant"
 install coursera-dl "usage: coursera-dl"
 install cpphs "cpphs 1"
 install emacs "GNU Emacs"
@@ -79,9 +76,6 @@ CEH_GHC32= install ghc "Glorious Glasgow Haskell Compilation System"
 CEH_GHC32= /opt/ceh/scripts/ghc-build-shell.pl </dev/null || true
 install gitceh "git version 2"
 install git-annex "Usage: git-annex command"
-CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
-CEH_JAVAFLAVOR=sun6 install javac  "javac: invalid flag: --version"
-CEH_JAVAFLAVOR=sun7 install javac  "javac: invalid flag: --version"
 install nc-indicators "nc-indicators: Cannot initialize GUI."
 install haddock "Haddock version 2"
 install happy "Happy Version 1"
@@ -103,10 +97,13 @@ install xpra "xpra v0."
 CEH_GHC32=1 install ghc "Glorious Glasgow Haskell Compilation System"
 CEH_GHC32=1 /opt/ceh/scripts/ghc-build-shell.pl </dev/null || true
 
-# Needs investigation: doesn't compile from source, because openjdk doesn't compile.
-# Binary cache installation is OK.
-CEH_NO_BIN_CACHE= install adb "Android Debug Bridge"
-CEH_NO_BIN_CACHE= install tws-ui "TWS successfully installed"
+install adb "Android Debug Bridge"
 
-# very slow, so do it last to see early results from other packages.
-install coqtop "Coq Proof Assistant"
+# Everything that depends on java is done below this comment and we
+# start with a wait for the background downloads to finish.
+wait
+CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
+CEH_JAVAFLAVOR=sun6 install javac  "javac: invalid flag: --version"
+CEH_JAVAFLAVOR=sun7 install javac  "javac: invalid flag: --version"
+install firefox "Mozilla Firefox"
+install tws-ui "TWS successfully installed"
