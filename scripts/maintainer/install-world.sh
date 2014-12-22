@@ -5,6 +5,18 @@ set -e
 # This script makes sure that everything is installable that is
 # currently provided by ceh.
 
+# We call this function curl, so that the user can just grep in this
+# file to find out how to automatically download Oracle stuff.
+curl () {
+    # Enforce at least 500 kbits/sec, travis <-> oracle conn randomness.
+    # We do a while loop instead of using curl's retry mechanism,
+    # because curl truncates back the output file to the beginning
+    # size on every retry (wtf!).
+    while ! /usr/bin/curl -C - -L -y 10 -Y 500000 "$@" ; do
+        sleep 1
+    done
+}
+
 install () {
     tries=1
     touch $CEH_INSTALLWORLDDIR/$1.out
@@ -68,14 +80,14 @@ fi
 (
     cd /tmp
 
-    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin &
-    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u71-b14/jdk-7u71-linux-x64.tar.gz &
-    wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.tar.gz &
+    curl -o jdk-6.bin -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin &
+    curl -o jdk-7.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u71-b14/jdk-7u71-linux-x64.tar.gz &
+    curl -o jdk-8.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.tar.gz &
     wait
 
-    nix-store --add-fixed sha256 jdk-6u45-linux-x64.bin
-    nix-store --add-fixed sha256 jdk-7u71-linux-x64.tar.gz
-    nix-store --add-fixed sha256 jdk-8u25-linux-x64.tar.gz
+    nix-store --add-fixed sha256 jdk-6.bin
+    nix-store --add-fixed sha256 jdk-7.tar.gz
+    nix-store --add-fixed sha256 jdk-8.tar.gz
 
     # Now we're using a flash player that is downloadable from adobe,
     # but this may change in the future, so leave the hack here as a
