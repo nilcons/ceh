@@ -42,8 +42,7 @@ if ($ENV{CEH_GHC32}) {
 }
 
 if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {
-    # for -lgcc_s see: http://lists.science.uu.nl/pipermail/nix-dev/2013-October/011891.html
-    my $env_nix_ldflags = "-lgcc_s -L /opt/ceh/lib/fake_libgcc_s ";
+    my $env_nix_ldflags = "";
     my $env_nix_cflags_compile = "";
 
     my @ghclibs = ();
