@@ -13,6 +13,10 @@ install () {
             echo "------------------------------------------------------------------------"
             echo "Installation of $1 failed (last 100 output lines)":
             tail -n 100 $CEH_INSTALLWORLDDIR/$1.out
+            echo "Current processes:"
+            ps auxw
+            free
+            df
             echo "------------------------------------------------------------------------"
             if [ "$tries" -gt 10 ]; then
                 echo Failed for 10 times, giving up...
