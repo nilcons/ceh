@@ -83,6 +83,7 @@ fi
 
 ) & # we are starting this in the background, because it is slow and
     # we will do a wait later before actually using the java.
+JAVA_DOWNLOADS_PID=$!
 
 # Let's don't depend on X.
 export DISPLAY=
@@ -129,7 +130,7 @@ install adb "Android Debug Bridge"
 # Everything that depends on java is done below this comment and we
 # start with a wait for the background downloads to finish.
 echo Waiting for the java downloads to finish at $(date)
-wait
+wait $JAVA_DOWNLOADS_PID
 echo Java downloads finished at $(date)
 CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
 CEH_JAVAFLAVOR=sun6 install javac  "javac: invalid flag: --version"
