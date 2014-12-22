@@ -17,6 +17,8 @@ install () {
             ps auxw
             free
             df
+            echo "Sleeping for 30 seconds in the hopes of the problem going away"
+            sleep 30
             echo "------------------------------------------------------------------------"
             if [ "$tries" -gt 10 ]; then
                 echo Failed for 10 times, giving up...
