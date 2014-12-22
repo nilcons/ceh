@@ -24,6 +24,23 @@ sub ceh_nixpkgs_install_ghctools {
 # added to LD_LIBRARY_PATH e.g. in ghc, ghci and ghc-mod.  We don't change
 # LD_LIBRARY_PATH here, because e.g. in /opt/ceh/bin/pandoc we want to leave it
 # unchanged.
+
+# Investigation needed on why moving cehGHC installation before the
+# installation of gcc helps, but with nix 1.8 (or with some nixpkgs
+# change at the same time) the normal order of first installing
+# gcc+pkgconfig, then cehGHC doesn't work anymore.  Strange.
+# Reproduce this way: do a full ceh-purge, then ceh-init and
+# "ceh_nixpkgs_install gcc" will try to build instead of downloading
+# from binary cache.  On the other hand, first doing a
+# "NIXPKGS_CONFIG=/opt/ceh/lib/Packages/GHC.nix ceh_nixpkgs_install cehGHC"
+# and then doing the "ceh_nixpkgs_install gcc" will work.
+$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/GHC.nix";
+if ($ENV{CEH_GHC32}) {
+    $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", bit32 => 1, nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'mm4dr91xbzm9cs13ls4qakd1njmg6d7k-haskell-env-ghc-7.8.3');
+} else {
+    $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'b9hzy2ahicrr93irydxmbsidz0i3hn9w-haskell-env-ghc-7.8.3');
+}
+
 if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {
     # for -lgcc_s see: http://lists.science.uu.nl/pipermail/nix-dev/2013-October/011891.html
     my $env_nix_ldflags = "-lgcc_s -L /opt/ceh/lib/fake_libgcc_s ";
@@ -65,14 +82,6 @@ if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {
     }
     path_prepend("$outpkg/bin");
     $ENV{CEH_GCC_WRAPPER_FLAGS_SET}=1;
-}
-
-$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/GHC.nix";
-
-if ($ENV{CEH_GHC32}) {
-    $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", bit32 => 1, nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'mm4dr91xbzm9cs13ls4qakd1njmg6d7k-haskell-env-ghc-7.8.3');
-} else {
-    $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'b9hzy2ahicrr93irydxmbsidz0i3hn9w-haskell-env-ghc-7.8.3');
 }
 
 1;
