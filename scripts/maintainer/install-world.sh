@@ -6,15 +6,38 @@ set -e
 # currently provided by ceh.
 
 install () {
-    echo Installing $1 at $(date)
-    date1=$(date +"%s")
-    /opt/ceh/bin/$1 --version >$CEH_INSTALLWORLDDIR/$1.out 2>&1 || true
-    if [ "$CEH_GATHER_DERIVATIONS_ONLY" = "" ]; then
-        date2=$(date +"%s")
-        diff=$(($date2-$date1))
-        echo "FINISHED $1 at $(date): $(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed."
-        fgrep -q -- "$2" $CEH_INSTALLWORLDDIR/$1.out
-    fi
+    tries=1
+    touch $CEH_INSTALLWORLDDIR/$1.out
+    while true; do
+        if [ "$tries" -gt 1 ]; then
+            echo "------------------------------------------------------------------------"
+            echo "Installation of $1 failed (last 100 output lines)":
+            tail -n 100 $CEH_INSTALLWORLDDIR/$1.out
+            echo "------------------------------------------------------------------------"
+            if [ "$tries" -gt 10 ]; then
+                echo Failed for 10 times, giving up...
+                exit 1
+            fi
+            echo TRY $tries of installing $1 at $(date)
+        else
+            echo Installing $1 at $(date)
+        fi
+
+        date1=$(date +"%s")
+        /opt/ceh/bin/$1 --version >$CEH_INSTALLWORLDDIR/$1.out 2>&1 || true
+        if [ "$CEH_GATHER_DERIVATIONS_ONLY" != "" ]; then
+            # just gathering derivations, no need to check version string
+            break
+        fi
+        if fgrep -q -- "$2" $CEH_INSTALLWORLDDIR/$1.out; then
+            # installation succeeded and we have found the version string
+            date2=$(date +"%s")
+            diff=$(($date2-$date1))
+            echo "FINISHED $1 at $(date): $(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed."
+            break
+        fi
+        tries=$((tries+1))
+    done
 }
 
 export CEH_INSTALLWORLDDIR=`mktemp -d /tmp/installworld.XXXXXX`
