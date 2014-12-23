@@ -80,14 +80,14 @@ fi
 (
     cd /tmp
 
-    curl -o jdk-6.bin -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin &
-    curl -o jdk-7.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u71-b14/jdk-7u71-linux-x64.tar.gz &
-    curl -o jdk-8.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.tar.gz &
+    curl -o jdk-6u45-linux-x64.bin -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin &
+    curl -o jdk-7u71-linux-x64.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u71-b14/jdk-7u71-linux-x64.tar.gz &
+    curl -o jdk-8u25-linux-x64.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.tar.gz &
     wait
 
-    nix-store --add-fixed sha256 jdk-6.bin
-    nix-store --add-fixed sha256 jdk-7.tar.gz
-    nix-store --add-fixed sha256 jdk-8.tar.gz
+    nix-store --add-fixed sha256 jdk-6u45-linux-x64.bin
+    nix-store --add-fixed sha256 jdk-7u71-linux-x64.tar.gz
+    nix-store --add-fixed sha256 jdk-8u25-linux-x64.tar.gz
 
     # Now we're using a flash player that is downloadable from adobe,
     # but this may change in the future, so leave the hack here as a
