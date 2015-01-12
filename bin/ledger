@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install("ledger", nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'ljnm0k85xd5iggx9cj99hkz82wif9dlm-ledger-3.1');
+
+exec "$ceh_nix_install_root/bin/ledger", @ARGV;
