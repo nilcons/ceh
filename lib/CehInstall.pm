@@ -207,7 +207,7 @@ sub ceh_nixpkgs_install($%) {
     check_nix_freshness();
 
     my $cdevtmp = `$CEH_ESSNIXPATH/bin/nix-instantiate --show-trace $nixsystem $nixpkgsgit -A $pkgattr`;
-    $? and confess;
+    $? and confess("cdevtmp(" . $? . "): " . $cdevtmp);
     chomp($cdevtmp);
     $cdevtmp =~ /^\/nix\/store\// or croak($cdevtmp . " not starting with /nix/store");
     $cdevtmp =~ s,/nix/store/,,;

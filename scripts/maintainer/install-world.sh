@@ -25,10 +25,14 @@ install () {
             echo "------------------------------------------------------------------------"
             echo "Installation of $1 failed (last 100 output lines)":
             tail -n 100 $CEH_INSTALLWORLDDIR/$1.out
-            echo "Current processes:"
+            echo "-- Current processes:"
             ps auxw
+            echo "-- free:"
             free
+            echo "-- df:"
             df
+            echo "-- dmesg:"
+            dmesg | tail -n 20
             echo "Sleeping for 30 seconds in the hopes of the problem going away"
             sleep 30
             echo "------------------------------------------------------------------------"
