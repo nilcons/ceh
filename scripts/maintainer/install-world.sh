@@ -37,8 +37,8 @@ install () {
             ipcs
             ipcs p
             echo "-- smem:"
-            smem -tw
-            smem
+            smem -tw || true
+            smem || true
             echo "Sleeping for 30 seconds in the hopes of the problem going away"
             sleep 30
             echo "------------------------------------------------------------------------"

@@ -9,6 +9,9 @@ sleep 60
 
 sudo /etc/init.d/mysql stop
 sudo /etc/init.d/postgresql stop
+sudo /etc/init.d/dbus stop
+sudo /etc/init.d/cron stop
+sudo /etc/init.d/ssh stop
 ls -l /etc/init.d
 sleep 10
 
@@ -25,8 +28,8 @@ echo '--------------------------------------------------------------------------
 ipcs
 ipcs p
 echo '--------------------------------------------------------------------------------'
-smem -tw
-smem
+smem -tw || true
+smem || true
 echo '--------------------------------------------------------------------------------'
 
 sudo mkdir /opt/ceh /nix
