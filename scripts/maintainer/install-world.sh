@@ -33,6 +33,9 @@ install () {
             df
             echo "-- dmesg:"
             sudo dmesg -c
+            echo "-- ipcs:"
+            ipcs
+            ipcs p
             echo "Sleeping for 30 seconds in the hopes of the problem going away"
             sleep 30
             echo "------------------------------------------------------------------------"
