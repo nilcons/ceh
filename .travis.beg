@@ -2,11 +2,13 @@
 
 set -e
 
+sudo apt-get install smem
+
 echo 'Sleeping 60 seconds, because Ubuntu is a piece of...'
 sleep 60
 
-/etc/init.d/mysql stop
-/etc/init.d/postgresql stop
+sudo /etc/init.d/mysql stop
+sudo /etc/init.d/postgresql stop
 ls -l /etc/init.d
 sleep 10
 
@@ -22,6 +24,9 @@ ps auwxf
 echo '--------------------------------------------------------------------------------'
 ipcs
 ipcs p
+echo '--------------------------------------------------------------------------------'
+smem -tw
+smem
 echo '--------------------------------------------------------------------------------'
 
 sudo mkdir /opt/ceh /nix
