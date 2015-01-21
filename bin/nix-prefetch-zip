@@ -1,0 +1,12 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehBase;
+use CehInstall;
+
+check_nix_freshness();
+
+exec "/opt/ceh/nixpkgs/${CEH_BASELINE_NIXPKGS}/pkgs/build-support/fetchzip/nix-prefetch-zip", @ARGV;

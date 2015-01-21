@@ -4,8 +4,13 @@
 use strict;
 use warnings;
 use lib "/opt/ceh/lib";
+use CehBase;
 use CehInstall;
 
 ceh_nixpkgs_install('haskellPackages.cabal2nix', nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'gxql3spbbq6qc0v82fpkqb2qwp7gd3zf-cabal2nix-1.72');
+
+unless (exists $ENV{NIX_PATH}) {
+    $ENV{NIX_PATH} = 'nixpkgs=/opt/ceh/nixpkgs/' . $CEH_BASELINE_NIXPKGS;
+}
 
 exec "$ceh_nix_install_root/bin/cabal2nix", @ARGV;
