@@ -4,9 +4,8 @@
 use strict;
 use warnings;
 use lib "/opt/ceh/lib";
-use CehBase;
 use CehInstall;
 
-check_nix_freshness();
+ceh_nixpkgs_install('nix-prefetch-scripts', nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'b4s9i9wf6m6yjslpjm5vkdazizdf5axy-nix-prefetch-scripts');
 
-exec "/opt/ceh/nixpkgs/${CEH_BASELINE_NIXPKGS}/pkgs/build-support/fetchgit/nix-prefetch-git", @ARGV;
+exec "$ceh_nix_install_root/bin/nix-prefetch-git", @ARGV;
