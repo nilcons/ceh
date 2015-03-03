@@ -17,9 +17,9 @@
         builder = ./firefox-builder.sh;
 
         src = fetchurl {
-          url = "https://download.mozilla.org/?product=firefox-34.0.5-SSL&os=linux64&lang=en-US";
+          url = "https://download.mozilla.org/?product=firefox-36.0-SSL&os=linux64&lang=en-US";
           name = "firefox.tar.bz2";
-          sha256 = "0dwnkglpw94amzdxxg7wgdk7gz41z052h5bx7z8ngvvcjf9h9jqy";
+          sha256 = "0bkqk0qyrlkyw7agmpwh6ammaswmhzgw2k75qdmcm6md53f1v1l5";
         };
 
         flashplayer_path = flashplayer;
