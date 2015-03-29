@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install("ledger", nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'ljnm0k85xd5iggx9cj99hkz82wif9dlm-ledger-3.1');
+ceh_nixpkgs_install("ledger", nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => '3njb6mhbyk9gg7vsiwdhji8xlip51gyp-ledger-3.1');
 
 exec "$ceh_nix_install_root/bin/ledger", @ARGV;

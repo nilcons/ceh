@@ -12,7 +12,7 @@ curl () {
     # We do a while loop instead of using curl's retry mechanism,
     # because curl truncates back the output file to the beginning
     # size on every retry (wtf!).
-    while ! /usr/bin/curl -C - -L -y 10 -Y 500000 "$@" ; do
+    while ! /usr/bin/curl -C - -y 10 -Y 500000 "$@" ; do
         sleep 1
     done
 }
@@ -90,14 +90,14 @@ fi
 (
     cd /tmp
 
-    curl -o jdk-6u45-linux-x64.bin -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin &
-    curl -o jdk-7u71-linux-x64.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u71-b14/jdk-7u71-linux-x64.tar.gz &
-    curl -o jdk-8u25-linux-x64.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.tar.gz &
+    curl -L -o jdk-6u45-linux-x64.bin -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin &
+    curl -L -o jdk-7u75-linux-x64.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u75-b13/jdk-7u75-linux-x64.tar.gz &
+    curl -L -o jdk-8u40-linux-x64.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u40-b25/jdk-8u40-linux-x64.tar.gz &
     wait
 
     nix-store --add-fixed sha256 jdk-6u45-linux-x64.bin
-    nix-store --add-fixed sha256 jdk-7u71-linux-x64.tar.gz
-    nix-store --add-fixed sha256 jdk-8u25-linux-x64.tar.gz
+    nix-store --add-fixed sha256 jdk-7u75-linux-x64.tar.gz
+    nix-store --add-fixed sha256 jdk-8u40-linux-x64.tar.gz
 
     # Now we're using a flash player that is downloadable from adobe,
     # but this may change in the future, so leave the hack here as a

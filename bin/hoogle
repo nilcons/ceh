@@ -6,7 +6,7 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('haskellPackages.hoogle', nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'c0l8f6v7cwzcjizskkf54mn3j42q46kd-haskell-hoogle-ghc7.8.3-4.2.36-shared');
+ceh_nixpkgs_install('haskellPackages.hoogle', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'k9nkjxyg0d6dw5scdvkypn0c576rm78f-haskell-hoogle-ghc7.8.4-4.2.36-shared');
 
 chdir "$ENV{HOME}/.hoogle";
 exec "$ceh_nix_install_root/bin/hoogle", @ARGV;

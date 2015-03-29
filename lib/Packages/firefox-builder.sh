@@ -11,7 +11,7 @@ done
 
 for bin in `find -perm +0100 -type f | grep -v '\.s[oh]$'` ; do
     echo $bin
-    patchelf --interpreter "$(cat $NIX_GCC/nix-support/dynamic-linker)" \
+    patchelf --interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
              --set-rpath $libPath:$out/share/firefox $bin
 done
 

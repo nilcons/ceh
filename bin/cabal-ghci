@@ -10,6 +10,6 @@ use CehInstall;
 
 foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
 
-ceh_nixpkgs_install('haskellPackages.cabalGhci', nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => '0cr8ik4p8v2fqf3a3cvvs8wyamayw49h-haskell-cabal-ghci-ghc7.8.3-0.3-shared');
+ceh_nixpkgs_install('haskellPackages.cabalGhci', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'nb1dli4df31zj5qifcsxgyd0vxl9zmgn-haskell-cabal-ghci-ghc7.8.4-0.3-shared');
 
 exec "$ceh_nix_install_root/bin/cabal-ghci", @ARGV;

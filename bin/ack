@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install("ack", nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'cl2kmjr6wacssr530nc7q67m1wqll3yc-perl-ack-2.14');
+ceh_nixpkgs_install("ack", nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'k1b1rqknd9n5srky5gq0lq84wd8mcjl8-perl-ack-2.14');
 
 exec "$ceh_nix_install_root/bin/ack", @ARGV;

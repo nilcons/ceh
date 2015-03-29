@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('haskellPackages_ghc783_profiling.alex', nixpkgs_version => '3d74b3810104878527f0fde8aad65908579a504e', out => 'h3djbrjhfx6vdqbm5gmrsfvan5s98w2q-alex-3.1.3');
+ceh_nixpkgs_install('haskellPackages_ghc784_profiling.alex', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'fhiigl5mribv4adh4k9xq39jcn5jsxrs-alex-3.1.3');
 
 exec "$ceh_nix_install_root/bin/alex", @ARGV;

@@ -24,9 +24,9 @@ our $CEH_ESSNIXPATH="$CEH_ESSGCLINKDIR/nix.32";
 our $CEH_NIXPKGS_GITURL='http://github.com/NixOS/nixpkgs';
 our $CEH_NIXPKGS_GIT='/opt/ceh/nixpkgs';
 
-our $CEH_BASELINE_NIXPKGS='3d74b3810104878527f0fde8aad65908579a504e';
-our $CEH_BASELINE_NIXPATH='i22jh334x91k0lbrmyxxymvd1ym7vysd-nix-1.8';
-our $CEH_BASELINE_PERL='p0kbl09j5q88d9i96ap4arffsd5ybjwx-perl-5.20.1';
+our $CEH_BASELINE_NIXPKGS='e07ea5cf77601325b16f51fb457b90d5aadfab6f';
+our $CEH_BASELINE_NIXPATH='fahiadkbnnj8v7n1cqnnkix299710ild-nix-1.8';
+our $CEH_BASELINE_PERL='10s65627539pvq739lq45s6igr0zl5jk-perl-5.20.1';
 # Don't forget to update emacs.d/nix-mode.el!
 
 sub import {

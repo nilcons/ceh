@@ -2,7 +2,7 @@
 
 {
   packageOverrides = pkgs: {
-    cehGHC = pkgs.haskellPackages_ghc783_profiling.ghcWithPackagesOld (hs:
+    cehGHC = pkgs.haskellPackages_ghc784_profiling.ghcWithPackagesOld (hs:
       [
         # Selected from Haskell Platform:
         hs.attoparsec
