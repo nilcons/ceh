@@ -36,6 +36,10 @@ install () {
             echo "-- ipcs:"
             ipcs
             ipcs p
+            echo "-- /proc/meminfo:"
+            cat /proc/meminfo
+            echo "-- /proc/user_beancounters"
+            cat /proc/user_beancounters || true
             echo "-- smem:"
             smem -tw || true
             smem || true
