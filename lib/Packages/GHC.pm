@@ -36,9 +36,9 @@ sub ceh_nixpkgs_install_ghctools {
 # and then doing the "ceh_nixpkgs_install gcc" will work.
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/GHC.nix";
 if ($ENV{CEH_GHC32}) {
-    $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", bit32 => 1, nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => '7i77fmrlcmxd1pyf6xfjjd4lm6h2xs2z-haskell-env-ghc-7.8.4');
+    $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", bit32 => 1, nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => '49x7a80y5s57xvx92x6mll3zpixd00lj-haskell-env-ghc-7.8.4');
 } else {
-    $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'nh0bbk8bzcfb9xck5dxcwj7xab0d03ds-haskell-env-ghc-7.8.4');
+    $ceh_ghc_root=ceh_nixpkgs_install("cehGHC", nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'hzdd5d3cp9kqw71ck55kvd2ykszr4j4m-haskell-env-ghc-7.8.4');
 }
 
 if (not $ENV{CEH_GCC_WRAPPER_FLAGS_SET}) {

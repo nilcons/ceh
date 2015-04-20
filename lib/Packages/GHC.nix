@@ -85,6 +85,7 @@
         hs.modularArithmetic
         hs.monadLoops
         hs.ncurses
+        hs.netwire
         hs.networkConduit
         hs.networkProtocolXmpp
         hs.pipes
