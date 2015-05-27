@@ -9,4 +9,5 @@ use CehInstall;
 
 check_nix_freshness();
 
+# TODO: --option system x86_64-linux -I nixpkgs=/opt/ceh/nixpkgs/f0311f9b8cd142a83ffcf738138fa51d0064e115
 exec "${CEH_ESSNIXPATH}/bin/nix-shell", @ARGV;
