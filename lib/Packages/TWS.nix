@@ -5,11 +5,11 @@
     {
       tws = pkgs.callPackage (
         {stdenv, fetchurl, unzip}: stdenv.mkDerivation rec {
-        name = "tws-20150820";
+        name = "tws-20150908";
 
         jts = fetchurl {
           url = "http://download2.interactivebrokers.com/java/classes/latest/jts.latest.jar";
-          sha1 = "06d643529f0bded46f2915505f52f48444cd9d45";
+          sha1 = "09926331cfa185ef4fc6ed577a14623ac38b9e27";
         };
 
         total = fetchurl {
