@@ -20,21 +20,5 @@ ceh_path_prepend /opt/ceh/man MANPATH
 
 if ! [ -e /run/current-system ]; then
     # non NixOS
-    if [ -r /usr/lib/locale/locale-archive ]; then
-	export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
-    else
-	export LOCPATH=/usr/lib/locale
-    fi
-    export FONTCONFIG_FILE=/etc/fonts/fonts.conf
-    export TZDIR=/usr/share/zoneinfo
     export NIX_CONF_DIR=/opt/ceh/lib
-    # Set up env vars for openssl
-    if [ -z "$SSL_CERT_FILE" -a -z "$SSL_CERT_DIR" ]; then
-        if [ -e /etc/ssl/certs/ca-certificates.crt ]; then
-        # We are on Debian-like system.
-        export SSL_CERT_DIR=/etc/ssl/certs
-        export GIT_SSL_CAPATH=/etc/ssl/certs
-        export CURL_CA_PATH=/etc/ssl/certs
-        fi
-    fi
 fi

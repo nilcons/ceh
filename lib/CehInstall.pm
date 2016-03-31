@@ -330,4 +330,41 @@ sub nix_symlinked_p($$) {
     return ($o eq "$out" && $oo eq "$gclink");
 }
 
+################################################################################
+# Set up environmet variables which are not set to sensible values by
+# Nix (except on NixOS :().
+
+sub setenv($$;@) {
+    my $var = shift;
+    my $val = shift;
+    # Don't set if it's already set
+    return if (exists $ENV{$var});
+    # Or if any of the alternatives are already set
+    for my $v (@_) {
+        return if (exists $ENV{$v});
+    }
+
+    $ENV{$var} = $val;
+}
+
+# Only do something if we are not on NixOS
+if (! -e '/run/current-system') {
+    if (-r '/usr/lib/locale/locale-archive') {
+        setenv 'LOCALE_ARCHIVE', '/usr/lib/locale/locale-archive', 'LOCPATH';
+    } else {
+        setenv 'LOCPATH', '/usr/lib/locale', 'LOCALE_ARCHIVE';
+    }
+
+    setenv 'FONTCONFIG_FILE', '/etc/fonts/fonts.conf';
+    setenv 'TZDIR', '/usr/share/zoneinfo';
+
+    # Set up env vars for openssl
+    # We only know how to do this on a Debian-like system
+    if (-r '/etc/ssl/certs/ca-certificates.crt') {
+        setenv 'SSL_CERT_DIR', '/etc/ssl/certs', 'SSL_CERT_FILE';
+        setenv 'GIT_SSL_CAPATH', '/etc/ssl/certs';
+        setenv 'CURL_CA_PATH', '/etc/ssl/certs';
+    }
+}
+
 1;
