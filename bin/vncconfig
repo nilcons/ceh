@@ -6,4 +6,4 @@ use warnings;
 use lib "/opt/ceh/lib";
 use Packages::TigerVNC;
 
-exec "$ceh_nix_install_root/bin/vncconfig", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/vncconfig", @ARGV;

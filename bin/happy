@@ -8,4 +8,4 @@ use CehInstall;
 
 ceh_nixpkgs_install('haskellPackages.happy', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'qva8yf3nhqb31jwlcwmh4p8lyci8w4mk-happy-1.19.4');
 
-exec "$ceh_nix_install_root/bin/happy", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/happy", @ARGV;

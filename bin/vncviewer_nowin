@@ -9,4 +9,4 @@ use CehInstall;
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/tigervnc_nowin.nix";
 ceh_nixpkgs_install('tigervncNoWin', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'q8hgp451ddx6mrckjprh6dsrkyky94ly-tigervnc-1.3.1');
 
-exec "$ceh_nix_install_root/bin/vncviewer", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/vncviewer", @ARGV;

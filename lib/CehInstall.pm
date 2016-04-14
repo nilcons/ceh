@@ -17,6 +17,7 @@ our @EXPORT = qw(
   check_nix_freshness
   ensure_base_installed
   $ceh_nix_install_root
+  nix_symlink
 );
 
 
@@ -119,7 +120,6 @@ sub ceh_nixpkgs_checkout($) {
 #      the specified nixpkgs git commit.
 # %nixpkgs_version: nixpkgs version to use
 # %out: output path in /nix/store, excludes AUTOINIT
-# %outFilter: filters outputs
 # %gclink: full abspath of symlink location to protect against GC removal and facilitate caching
 #          (defaults to /opt/ceh/installed/packages/$1)
 #          a .32 suffix automatically gets appended if the bit32 parameter is on
@@ -132,7 +132,6 @@ sub ceh_nixpkgs_install($%) {
     my $nixsystem = $opts{bit32} ? "--option system i686-linux" : "--option system x86_64-linux";
     my $nixpkgs_version = $opts{nixpkgs_version};
     my $out = $opts{out};
-    my $outFilter = $opts{outFilter};
     my $old_nixpkgs_version = $opts{nixpkgs_version};
     my $old_out = $opts{out};
     my $autoinit_nixpkgs_version = 0;
@@ -190,8 +189,8 @@ sub ceh_nixpkgs_install($%) {
     }
 
     # quick return if the package is already installed
-    if ($out and nix_symlinked_p($gclink, "$out")) {
-        $ceh_nix_install_root = "/nix/store/$out";
+    if ($out and nix_symlinked_p($gclink, $out)) {
+        $ceh_nix_install_root = $gclink;
         return $ceh_nix_install_root;
     }
 
@@ -224,11 +223,10 @@ sub ceh_nixpkgs_install($%) {
         chomp;
         s,^/nix/store/,,;
     }
-    if ($outFilter) {
-        @outs = grep { &$outFilter($_) } @outs;
+    if (scalar(@outs) == 0) {
+        croak("nix-store -q didn't reply with output paths for derivation: $current_derivation");
     }
-    ($#outs == 0) or croak("nix-store -q didn't reply with exactly one out path, maybe use outFilter?");
-    my $current_out = $outs[0];
+    my ($current_out, $outmap) = compute_outs_map(@outs);
     if (not $out) {
         $out = $current_out;
         debug "*** Autoguessed out: $out";
@@ -240,7 +238,7 @@ sub ceh_nixpkgs_install($%) {
     $extraopts .= " --option build-max-jobs $ENV{CEH_BUILD_MAX_JOBS}" if ($ENV{CEH_BUILD_MAX_JOBS});
     $extraopts .= " -K" if ($ENV{CEH_BUILD_KEEP_FAILED});
     systemdie("$CEH_ESSNIXPATH/bin/nix-store $extraopts $nixsystem -r /nix/store/$current_derivation >&2");
-    nix_symlink($gclink, "$out");
+    nix_symlink($gclink, $outmap);
 
     if ($autoinit) {
         not $autoupgrade or croak("autoupgrade and autoinit at once?");
@@ -260,7 +258,7 @@ sub ceh_nixpkgs_install($%) {
         replace_in_backtrace(qq{"$old_out"}, qq{"$out"});
     }
 
-    $ceh_nix_install_root = "/nix/store/$out";
+    $ceh_nix_install_root = $gclink;
     return $ceh_nix_install_root;
 }
 
@@ -283,8 +281,8 @@ sub ceh_nixpkgs_install_essential {
 }
 
 sub ensure_base_installed {
-    ceh_nixpkgs_install_essential('nix', bit32 => 1, nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'fahiadkbnnj8v7n1cqnnkix299710ild-nix-1.8');
-    ceh_nixpkgs_install_essential('perl', bit32 => 1, nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => '10s65627539pvq739lq45s6igr0zl5jk-perl-5.20.1');
+    ceh_nixpkgs_install_essential('nix', bit32 => 1, nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => '3xx08z1wv87hx4rh04walcvrhw0jlrf5-nix-1.11.2');
+    ceh_nixpkgs_install_essential('perl', bit32 => 1, nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => '5dzx4vqh3d9jcwp4czslx1zjv7zs16ab-perl-5.22.1');
 }
 
 our $freshness_being_ensured;
@@ -299,28 +297,70 @@ sub check_nix_freshness {
     }
 }
 
-sub ensure_dir_of_path {
-    my ($dir) = @_;
-    if (not -d dirname($dir)) {
-        make_path(dirname($dir)) or confess;
-    }
-}
-
 my $autoroot = "/nix/var/nix/gcroots/auto/ceh";
 # Creates an indirect gc entry. (see nix-store(1))
+# Since nix is multi output nowadays, for one derivation there are multiple outputs, e.g.:
+#   $CEH_NIX/bin/nix-store -q /nix/store/c3rqkwb8yh7ph9sm9im3w8ay248sdb93-nix-1.11.2.drv
+#   ->
+#    /nix/store/3xx08z1wv87hx4rh04walcvrhw0jlrf5-nix-1.11.2
+#    /nix/store/lw1g3ag6xr6mswrivr6ifj327fdmw7qr-nix-1.11.2-doc
+#    /nix/store/m5m2gwhhzbyfdlmbf84hcdmjb9n78b1j-nix-1.11.2-debug
+# Because of this, $1 is a directory, e.g. /opt/ceh/installed/essential/nix.32
+# and we create inside this directory the following symlinks:
+#    MAIN  -> /nix/store/3xx08z1wv87hx4rh04walcvrhw0jlrf5-nix-1.11.2
+#    doc   -> /nix/store/lw1g3ag6xr6mswrivr6ifj327fdmw7qr-nix-1.11.2-doc
+#    debug -> /nix/store/m5m2gwhhzbyfdlmbf84hcdmjb9n78b1j-nix-1.11.2-debug
+sub replace_with_directory( $ ) {
+    my $path = shift;
+    if (-e $path) {
+        # Make way in case of both new and old /opt/ceh/installed standards
+        rmtree($path) or croak("Can't delete $path");
+    }
+    make_path($path) or croak;
+}
+
+sub compute_outs_map(@) {
+    my @outs = sort { length $a <=> length $b } @_; # map {"/nix/store/" . $_} @_;
+
+    # Check that every line's non-hashed name has as a prefix the first line.
+    my @names = @outs;
+    map { s/^.*?-// } @names;
+    my $basename = $names[0] . "-";
+    shift @names;
+    for (@names) {
+        (substr ($_, 0, length($basename)) eq $basename)
+            or croak("$basename is not a prefix of $_");
+    }
+
+    my %links;
+    $links{"MAIN"} = $outs[0];
+    my $baselen = length($outs[0]) + 1;
+    shift @outs;
+    for (@outs) {
+        $links{substr($_, $baselen)} = $_;
+    }
+
+    return ($links{"MAIN"}, \%links);
+}
+
 sub nix_symlink($$) {
-    my ($gclink, $out) = @_;
-    $out = "/nix/store/$out";
-    my $autogclink = "$autoroot$gclink";
-    ensure_dir_of_path($gclink);
-    ensure_dir_of_path($autogclink);
-    systemdie("ln -sfn $out $gclink >&2");
-    systemdie("ln -sfn $gclink $autogclink >&2");
+    my $gclinkbase = shift;
+    my $autogclinkbase = "$autoroot$gclinkbase";
+    my $links = shift;
+
+    replace_with_directory($autogclinkbase);
+    replace_with_directory($gclinkbase);
+
+    while (my ($linkname, $storename) = each %{$links}) {
+        systemdie("ln -s /nix/store/$storename $gclinkbase/$linkname");
+        systemdie("ln -s $gclinkbase/$linkname $autogclinkbase/$linkname");
+    }
 }
 
 # Verifies the existence of an entry created with nix_symlink
 sub nix_symlinked_p($$) {
-    my ($gclink, $out) = @_;
+    my ($gclinkbase, $out) = @_;
+    my $gclink = "$gclinkbase/MAIN";
     $out = "/nix/store/$out";
     my $autogclink = "$autoroot$gclink";
     my $o = readlink("$gclink");

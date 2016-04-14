@@ -110,6 +110,17 @@ parallelized by nix.
 
 
 * Upgrade notes
+*** 2016-04-14: support for multiple outputs
+As preparation for a baseline upgrade, we had to do a refactoring: in
+new nixpkgs versions, most of the derivations result in multiple
+output, not just one.  Previously this happened only rarely, so we
+handled the special cases with the outFilter hack.  This hack is gone,
+and instead we refactored the gclink symlinks a little bit to support
+multiple derivations.
+
+For the end user, the change shouldn't be notable and everything
+should continue working as expected.
+
 *** 2014-12-20: no more nixops
 NixOps was not working after the 32-bit -> 64-bit migration, I do not
 think this is anything to do with the architecture, something has
@@ -187,6 +198,13 @@ On existing installations, run the following:
 : nix-channel --add http://nixos.org/channels/nixpkgs-unstable
 : nix-channel --update
 
+*** 2014-02-03: xpra upgrade broken
+Unfortunately the nixpkgs guys changed the name of the xpra packages
+from python2.7-xpra to xpra.  As described in the Troubleshooting
+section, this is causes a filename collision.  This can be fixed:
+: /opt/ceh/bin/nix-env -p /nix/var/nix/profiles/ceh/bin -e python2.7-xpra
+: /opt/ceh/bin/xpra
+
 *** 2013-08-05: ~/.nix-profile reserved for the user
 The =/nix/var/nix/profiles/per-user/root/profile= profile (which is
 symlinked by default from =$HOME/.nix-profile=) is not used for
@@ -222,13 +240,6 @@ nix-purge.sh   -> ceh-purge.sh
 nix-upgrade.sh -> ceh-upgrade.sh
 
 And install-world.sh and predict-binary-cache.sh moved to scripts/maintainer.
-
-*** 2014-02-03: xpra upgrade broken
-Unfortunately the nixpkgs guys changed the name of the xpra packages
-from python2.7-xpra to xpra.  As described in the Troubleshooting
-section, this is causes a filename collision.  This can be fixed:
-: /opt/ceh/bin/nix-env -p /nix/var/nix/profiles/ceh/bin -e python2.7-xpra
-: /opt/ceh/bin/xpra
 
 
 * Haskell support
@@ -459,12 +470,14 @@ is unusable on NixOS.
 + Choose a new release from http://nixos.org/nix/download.html, read
   release notes, etc.
 
-+ Download "Distribution-independent Nix bootstrap binaries for i686-linux".
++ Look into the install shell script, to figure out the current URL
+  for i686-linux, e.g. for 1.11.2 it was
+  `https://nixos.org/releases/nix/nix-1.11.2/nix-1.11.2-i686-linux.tar.bz2`
 
-+ tar xvfj nix-x.x.x.tar.bz2 /nix (it's a tarbomb, we only want /nix from it).
++ tar xvfj nix-x.x.x-i686-linux.tar.bz2
 
-+ Update =ENSURE_BASE_PERL=, =ENSURE_BASE_NIXPATH=, =CEH_NIX_DOWNLOAD= and
-  =NIX_TARDIR_NAME= in =scripts/ceh-init.sh=.
++ Update =CEH_NIX_DOWNLOAD=, =NIX_TARDIR_NAME=, =CEH_NIX= and
+  =CEH_NIXPERL= in =scripts/ceh-init.sh=.
 
 + Test if =scripts/ceh-init.sh= still works on a clean Debian and on a
   clean NixOS.

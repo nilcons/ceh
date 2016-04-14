@@ -9,4 +9,4 @@ use CehBase;
 
 foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
 
-exec "$ceh_ghc_root/bin/ghc", @ARGV;
+exec "$ceh_ghc_root/MAIN/bin/ghc", @ARGV;

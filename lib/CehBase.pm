@@ -20,13 +20,13 @@ our @EXPORT = qw($CEH_ESSNIXPATH $CEH_ESSGCLINKDIR
 # a working set of nix- binaries.  This feature is used in ceh-init.sh
 # to handle NixOS and other distributions differently.
 our $CEH_ESSGCLINKDIR='/opt/ceh/installed/essential';
-our $CEH_ESSNIXPATH="$CEH_ESSGCLINKDIR/nix.32";
+our $CEH_ESSNIXPATH="$CEH_ESSGCLINKDIR/nix.32/MAIN";
 our $CEH_NIXPKGS_GITURL='http://github.com/NixOS/nixpkgs';
 our $CEH_NIXPKGS_GIT='/opt/ceh/nixpkgs';
 
-our $CEH_BASELINE_NIXPKGS='e07ea5cf77601325b16f51fb457b90d5aadfab6f';
-our $CEH_BASELINE_NIXPATH='fahiadkbnnj8v7n1cqnnkix299710ild-nix-1.8';
-our $CEH_BASELINE_PERL='10s65627539pvq739lq45s6igr0zl5jk-perl-5.20.1';
+our $CEH_BASELINE_NIXPKGS='551296a1cec0b9751ab96c420a7481e322ea127d';
+our $CEH_BASELINE_NIXPATH='3xx08z1wv87hx4rh04walcvrhw0jlrf5-nix-1.11.2';
+our $CEH_BASELINE_PERL='5dzx4vqh3d9jcwp4czslx1zjv7zs16ab-perl-5.22.1';
 # Don't forget to update emacs.d/nix-mode.el!
 
 sub import {
@@ -41,7 +41,7 @@ sub import {
     }
 
     unshift @_, $self;
-    -x "${CEH_ESSNIXPATH}/bin/nix-env" or die "*** Ceh is not initialized, run /opt/ceh/scripts/ceh-init.sh ***";
+    -x "${CEH_ESSNIXPATH}/bin/nix-build" or die "*** Ceh is not initialized, run /opt/ceh/scripts/ceh-init.sh ***";
     goto &Exporter::import;
 }
 

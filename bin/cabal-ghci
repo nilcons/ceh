@@ -12,4 +12,4 @@ foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
 
 ceh_nixpkgs_install('haskellPackages.cabalGhci', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'nb1dli4df31zj5qifcsxgyd0vxl9zmgn-haskell-cabal-ghci-ghc7.8.4-0.3-shared');
 
-exec "$ceh_nix_install_root/bin/cabal-ghci", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/cabal-ghci", @ARGV;

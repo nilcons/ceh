@@ -8,4 +8,4 @@ use CehInstall;
 
 ceh_nixpkgs_install('coq', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'n2rsnq07cdyrk2jgk5ygr1yrf6ssqczd-coq-8.4pl5');
 
-exec "$ceh_nix_install_root/bin/coqtop", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/coqtop", @ARGV;

@@ -8,4 +8,4 @@ use CehInstall;
 
 ceh_nixpkgs_install('nix-repl', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'lxxclk151dj6l382hksj5jly2s33r3cy-nix-repl-1.8-f924081');
 
-exec "$ceh_nix_install_root/bin/nix-repl", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/nix-repl", @ARGV;

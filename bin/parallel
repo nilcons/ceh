@@ -8,4 +8,4 @@ use CehInstall;
 
 ceh_nixpkgs_install('parallel', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'pjbz14r42jpgmxghi6xx6gvwlqgl53l2-parallel-20150222');
 
-exec "$ceh_nix_install_root/bin/parallel", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/parallel", @ARGV;

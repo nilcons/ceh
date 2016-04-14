@@ -12,4 +12,4 @@ foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
 
 ceh_nixpkgs_install('haskellPackages.c2hs', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'mjl6ws9cmrl77dvl97kgpdm7hcjjlcnf-c2hs-0.20.1');
 
-exec "$ceh_nix_install_root/bin/c2hs", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/c2hs", @ARGV;

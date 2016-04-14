@@ -2,9 +2,10 @@
 
 set -e
 
-export CEH_NIX_DOWNLOAD=http://hydra.nixos.org/build/17897582/download/1/nix-1.8-i686-linux.tar.bz2
-export NIX_TARDIR_NAME=nix-1.8-i686-linux
-export CEH_NIX=/nix/store/a1kr8kds4jdvvfl6z4gj0gr9w27awhnd-nix-1.8
+export CEH_NIX_DOWNLOAD=https://nixos.org/releases/nix/nix-1.11.2/nix-1.11.2-i686-linux.tar.bz2
+export NIX_TARDIR_NAME=nix-1.11.2-i686-linux
+export CEH_NIX=/nix/store/npfwdjdm2rxbcbfqz33p07mdn231qg4m-nix-1.11.2
+export CEH_NIXPERL=/nix/store/bkqrxpnz2dxc2j16zq7c7ahggqjbv7g7-perl-5.20.2
 
 export LANG=C LC_ALL=C
 
@@ -149,14 +150,14 @@ then
   # Initialize the nix store
   $CEH_NIX/bin/nix-store --load-db < $NIX_TARDIR_NAME/.reginfo
 
-  # This also initializes the nixpkgs git repo in /opt/ceh/nixpkgs.
-  ENSURE_BASE_PERL=/nix/store/p0kbl09j5q88d9i96ap4arffsd5ybjwx-perl-5.20.1/bin/perl \
-    ENSURE_BASE_NIXPATH=/nix/store/a1kr8kds4jdvvfl6z4gj0gr9w27awhnd-nix-1.8 \
-    /opt/ceh/lib/ensure_base_installed.pl
-
   # Add channels
-  /opt/ceh/bin/nix-channel --add http://nixos.org/channels/nixpkgs-unstable
-  /opt/ceh/bin/nix-channel --update
+  $CEH_NIX/bin/nix-channel --add http://nixos.org/channels/nixpkgs-unstable
+  $CEH_NIX/bin/nix-channel --update
+
+  # This also initializes the nixpkgs git repo in /opt/ceh/nixpkgs.
+  ENSURE_BASE_PERL=$CEH_NIXPERL/bin/perl \
+    ENSURE_BASE_NIXPATH=$CEH_NIX \
+    /opt/ceh/lib/ensure_base_installed.pl
 else
   # if we're on NixOS
   if ! [ -d /nix/var/nix/gcroots/auto/ceh ] || ! [ -O /nix/var/nix/gcroots/auto/ceh ]

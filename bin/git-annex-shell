@@ -6,4 +6,4 @@ use warnings;
 use lib "/opt/ceh/lib";
 use Packages::GitAnnex;
 
-exec "$ceh_nix_install_root/bin/git-annex-shell", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/git-annex-shell", @ARGV;

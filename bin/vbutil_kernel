@@ -6,4 +6,4 @@ use warnings;
 use lib "/opt/ceh/lib";
 use Packages::VBootReference;
 
-exec "$ceh_nix_install_root/bin/vbutil_kernel", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/vbutil_kernel", @ARGV;

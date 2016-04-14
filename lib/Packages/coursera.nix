@@ -9,7 +9,7 @@
 
           src = fetchurl {
             url = "https://github.com/coursera-dl/coursera/archive/031b7835b26a7347c6ac4b88dea781de82789c01.tar.gz";
-            sha256 = "0yykxf6dh3mrn87p2nlsv3cgalqxs4vyi3gdj4fjlv3y2f91lnm0";
+            sha256 = "11zxj4lg75sygswc01pc124sr3g9y93y9k8ccqph09nbgc9hik6m";
           };
 
           buildInputs = [ makeWrapper pythonPackages.python

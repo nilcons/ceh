@@ -8,4 +8,4 @@ use CehInstall;
 
 ceh_nixpkgs_install('tmux', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'n16fs6wi5rjpna2wn9kq2ccwqlr7y2r0-tmux-1.9a');
 
-exec "$ceh_nix_install_root/bin/tmux", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/tmux", @ARGV;

@@ -6,4 +6,4 @@ use warnings;
 use lib "/opt/ceh/lib";
 use Packages::Git;
 
-exec "$ceh_nix_install_root/bin/gitk", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/gitk", @ARGV;

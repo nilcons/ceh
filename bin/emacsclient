@@ -6,4 +6,4 @@ use warnings;
 use lib "/opt/ceh/lib";
 use Packages::Emacs;
 
-exec "$ceh_nix_install_root/bin/emacsclient", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/emacsclient", @ARGV;

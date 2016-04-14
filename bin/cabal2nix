@@ -13,4 +13,4 @@ unless (exists $ENV{NIX_PATH}) {
     $ENV{NIX_PATH} = 'nixpkgs=/opt/ceh/nixpkgs/' . $CEH_BASELINE_NIXPKGS;
 }
 
-exec "$ceh_nix_install_root/bin/cabal2nix", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/cabal2nix", @ARGV;

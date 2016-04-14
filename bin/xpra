@@ -8,4 +8,4 @@ use CehInstall;
 
 ceh_nixpkgs_install("xpra", nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'l1zmlszwk64rzs13hly2jcrnfbkf2z3d-xpra-0.14.19');
 
-exec "$ceh_nix_install_root/bin/xpra", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/xpra", @ARGV;

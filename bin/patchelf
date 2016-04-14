@@ -8,4 +8,4 @@ use CehInstall;
 
 ceh_nixpkgs_install('patchelf', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'ysyv0b5y6dx9qr5ai2jyhvpf78dpwqy9-patchelf-0.8');
 
-exec "$ceh_nix_install_root/bin/patchelf", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/patchelf", @ARGV;

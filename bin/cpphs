@@ -12,4 +12,4 @@ foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
 
 ceh_nixpkgs_install('haskellPackages.cpphs', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'pr12323gig66iakac9jz2b7jbs42vq2p-haskell-cpphs-ghc7.8.4-1.18.6-shared');
 
-exec "$ceh_nix_install_root/bin/cpphs", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/cpphs", @ARGV;

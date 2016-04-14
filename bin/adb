@@ -6,4 +6,4 @@ use warnings;
 use lib "/opt/ceh/lib";
 use Packages::AndroidSDK;
 
-exec "$ceh_nix_install_root/bin/adb", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/adb", @ARGV;

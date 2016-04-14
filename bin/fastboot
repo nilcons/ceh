@@ -6,4 +6,4 @@ use warnings;
 use lib "/opt/ceh/lib";
 use Packages::AndroidSDK;
 
-exec "$ceh_nix_install_root/bin/fastboot", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/fastboot", @ARGV;

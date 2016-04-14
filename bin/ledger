@@ -8,4 +8,4 @@ use CehInstall;
 
 ceh_nixpkgs_install("ledger", nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => '3njb6mhbyk9gg7vsiwdhji8xlip51gyp-ledger-3.1');
 
-exec "$ceh_nix_install_root/bin/ledger", @ARGV;
+exec "$ceh_nix_install_root/MAIN/bin/ledger", @ARGV;
