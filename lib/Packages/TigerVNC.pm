@@ -9,6 +9,6 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw($ceh_nix_install_root);
 
-ceh_nixpkgs_install("tigervnc", nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => '2nlhkz82yk6c1g8pvjjczh5r2vkll1jv-tigervnc-1.3.1');
+ceh_nixpkgs_install("tigervnc", nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'lw4ad1zfsy8kgkqp9vgp5v3wjg85bcgr-tigervnc-1.6.0');
 
 1;

@@ -7,7 +7,7 @@ use lib "/opt/ceh/lib";
 use CehBase;
 use CehInstall;
 
-ceh_nixpkgs_install('haskellPackages.cabal2nix', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => '1h5drl9vni2z68vngjygb6xdasy3890c-cabal2nix-1.73');
+ceh_nixpkgs_install('haskellPackages.cabal2nix', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'fyxwb94w9icj7sbqx9fwj2rbv19xlagh-cabal2nix-20160406');
 
 unless (exists $ENV{NIX_PATH}) {
     $ENV{NIX_PATH} = 'nixpkgs=/opt/ceh/nixpkgs/' . $CEH_BASELINE_NIXPKGS;

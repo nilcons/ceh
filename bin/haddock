@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('haskellPackages.haddock', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => '75yjbh7p0dl1ib3ma8db0hb1z6mqsr1d-haddock-2.15.0.1');
+ceh_nixpkgs_install('haskellPackages.haddock', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'ksi3mwg8z0rfj0x439wayrpfbbiaqgsp-haddock-2.16.1');
 
 exec "$ceh_nix_install_root/MAIN/bin/haddock", @ARGV;

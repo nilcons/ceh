@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('teamspeak_client', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'k53kl99b8mllxws0kclc7x79fgi4ysx1-teamspeak-client-3.0.16');
+ceh_nixpkgs_install('teamspeak_client', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'b6w5jd6vy7zscwqdy4xjbka7cd3j5pjw-teamspeak-client-3.0.18.2');
 
 exec "$ceh_nix_install_root/MAIN/bin/ts3client", @ARGV;

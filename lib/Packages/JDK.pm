@@ -15,13 +15,13 @@ our @EXPORT = qw($ceh_nix_install_root);
 $ENV{NIXPKGS_CONFIG}='/opt/ceh/lib/Packages/allownonfree.nix';
 
 if (defined($ENV{CEH_JAVAFLAVOR}) && $ENV{CEH_JAVAFLAVOR} eq "sun6") {
-    ceh_nixpkgs_install("oraclejdk", nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'bhp8gxjif2b0vk56887f56a9ci9sdvfd-jdk-1.6.0_45b06');
+    ceh_nixpkgs_install("oraclejdk", nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'kg50ija6gashs2zkkjf0ir9m6xc8vn8b-jdk-1.6.0_45b06');
 } elsif (defined($ENV{CEH_JAVAFLAVOR}) && $ENV{CEH_JAVAFLAVOR} eq "sun7") {
-    ceh_nixpkgs_install("oraclejdk7", nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => '4w8nnhkhr16han43saik611avxqh03fi-oraclejdk-7u75');
+    ceh_nixpkgs_install("oraclejdk7", nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => '84gym9ngkk195x9p3xb20pvg114gnhmg-oraclejdk-7u79');
 } elsif (defined($ENV{CEH_JAVAFLAVOR}) && $ENV{CEH_JAVAFLAVOR} eq "sun8") {
-    ceh_nixpkgs_install("oraclejdk8", nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => '9vfnw4nl4x0imxrkpznwzkjwfpbvwm6d-oraclejdk-8u40');
+    ceh_nixpkgs_install("oraclejdk8", nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => '63qdvdcqy8v70sgx1z432pvfqixgd7f3-oraclejdk-8u77');
 } else {
-    ceh_nixpkgs_install("openjdk", nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => 'qjr6s6fm2vpfkgdh5iksg2zx23xf56hm-openjdk-7u65b32');
+    ceh_nixpkgs_install("openjdk", nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'n35viakx3wj9rhl1brrw23blzhl03rm0-openjdk-8u76b00');
 }
 
 1;
