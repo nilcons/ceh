@@ -10,6 +10,6 @@ use CehInstall;
 
 foreach my $l (@ceh_ghc_libs) { path_prepend($l, 'LD_LIBRARY_PATH'); }
 
-ceh_nixpkgs_install('haskellPackages.cabalInstall', nixpkgs_version => 'e07ea5cf77601325b16f51fb457b90d5aadfab6f', out => '0yzsy3wmq8y06vgaz2a2yfah3vfhsiqb-cabal-install-1.22.0.0');
+ceh_nixpkgs_install('haskellPackages.cabal-install', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'r2d64lx491gz7v7vq1l7zlgpw66ii85d-cabal-install-1.22.9.0');
 
 exec "$ceh_nix_install_root/MAIN/bin/cabal", @ARGV;
