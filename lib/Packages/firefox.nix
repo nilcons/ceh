@@ -12,6 +12,7 @@
         , hunspell, libevent, libstartup_notification, libvpx
         , gst_plugins_base, gstreamer
         , cairo, glib, atk, gdk_pixbuf, linuxPackages, mesa_drivers
+        , libcanberra, libheimdal, libpulseaudio
         , flashplayer, google_talk_plugin
         # , oraclejdk8distro
         }: stdenv.mkDerivation rec {
@@ -20,10 +21,9 @@
         builder = ./firefox-builder.sh;
 
         src = fetchurl {
-          # url = "https://download.mozilla.org/?product=firefox-36.0-SSL&os=linux64&lang=en-US";
-          url = "http://download-installer.cdn.mozilla.net/pub/firefox/releases/36.0.1/linux-x86_64/en-US/firefox-36.0.1.tar.bz2";
+          url = "http://download-installer.cdn.mozilla.net/pub/firefox/releases/45.0.2/linux-x86_64/en-US/firefox-45.0.2.tar.bz2";
           name = "firefox.tar.bz2";
-          sha256 = "0v9khvjrs3kl3i3bpjnmvp1h5ls1hfkqfzi66hhw92x1gkbr73g8";
+          sha256 = "1if684ga4pgfpkv1fwnaa5hbp5h1qshqd4a4q7fri5vyn0zfns20";
         };
 
         flashplayer_path = flashplayer;
@@ -46,7 +46,7 @@
             xlibs.libXext xlibs.xextproto sqlite cups
             hunspell libevent libstartup_notification libvpx
             cairo glib atk gdk_pixbuf linuxPackages.nvidia_x11
-            mesa_drivers
+            mesa_drivers libcanberra libheimdal libpulseaudio
             ] + ":" + stdenv.lib.makeSearchPath "lib64" [ stdenv.cc.cc ];
         }) { };
     };

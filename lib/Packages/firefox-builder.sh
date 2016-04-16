@@ -9,7 +9,7 @@ for lib in `find -name '*.so'` ; do
     patchelf --set-rpath $libPath:$out/share/firefox $lib
 done
 
-for bin in `find -perm +0100 -type f | grep -v '\.s[oh]$'` ; do
+for bin in `find -perm /0100 -type f | grep -v '\.s[oh]$'` ; do
     echo $bin
     patchelf --interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
              --set-rpath $libPath:$out/share/firefox $bin
@@ -33,4 +33,4 @@ EOF
 chmod a+x firefox
 
 cd $out/share/firefox
-ln -s $nvidia_path/lib/libvdpau_nvidia.so .
+ln -s $nvidia_path/lib/vdpau/libvdpau_nvidia.so .
