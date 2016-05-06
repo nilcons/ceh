@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install('backblaze-b2', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'wy92znw5vszrb0ahin64zcqaah8ys0cz-backblaze-b2-0.4.4');
+
+exec "$ceh_nix_install_root/MAIN/bin/backblaze-b2", @ARGV;
