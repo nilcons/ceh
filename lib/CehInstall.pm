@@ -312,7 +312,7 @@ my $autoroot = "/nix/var/nix/gcroots/auto/ceh";
 #    debug -> /nix/store/m5m2gwhhzbyfdlmbf84hcdmjb9n78b1j-nix-1.11.2-debug
 sub replace_with_directory( $ ) {
     my $path = shift;
-    if (-e $path) {
+    if (-e $path || -l $path) {
         # Make way in case of both new and old /opt/ceh/installed standards
         rmtree($path) or croak("Can't delete $path");
     }
