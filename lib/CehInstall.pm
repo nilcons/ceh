@@ -210,6 +210,7 @@ sub ceh_nixpkgs_install($%) {
     chomp($cdevtmp);
     $cdevtmp =~ /^\/nix\/store\// or croak($cdevtmp . " not starting with /nix/store");
     $cdevtmp =~ s,/nix/store/,,;
+    $cdevtmp =~ s/!.*$//;
     my $current_derivation = $cdevtmp;
 
     # this hack is used by /opt/ceh/scripts/maintainer/predict-binary-cache.sh
@@ -218,7 +219,7 @@ sub ceh_nixpkgs_install($%) {
         exit 0;
     }
     my @outs = `$CEH_ESSNIXPATH/bin/nix-store -q /nix/store/$current_derivation`;
-    $? and croak;
+    $? and confess;
     foreach (@outs) {
         chomp;
         s,^/nix/store/,,;
