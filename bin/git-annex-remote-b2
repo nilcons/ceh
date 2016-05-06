@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install('gitAndTools.git-annex-remote-b2', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'khsvzdxwsjcdm5i0qzrc0psrkpl2421p-go1.5-git-annex-remote-b2-v0.2');
+
+exec "$ceh_nix_install_root/bin/bin/git-annex-remote-b2", @ARGV;
