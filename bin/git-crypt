@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install('git-crypt', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'nv3v86qfwx0k13rxny4fmxjwvpd2z0p1-git-crypt-0.5.0');
+
+exec "$ceh_nix_install_root/MAIN/bin/git-crypt", @ARGV;
