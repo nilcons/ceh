@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install('gnupg', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'yvca6j4659dwgnv3d35ldpp5qkqdrdgf-gnupg-2.1.11');
+
+exec "$ceh_nix_install_root/MAIN/bin/gpgsm", @ARGV;
