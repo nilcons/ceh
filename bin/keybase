@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install('keybase', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'm8dfvnd60hqh8dcwbdv6mmkk84y76rpf-nodejs-keybase-0.8.25');
+
+exec "$ceh_nix_install_root/MAIN/bin/keybase", @ARGV;
