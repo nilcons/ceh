@@ -20,7 +20,6 @@ cd $out/bin
 cat >firefox <<EOF
 #!/bin/sh
 
-export ALSA_PLUGIN_DIRS=$alsa_path/lib/alsa-lib
 export LD_PRELOAD=$google_talk_plugin_path/libexec/google/talkplugin/libpreload.so
 export LIBGL_DRIVERS_PATH=$mesa_path/lib/dri
 
