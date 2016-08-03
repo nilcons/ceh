@@ -23,7 +23,7 @@ use CehInstall;
 
 # To enable google talk plugin and jre plugin.
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/firefox.nix";
-# TODO(errge): I had to update nixpkgs for firefox, otherwise hangouts plugin was not compatible with FF47
-ceh_nixpkgs_install('firefoxCeh', nixpkgs_version => '21747ef768341b3322c8333f9dafb48961ced63f', out => 'y02vw3r92bwkh9zr7n24xanqp4x1bm6i-firefox-ceh');
+# TODO(errge): I had to update nixpkgs for firefox, otherwise hangouts plugin was not compatible with FF48
+ceh_nixpkgs_install('firefoxCeh', nixpkgs_version => '21747ef768341b3322c8333f9dafb48961ced63f', out => 'k6jfpmdwj46phsppw3kh93m6qizzjx0b-firefox-ceh');
 
 exec "$ceh_nix_install_root/MAIN/bin/firefox", @ARGV;

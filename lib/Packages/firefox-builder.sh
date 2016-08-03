@@ -33,3 +33,6 @@ chmod a+x firefox
 
 cd $out/share/firefox
 ln -s $nvidia_path/lib/vdpau/libvdpau_nvidia.so .
+mkdir -p browser/plugins
+ln -sf $flashplayer_path/lib/mozilla/plugins/* browser/plugins
+ln -sf $google_talk_plugin_path/lib/mozilla/plugins/* browser/plugins

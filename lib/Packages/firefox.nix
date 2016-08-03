@@ -80,9 +80,9 @@
         builder = ./firefox-builder.sh;
 
         src = fetchurl {
-          url = "http://download-installer.cdn.mozilla.net/pub/firefox/releases/47.0/linux-x86_64/en-US/firefox-47.0.tar.bz2";
+          url = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/48.0/linux-x86_64/en-US/firefox-48.0.tar.bz2";
           name = "firefox.tar.bz2";
-          sha256 = "1r8mn5wj7ang4fhvaf8cxaaqynz6whyx35nb9xdy6kn17x4wyzvn";
+          sha256 = "00cybk1ixnfmbjllp9fpyf6qcr9y16qkj30wql4ghpmj35260ibh";
         };
 
         flashplayer_path = flashplayer;
