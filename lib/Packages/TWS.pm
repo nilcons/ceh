@@ -10,6 +10,6 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw($ceh_nix_install_root);
 
 $ENV{NIXPKGS_CONFIG}='/opt/ceh/lib/Packages/TWS.nix';
-ceh_nixpkgs_install("tws", nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'rghcmdgk0lggbl77ibfdp6jvb7aj76x5-tws-20160916');
+ceh_nixpkgs_install("tws", nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'vphpd1jyb9a5xrywanakgb7ikwhkfvzi-tws-20170713');
 
 1;

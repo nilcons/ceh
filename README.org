@@ -426,18 +426,14 @@ whether a package is already installed.
 
 *** Upgrading ceh to a new baseline
 + Update CEH_BASELINE_NIXPKGS in =lib/CehBase.pm= with a new hash,
-  that you should get from http://nixos.org/releases/nixpkgs/, by
-  choosing the most recent release and getting the git commit id from
-  there (in my case b253eb0).  To get the long hash id for that
-  commit, do this:
-: cd /opt/ceh/nixpkgs/git
-: git fetch --all
-: git log -1 --format=oneline b253eb0 -- | cat
+  that you should get from http://hydra.nixos.org/jobset/nixpkgs/trunk, by
+  choosing the most recent build that has no pending (gray) packages anymore.
+  Clicking inputs, you can get the git revision you need.
 
 + Update the used Nix and Perl to the new baseline:
 : CEH_AUTO_UPGRADE=1 \
-: ENSURE_BASE_PERL=/opt/ceh/installed/essential/perl.32/bin/perl \
-: ENSURE_BASE_NIXPATH=/opt/ceh/installed/essential/nix.32 /opt/ceh/lib/ensure_base_installed.pl
+: ENSURE_BASE_PERL=/opt/ceh/installed/essential/perl.32/MAIN/bin/perl \
+: ENSURE_BASE_NIXPATH=/opt/ceh/installed/essential/nix.32/MAIN /opt/ceh/lib/ensure_base_installed.pl
 
 + Update CEH_BASELINE_NIXPATH in =lib/CehBase.pm= (peek from CehInstall.pl:ensure_base_installed).
 

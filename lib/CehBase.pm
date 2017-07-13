@@ -24,9 +24,9 @@ our $CEH_ESSNIXPATH="$CEH_ESSGCLINKDIR/nix.32/MAIN";
 our $CEH_NIXPKGS_GITURL='http://github.com/NixOS/nixpkgs';
 our $CEH_NIXPKGS_GIT='/opt/ceh/nixpkgs';
 
-our $CEH_BASELINE_NIXPKGS='551296a1cec0b9751ab96c420a7481e322ea127d';
-our $CEH_BASELINE_NIXPATH='3xx08z1wv87hx4rh04walcvrhw0jlrf5-nix-1.11.2';
-our $CEH_BASELINE_PERL='5dzx4vqh3d9jcwp4czslx1zjv7zs16ab-perl-5.22.1';
+our $CEH_BASELINE_NIXPKGS='02a268430e13061aad441ec4a28579d46af79e33';
+our $CEH_BASELINE_NIXPATH='nyf9vjh8lc3fl43byf6b86hq9bp3my9z-nix-1.11.11';
+our $CEH_BASELINE_PERL='m82raw2hwbgxfxy4b6v9fckj9dxw23q4-perl-5.24.1';
 # Don't forget to update emacs.d/nix-mode.el!
 
 sub import {
@@ -41,7 +41,7 @@ sub import {
     }
 
     unshift @_, $self;
-    -x "${CEH_ESSNIXPATH}/bin/nix-build" or die "*** Ceh is not initialized, run /opt/ceh/scripts/ceh-init.sh ***";
+    -x "${CEH_ESSNIXPATH}/bin/nix-build" or die "*** Ceh is not initialized, run /opt/ceh/scripts/ceh-init.sh ${CEH_ESSNIXPATH}/bin/nix-build ***";
     goto &Exporter::import;
 }
 

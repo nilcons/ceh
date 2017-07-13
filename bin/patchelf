@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('patchelf', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'aazfwly4r1hcxlx5y18ii3s8ir26h66f-patchelf-0.9');
+ceh_nixpkgs_install('patchelf', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'brgqsmibk4grk0irjbmv9sj99pqbs8q9-patchelf-0.9');
 
 exec "$ceh_nix_install_root/MAIN/bin/patchelf", @ARGV;

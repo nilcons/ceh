@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('nix-prefetch-scripts', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'bqb7ck0ncmzbnmbnaa8p4j6561xb13zp-nix-prefetch-scripts');
+ceh_nixpkgs_install('nix-prefetch-scripts', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => '420whgwxcdzphfr94drkz0nksdzpxsjj-nix-prefetch-scripts');
 
 exec "$ceh_nix_install_root/MAIN/bin/nix-prefetch-zip", @ARGV;

@@ -94,14 +94,10 @@ fi
 (
     cd /tmp
 
-    curl -L -o jdk-6u45-linux-x64.bin -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64.bin &
-    curl -L -o jdk-7u79-linux-x64.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.tar.gz &
-    curl -L -o jdk-8u77-linux-x64.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u77-b03/jdk-8u77-linux-x64.tar.gz &
+    curl -L -o jdk-8u131-linux-x64.tar.gz -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz &
     wait
 
-    nix-store --add-fixed sha256 jdk-6u45-linux-x64.bin
-    nix-store --add-fixed sha256 jdk-7u75-linux-x64.tar.gz
-    nix-store --add-fixed sha256 jdk-8u40-linux-x64.tar.gz
+    nix-store --add-fixed sha256 jdk-8u131-linux-x64.tar.gz
 
     # Now we're using a flash player that is downloadable from adobe,
     # but this may change in the future, so leave the hack here as a
@@ -162,7 +158,6 @@ echo Waiting for the java downloads to finish at $(date)
 wait $JAVA_DOWNLOADS_PID
 echo Java downloads finished at $(date)
 CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
-CEH_JAVAFLAVOR=sun6 install javac  "javac: invalid flag: --version"
-CEH_JAVAFLAVOR=sun7 install javac  "javac: invalid flag: --version"
+CEH_JAVAFLAVOR=sun8 install javac  "javac: invalid flag: --version"
 install firefox "Mozilla Firefox"
 install tws-ui "TWS successfully installed"

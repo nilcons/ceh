@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('haskellPackages.sizes', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'd59chx5z62jy1ipkdc3qnw3lq2cdpcpw-sizes-2.3.2');
+ceh_nixpkgs_install('haskellPackages.sizes', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => '68k65f8al3p185jsnc06h05xdjynwqv9-sizes-2.3.2');
 
 exec "$ceh_nix_install_root/MAIN/bin/sizes", @ARGV;

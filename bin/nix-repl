@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('nix-repl', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'vripsd8h0faag1zvc0q4ic0728dja3cm-nix-repl-1.11.2-8a2f5f0');
+ceh_nixpkgs_install('nix-repl', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'sxrn1v2bw64rch9gpqzy96bdl622ga7j-nix-repl-1.11.11-2016-02-28');
 
 exec "$ceh_nix_install_root/MAIN/bin/nix-repl", @ARGV;

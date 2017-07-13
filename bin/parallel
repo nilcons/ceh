@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('parallel', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => '6pbhjq2ky8z21i0kmyifb4spbzcj8vin-parallel-20160322');
+ceh_nixpkgs_install('parallel', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => '90km0n3qclbsdllgvz1486v3jv2mfgl7-parallel-20170522');
 
 exec "$ceh_nix_install_root/MAIN/bin/parallel", @ARGV;

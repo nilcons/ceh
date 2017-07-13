@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('gitAndTools.git-annex-remote-b2', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'khsvzdxwsjcdm5i0qzrc0psrkpl2421p-go1.5-git-annex-remote-b2-v0.2');
+ceh_nixpkgs_install('gitAndTools.git-annex-remote-b2', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => '5q9sldspz24fy8gmkv9v14bqd24wiwil-git-annex-remote-b2-20151212-4db46b9');
 
 exec "$ceh_nix_install_root/bin/bin/git-annex-remote-b2", @ARGV;
