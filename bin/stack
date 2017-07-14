@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install('stack', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'cml2c80h8qm8ak68s7nrw79cldriip1a-stack-1.4.0');
+
+exec "$ceh_nix_install_root/MAIN/bin/stack", @ARGV;
