@@ -6,22 +6,7 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-# This is a 64-bit FF install with all the 3 required plugins:
-#  - google talk,
-#  - java (well, not working currently :( ),
-#  - flash,
-# please make sure to remove all the conflicting plugins from your
-# system (~/.mozilla/firefox/plugins, /usr/lib/mozilla, etc.).
-#
-# To make sure everything is OK, use all 3 plugins while running
-# firefox from a terminal and watch stderr.
-#
-# Do not ever mix 32-bit plugins with this 64-bit firefox!
-# TODO(errge): an ld_preload hack that purifies this plugin issue, by
-# hiding /usr/lib/mozilla, ~/.mozilla/plugins and whatever else that
-# is needed.
-
-# To enable flash.
+# This is a 64-bit FF install with flash.
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/firefox.nix";
 ceh_nixpkgs_install('firefoxCeh', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'qfvqh8z59f8rjisrl8nyb0a7pvwxj0qc-firefox-ceh');
 
