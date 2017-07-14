@@ -13,7 +13,6 @@ our @EXPORT = qw(
   ceh_nixpkgs_checkout
   ceh_nixpkgs_install
   ceh_nixpkgs_install_tools
-  ceh_nixpkgs_install_ghclibs
   check_nix_freshness
   ensure_base_installed
   $ceh_nix_install_root
@@ -261,12 +260,6 @@ sub ceh_nixpkgs_install($%) {
 
     $ceh_nix_install_root = $gclink;
     return $ceh_nix_install_root;
-}
-
-# Libraries for GHC FFI packages.
-sub ceh_nixpkgs_install_ghclibs {
-    my ($pkgattr, %opts) = @_;
-    return ceh_nixpkgs_install($pkgattr, gclink => "/opt/ceh/installed/ghclibs/$pkgattr", %opts);
 }
 
 # Use this when you're installing packages used internally by Ceh.

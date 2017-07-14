@@ -6,7 +6,7 @@
   header can be =#!/opt/ceh/bin/runhaskell -i /opt/ceh/p/ourproject=,
   instead of some complicated perl one-liner).
 + So that the packages are available with the same version on our
-  machines (e.g. =emacs= and =ghc=).
+  machines (e.g. =emacs=, =tmux=, =firefox=, etc).
 + These agreements are intentionally based on simple unifications
   instead of abstractions (e.g. =/opt/ceh/home= has to be a symlink
   for the user's home directory, no need to =$HOME= or tilde lookups
@@ -15,9 +15,6 @@
   distribution that you use as a base system, we recommend amd64 Debian.
   But the point is that this should work on any modern amd64
   GNU/Linux, we also tested Ubuntu trusty and precise.
-+ When it makes sense, we provide 32-bit version of packages too,
-  e.g. you can use 32-bit haskell by setting the =CEH_GHC32=
-  environment variable to 1.
 
 
 * Requirements
@@ -110,6 +107,12 @@ parallelized by nix.
 
 
 * Upgrade notes
+*** 2017-07-14: no Haskell anymore
+We think that for Haskell, stack is a clear winner in the ecosystem.
+
+Therefore we may add stack support to ceh in the future, but we have
+removed our nix based haskell suppotr.
+
 *** 2016-04-14: support for multiple outputs
 As preparation for a baseline upgrade, we had to do a refactoring: in
 new nixpkgs versions, most of the derivations result in multiple
@@ -242,115 +245,6 @@ nix-upgrade.sh -> ceh-upgrade.sh
 And install-world.sh and predict-binary-cache.sh moved to scripts/maintainer.
 
 
-* Haskell support
-*** 32-bit vs 64-bit
-Ceh usually installs 64-bit binaries.
-
-If you want to use a 32-bit GHC (e.g. for testing compatibility if
-your program/library with i686 or for benchmarking), you can ask Ceh
-to install and configure a 32-bit GHC with 32-bit packages.
-
-If the environment variable =$CEH_GHC32= is 1, then GHC, Cabal,
-etc. will be installed in 32-bit mode.
-
-*** Builtin packages, shipped with ceh
-The list can be found in =/opt/ceh/lib/Packages/GHC.nix=, feel free to
-send pull requests if you need something.
-
-*** Installation of pure haskell, non-FFI packages
-The =/opt/ceh/bin/ghc= and =/opt/ceh/bin/cabal= scripts are wrapped in
-a way that the whole toolchain (GHC, GCC, the linker) is used from Nix.
-
-This means that simple, non-FFI packages should just work out-of-the-box:
-: cabal update
-: vi ~/.cabal/config    (enable library-profiling if you want)
-: cabal install hflags
-
-But again, if we miss some basic, important package from the default
-installation, please tell us, instead of cabal installing it on your
-own machines.
-
-*** Installation of FFI packages
-For FFI packages to work, you of course need to have the required libs
-installed, so the package can link against them.  These packages are
-searched for in =/opt/ceh/installed/ghclibs=.
-
-To install a new package there, you can do this:
-#+BEGIN_SRC perl
-#!/opt/ceh/lib/perl
-
-use strict;
-use warnings;
-use lib "/opt/ceh/lib";
-use CehInstall;
-
-# BerkeleyDB
-ceh_nixpkgs_install_ghclibs('db', AUTOINIT);
-# BerkeleyDB for CEH_GHC32=1
-ceh_nixpkgs_install_ghclibs('db', bit32 => 1, AUTOINIT);
-#+END_SRC
-
-AUTOINIT will be replaced by the current nixpkgs version and the
-correct hashes when you first run this Perl script.  You can then even
-commit this script to your project's version control, so your
-teammates can reproduce the same environment.
-
-If you don't need the conrete hashes that you used committed and
-recorded, just want to install a lib to the correct profile for a
-quick =cabal install=, you can use the
-=/opt/ceh/bin/ceh_nixpkgs_install_ghclibs= script.
-
-After that you will be able to simply call =cabal install=:
-: cabal install --user BerkeleyDB
-
-*** Hoogle usage
-To use hoogle for all the installed packages, first you have to
-generate the databases.  You can do that with the =hoogle-gendata=
-command.  This may take a while.  After the databases are generated,
-you can issue queries using =hoogle=, e.g.:
-
-: errge@curry:/opt/ceh/scripts/maintainer $ time hoogle-gendata >/dev/null 2>&1
-: real  1m19.005s
-: user  1m15.764s
-: sys   0m9.356s
-: errge@curry:~ $ hoogle '[a] -> [a]' | grep '^Prelude' | head -n 20
-: Prelude cycle :: [a] -> [a]
-: Prelude init :: [a] -> [a]
-: Prelude reverse :: [a] -> [a]
-: Prelude tail :: [a] -> [a]
-: Prelude scanl1 :: (a -> a -> a) -> [a] -> [a]
-: Prelude scanr1 :: (a -> a -> a) -> [a] -> [a]
-: Prelude dropWhile :: (a -> Bool) -> [a] -> [a]
-: Prelude filter :: (a -> Bool) -> [a] -> [a]
-: Prelude takeWhile :: (a -> Bool) -> [a] -> [a]
-: Prelude drop :: Int -> [a] -> [a]
-: Prelude take :: Int -> [a] -> [a]
-: Prelude (++) :: [a] -> [a] -> [a]
-: Prelude.Unicode (⧺) :: [α] -> [α] -> [α]
-: Prelude concat :: [[a]] -> [a]
-: Prelude head :: [a] -> a
-: Prelude last :: [a] -> a
-: Prelude repeat :: a -> [a]
-: Prelude map :: (a -> b) -> [a] -> [b]
-: Prelude concatMap :: (a -> [b]) -> [a] -> [b]
-: Prelude foldl1 :: (a -> a -> a) -> [a] -> a
-
-*** Deploying Haskell binaries built with Ceh to non-Ceh machines
-Thanks to the isolated compilation and linking environment provided by
-Ceh's GHC, those binaries are easy to deploy.  By putting the needed
-=.so= files in a =lib/= directory beside the binary and modifying the
-binary with =patchelf= to search that directory for libraries, you can
-create a bundle that can be easily zipped up and shipped to any
-machine with the same architecture to run completely isolated from the
-system libraries in that machine.  To see an example on how to do
-this, check out
-https://github.com/errge/PrefetchFS/blob/master/standalone.sh.
-
-*** Using ceh to get a current GHC environment on Travis
-Checkout out https://github.com/errge/hflags and the =.travis= files
-there.
-
-
 * TODOs
 + Have an LD_PRELOAD library that hides =/usr/lib/mozilla/plugins= from Firefox's view.
 
@@ -406,11 +300,6 @@ garbage collected.  Secondly, we can determine with a simple =stat=
 whether a package is already installed.
 
 =/opt/ceh/installed/essential=: nix and perl that is used by Ceh,
-
-=/opt/ceh/installed/ghctools=: gcc and pkgconfig used by GHC,
-
-=/opt/ceh/installed/ghclibs=: clibs that are needed for the user to
-=cabal install FFI= libraries, see above,
 
 =/opt/ceh/installed/tools=: the tools used by Ceh itself (e.g. =which=).
 

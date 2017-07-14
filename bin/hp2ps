@@ -1,9 +1,0 @@
-#!/opt/ceh/lib/perl
-# -*- mode: perl; -*-
-
-use strict;
-use warnings;
-use lib "/opt/ceh/lib";
-use Packages::GHC;
-
-exec "$ceh_ghc_root/MAIN/bin/hp2ps", @ARGV;
