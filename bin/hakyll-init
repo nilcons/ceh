@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('haskellPackages.hakyll', nixpkgs_version => '551296a1cec0b9751ab96c420a7481e322ea127d', out => 'msvvw8ykxzlwj3b5kja49hyiz52j009m-hakyll-4.7.5.2');
+ceh_nixpkgs_install('haskellPackages.hakyll', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'm365230gjq8iglknx285zz071aaraln7-hakyll-4.9.7.0');
 
 exec "$ceh_nix_install_root/MAIN/bin/hakyll-init", @ARGV;
