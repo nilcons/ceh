@@ -102,8 +102,8 @@ fi
     # Now we're using a flash player that is downloadable from adobe,
     # but this may change in the future, so leave the hack here as a
     # reference.
-    # wget -c http://ftp.tw.freebsd.org/distfiles/flashplugin/11.2r202.297/install_flash_player_11_linux.i386.tar.gz
-    # nix-store --add-fixed sha256 install_flash_player_11_linux.i386.tar.gz
+    # wget -c http://nyftp.netbsd.org/pub/pkgsrc/distfiles/adobe-flash-player-26.0.0.131/flash_player_npapi_linux.x86_64.tar.gz
+    # nix-store --add-fixed sha256 flash_player_npapi_linux.x86_64.tar.gz
 
 ) & # we are starting this in the background, because it is slow and
     # we will do a wait later before actually using the java.

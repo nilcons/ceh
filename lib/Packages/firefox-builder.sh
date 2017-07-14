@@ -20,19 +20,14 @@ cd $out/bin
 cat >firefox <<EOF
 #!/bin/sh
 
-export LD_PRELOAD=$google_talk_plugin_path/libexec/google/talkplugin/libpreload.so
 export LIBGL_DRIVERS_PATH=$mesa_path/lib/dri
 
 export MOZ_PLUGIN_PATH=\$MOZ_PLUGIN_PATH\${MOZ_PLUGIN_PATH:+:}$flashplayer_path/lib/mozilla/plugins
-# export MOZ_PLUGIN_PATH=\$MOZ_PLUGIN_PATH\${MOZ_PLUGIN_PATH:+:}$jre_path/jre/lib/amd64/plugins
-export MOZ_PLUGIN_PATH=\$MOZ_PLUGIN_PATH\${MOZ_PLUGIN_PATH:+:}$google_talk_plugin_path/lib/mozilla/plugins
 
 exec $out/share/firefox/firefox "\$@"
 EOF
 chmod a+x firefox
 
 cd $out/share/firefox
-ln -s $nvidia_path/lib/vdpau/libvdpau_nvidia.so .
 mkdir -p browser/plugins
 ln -sf $flashplayer_path/lib/mozilla/plugins/* browser/plugins
-ln -sf $google_talk_plugin_path/lib/mozilla/plugins/* browser/plugins

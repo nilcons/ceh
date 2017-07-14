@@ -31,10 +31,6 @@
         alsaLib = alsaLibWithPlugins;
       };
 
-      google_talk_plugin = pkgs.google_talk_plugin.override {
-        alsaLib = alsaLibWithPlugins;
-      };
-
       firefoxCeh = pkgs.callPackage (
         { stdenv, fetchurl
         , alsaLibWithPlugins
@@ -55,13 +51,14 @@
         , libX11
         , libXScrnSaver
         , libXcomposite
+        , libxcb
         , libXdamage
         , libXext
         , libXfixes
         , libXinerama
         , libXrender
         , libXt
-        , libcanberra
+        , libcanberra_gtk2
         , mesa
         , nspr
         , nss
@@ -71,8 +68,6 @@
 
         # plugins
         , flashplayer
-        , google_talk_plugin
-        , linuxPackages
         , mesa_drivers
         }: stdenv.mkDerivation rec {
         name = "firefox-ceh";
@@ -80,17 +75,12 @@
         builder = ./firefox-builder.sh;
 
         src = fetchurl {
-          url = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/48.0/linux-x86_64/en-US/firefox-48.0.tar.bz2";
+          url = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/54.0.1/linux-x86_64/en-US/firefox-54.0.1.tar.bz2";
           name = "firefox.tar.bz2";
-          sha256 = "00cybk1ixnfmbjllp9fpyf6qcr9y16qkj30wql4ghpmj35260ibh";
+          sha256 = "1frns7imxmx4sl8nj9g97zciznmzy7s3b2jdm0fjwyz386w5zrdf";
         };
 
         flashplayer_path = flashplayer;
-        google_talk_plugin_path = google_talk_plugin;
-        # Unfortunately, for some reason I can not get amd64+java plugin to work...
-        # Fortunately on the other hand, I do not have any more usecases for the java plugin...
-        # jre_path = oraclejdk8distro true true;
-        nvidia_path = linuxPackages.nvidia_x11;
         mesa_path = mesa_drivers;
 
         libPath = stdenv.lib.makeLibraryPath
@@ -113,13 +103,14 @@
               libX11
               libXScrnSaver
               libXcomposite
+              libxcb
               libXdamage
               libXext
               libXfixes
               libXinerama
               libXrender
               libXt
-              libcanberra
+              libcanberra_gtk2
               mesa
               nspr
               nss
