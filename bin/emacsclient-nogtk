@@ -1,0 +1,9 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use Packages::EmacsNoGTK;
+
+exec "$ceh_nix_install_root/MAIN/bin/emacsclient", @ARGV;
