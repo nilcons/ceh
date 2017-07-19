@@ -8,4 +8,4 @@ use CehInstall;
 
 ceh_nixpkgs_install('keybase', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => '3822a0p9khz3z1qyxh4k5qcfg9cl6agh-keybase-1.0.20');
 
-exec "$ceh_nix_install_root/MAIN/bin/keybase", @ARGV;
+exec "$ceh_nix_install_root/bin/bin/keybase", @ARGV;
