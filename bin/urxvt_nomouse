@@ -1,0 +1,12 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/urxvt_nomouse.nix";
+ceh_nixpkgs_install('rxvt_unicode-with-plugins', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => '00z7gqs9iglfzfsivd5dm76ikfw90dhf-rxvt-unicode-with-perl-with-unicode3-with-plugins-9.22');
+
+exec "$ceh_nix_install_root/MAIN/bin/urxvt", @ARGV;
