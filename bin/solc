@@ -1,0 +1,11 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+ceh_nixpkgs_install('solc', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'ak6pkbqjjiliq81n9pmjxhbg9f3dgwif-solc-0.4.12');
+
+exec "$ceh_nix_install_root/MAIN/bin/solc", @ARGV;
