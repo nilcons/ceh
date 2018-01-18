@@ -75,9 +75,9 @@
         builder = ./firefox-builder.sh;
 
         src = fetchurl {
-          url = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/54.0.1/linux-x86_64/en-US/firefox-54.0.1.tar.bz2";
+          url = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/56.0.1/linux-x86_64/en-US/firefox-56.0.1.tar.bz2";
           name = "firefox.tar.bz2";
-          sha256 = "1frns7imxmx4sl8nj9g97zciznmzy7s3b2jdm0fjwyz386w5zrdf";
+          sha256 = "0wyalginryxxn3dsmk5flda237mxrz96xikhs835jlpdr3wl3pws";
         };
 
         flashplayer_path = flashplayer;

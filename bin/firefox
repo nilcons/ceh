@@ -8,6 +8,6 @@ use CehInstall;
 
 # This is a 64-bit FF install with flash.
 $ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/firefox.nix";
-ceh_nixpkgs_install('firefoxCeh', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'qfvqh8z59f8rjisrl8nyb0a7pvwxj0qc-firefox-ceh');
+ceh_nixpkgs_install('firefoxCeh', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'jljlj8l53ky6bidlvkz6y5fnf6lll51m-firefox-ceh');
 
 exec "$ceh_nix_install_root/MAIN/bin/firefox", @ARGV;
