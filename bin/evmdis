@@ -1,0 +1,12 @@
+#!/opt/ceh/lib/perl
+# -*- mode: perl; -*-
+
+use strict;
+use warnings;
+use lib "/opt/ceh/lib";
+use CehInstall;
+
+$ENV{NIXPKGS_CONFIG}="/opt/ceh/lib/Packages/evmdis.nix";
+ceh_nixpkgs_install('evmdis', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'fvxjnlxvhmhpjsz7b5cr6dnfcm41ny4w-evmdis-0.20170616');
+
+exec "$ceh_nix_install_root/bin/bin/evmdis", @ARGV;
