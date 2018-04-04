@@ -8,14 +8,14 @@
 
         buildGoPackage rec {
           name = "evmdis-${version}";
-          version = "0.20170616";
+          version = "0.20180323";
           goPackagePath = "github.com/Arachnid/evmdis";
 
           src = fetchFromGitHub {
             owner = "Arachnid";
             repo = "evmdis";
-            rev = "1abeda0a402b0aa4f755d571565d7044b3e56c77";
-            sha256 = "0mjh9rcpdwd96m68pps1hhrsn9004g052hq8y2gc579pq50izl0a";
+            rev = "0d1406905c5fda6224651fa53260a21c907eb986";
+            sha256 = "09y4j7ipgv8yd99g3xk3f079w8fqfj7kl1y7ry81ainysn0qlqrg";
           };
 
           meta = with stdenv.lib; {
