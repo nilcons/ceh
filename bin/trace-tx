@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+tx=${1#0x}
+trace=${2:-trace}
+
+if [[ $trace == sd ]]; then
+    trace=stateDiff
+fi
+
+if [[ $trace == vm ]]; then
+    trace=vmTrace
+fi
+
+curl --data '{"method":"trace_replayTransaction","params":["0x'$tx'",["'$trace'"]],"id":1,"jsonrpc":"2.0"}' -H "Content-Type: application/json" -X POST localhost:${WEB3PORT:-8545} | jq .
