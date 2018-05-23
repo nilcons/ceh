@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('solc', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'ak6pkbqjjiliq81n9pmjxhbg9f3dgwif-solc-0.4.12');
+ceh_nixpkgs_install('solc', nixpkgs_version => 'c29d2fde74d03178ed42655de6dee389f2b7d37f', out => '0c1b47q8vksky8amwvad4n90jj5p79yh-solc-0.4.23');
 
 exec "$ceh_nix_install_root/MAIN/bin/lllc", @ARGV;
