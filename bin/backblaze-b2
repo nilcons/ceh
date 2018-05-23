@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('backblaze-b2', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'qyjvjj5543mfna7234mdm46lj9rncjk9-backblaze-b2-0.6.2');
+ceh_nixpkgs_install('backblaze-b2', nixpkgs_version => 'c29d2fde74d03178ed42655de6dee389f2b7d37f', out => '7a7zpp1ps2yyzk3n3vl8z2yqbv1rhym1-backblaze-b2-1.1.0');
 
 exec "$ceh_nix_install_root/MAIN/bin/backblaze-b2", @ARGV;

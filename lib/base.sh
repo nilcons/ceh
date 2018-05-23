@@ -18,12 +18,12 @@ ceh_path_prepend() {
 }
 
 ceh_check_initialization() {
-    [ -x /opt/ceh/installed/essential/perl.32/MAIN/bin/perl ] && \
-    [ -x /opt/ceh/installed/essential/nix.32/MAIN/bin/nix-build ] || {
+    [ -x /opt/ceh/installed/essential/perl/MAIN/bin/perl ] && \
+    [ -x /opt/ceh/installed/essential/nix/MAIN/bin/nix-build ] || {
         echo >&2 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
         echo >&2 "Ceh is not properly initialized, the base executables are missing:"
-        echo >&2 "  /opt/ceh/installed/essential/perl.32/bin/perl"
-        echo >&2 "  /opt/ceh/installed/essential/nix.32/bin/nix-build"
+        echo >&2 "  /opt/ceh/installed/essential/perl/bin/perl"
+        echo >&2 "  /opt/ceh/installed/essential/nix/bin/nix-build"
         echo >&2 ""
         echo >&2 "This can be fixed, by running:"
         echo >&2 "  /opt/ceh/scripts/ceh-init.sh"

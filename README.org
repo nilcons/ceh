@@ -107,11 +107,35 @@ parallelized by nix.
 
 
 * Upgrade notes
+*** 2018-05-23: Nix 2, no nix-mode.el, no firefox, no vanitygen, no 32-bit, no TWS
+This is the first Ceh release with Nix 2, if there are issues, please
+keep us posted!
+
+Nix 2 removed the nix-mode.el emacs bindings, instead you have to use
+it from Melpa, as you do with all your other emacs modules.
+
+We removed Firefox, because it was a constant maintenance burden, and
+the reasoning from many years ago (easy to use and install java,
+flash, googletalk plugin) is not strong enough anymore.  The Firefox
+versions shipped by standard desktop distibutions are good enough.
+
+Vanitygen is removed from nixpkgs, so we remove it from ceh. :(
+
+For the shiny new Nix2 2 gigs of ram is not enough to download
+ghc-8.2.2 from the binary cache.  Therefore we can't use 32-bit nix
+anymore.  So the base perl and nix package has been changed to 64-bit
+versions.  The bit32 option has also been removed, ceh is now 64-bit
+only.  Rest in peace ia32.
+
+TWS is also removed, because Interactive Brokers started to release
+usable linux desktop installation packages, which includes the correct
+version of java and just works.
+
 *** 2017-07-14: no Haskell anymore
 We think that for Haskell, stack is a clear winner in the ecosystem.
 
 Therefore we may add stack support to ceh in the future, but we have
-removed our nix based haskell suppotr.
+removed our nix based haskell support.
 
 *** 2016-04-14: support for multiple outputs
 As preparation for a baseline upgrade, we had to do a refactoring: in
@@ -127,7 +151,7 @@ should continue working as expected.
 *** 2014-12-20: no more nixops
 NixOps was not working after the 32-bit -> 64-bit migration, I do not
 think this is anything to do with the architecture, something has
-changed in the bit repo.
+changed in the git repo.
 
 Anyways, we know of no users who uses Ceh and nixops together, so it
 was easier to remove it.  Tell us if you need it!
@@ -321,14 +345,12 @@ whether a package is already installed.
 
 + Update the used Nix and Perl to the new baseline:
 : CEH_AUTO_UPGRADE=1 \
-: ENSURE_BASE_PERL=/opt/ceh/installed/essential/perl.32/MAIN/bin/perl \
-: ENSURE_BASE_NIXPATH=/opt/ceh/installed/essential/nix.32/MAIN /opt/ceh/lib/ensure_base_installed.pl
+: ENSURE_BASE_PERL=/opt/ceh/installed/essential/perl/MAIN/bin/perl \
+: ENSURE_BASE_NIXPATH=/opt/ceh/installed/essential/nix/MAIN /opt/ceh/lib/ensure_base_installed.pl
 
 + Update CEH_BASELINE_NIXPATH in =lib/CehBase.pm= (peek from CehInstall.pl:ensure_base_installed).
 
 + Update CEH_BASELINE_PERL in =lib/CehBase.pm= (peek from CehInstall.pl:ensure_base_installed).
-
-+ Update =emacs.d/nix-mode.el=.
 
 + Update all the wrappers to have the new baseline versions.  For
   example to upgrade git:
@@ -361,8 +383,8 @@ is unusable on NixOS.
 
 + tar xvfj nix-x.x.x-i686-linux.tar.bz2
 
-+ Update =CEH_NIX_DOWNLOAD=, =NIX_TARDIR_NAME=, =CEH_NIX= and
-  =CEH_NIXPERL= in =scripts/ceh-init.sh=.
++ Update =CEH_NIX_DOWNLOAD=, =NIX_TARDIR_NAME= and =CEH_NIX=
+  in =scripts/ceh-init.sh=.
 
 + Test if =scripts/ceh-init.sh= still works on a clean Debian and on a
   clean NixOS.

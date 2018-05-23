@@ -20,13 +20,13 @@ our @EXPORT = qw($CEH_ESSNIXPATH $CEH_ESSGCLINKDIR
 # a working set of nix- binaries.  This feature is used in ceh-init.sh
 # to handle NixOS and other distributions differently.
 our $CEH_ESSGCLINKDIR='/opt/ceh/installed/essential';
-our $CEH_ESSNIXPATH="$CEH_ESSGCLINKDIR/nix.32/MAIN";
+our $CEH_ESSNIXPATH="$CEH_ESSGCLINKDIR/nix/MAIN";
 our $CEH_NIXPKGS_GITURL='http://github.com/NixOS/nixpkgs';
 our $CEH_NIXPKGS_GIT='/opt/ceh/nixpkgs';
 
-our $CEH_BASELINE_NIXPKGS='02a268430e13061aad441ec4a28579d46af79e33';
-our $CEH_BASELINE_NIXPATH='nyf9vjh8lc3fl43byf6b86hq9bp3my9z-nix-1.11.11';
-our $CEH_BASELINE_PERL='m82raw2hwbgxfxy4b6v9fckj9dxw23q4-perl-5.24.1';
+our $CEH_BASELINE_NIXPKGS='c29d2fde74d03178ed42655de6dee389f2b7d37f';
+our $CEH_BASELINE_NIXPATH='vdvla43ppjf6gfsi8nx1zmac7rwq72yd-nix-2.0.2';
+our $CEH_BASELINE_PERL='cxdmh98g0lvl1dyq304c1lq7f90dh01f-perl-5.24.3';
 # Don't forget to update emacs.d/nix-mode.el!
 
 sub import {
