@@ -1,11 +1,10 @@
 #!/bin/sh
 
 set -e
-
-export CEH_NIX_DOWNLOAD=https://nixos.org/releases/nix/nix-1.11.12/nix-1.11.12-i686-linux.tar.bz2
-export NIX_TARDIR_NAME=nix-1.11.12-i686-linux
-export CEH_NIX=/nix/store/sbz8z995lysxja8brnxmw7hgi6ljigrq-nix-1.11.12
-export CEH_NIXPERL=/nix/store/c3mfqjfl8v71b15fd5i9g1jpdflfsnr2-perl-5.22.3
+export CEH_NIX_DOWNLOAD=https://nixos.org/releases/nix/nix-2.0.2/nix-2.0.2-x86_64-linux.tar.bz2
+export NIX_TARDIR_NAME=nix-2.0.2-x86_64-linux
+export CEH_NIX=/nix/store/z6avpvg24f6d1br2sr6qlphsq3h4d91v-nix-2.0.2
+export CEH_NIXPERL=/usr
 
 export LANG=C LC_ALL=C
 

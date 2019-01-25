@@ -130,7 +130,6 @@ install pandoc "Syntax highlighting is supported for the following"
 install patchelf "patchelf 0"
 install parallel "O. Tange"
 install tmux "usage: tmux"
-install vanitygen "Generates a bitcoin"
 install vbutil_kernel "This program creates, signs"
 install vncviewer "TigerVNC Viewer 64-bit"
 install xpra "xpra v0."
@@ -144,5 +143,3 @@ wait $JAVA_DOWNLOADS_PID
 echo Java downloads finished at $(date)
 CEH_JAVAFLAVOR= install javac "javac: invalid flag: --version"
 CEH_JAVAFLAVOR=sun8 install javac  "javac: invalid flag: --version"
-install firefox "Mozilla Firefox"
-install tws-ui "TWS successfully installed"

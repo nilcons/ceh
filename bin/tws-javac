@@ -1,9 +1,0 @@
-#!/opt/ceh/lib/perl
-# -*- mode: perl; -*-
-
-use strict;
-use warnings;
-use lib "/opt/ceh/lib";
-use Packages::TWS;
-
-exec "$ceh_nix_install_root/MAIN/bin/tws-javac", @ARGV;

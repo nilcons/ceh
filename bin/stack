@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('stack', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'cml2c80h8qm8ak68s7nrw79cldriip1a-stack-1.4.0');
+ceh_nixpkgs_install('stack', nixpkgs_version => 'c29d2fde74d03178ed42655de6dee389f2b7d37f', out => '7m915nqjklqyrqsj3rsck7fpwi5z6s5i-stack-1.7.1');
 
 exec "$ceh_nix_install_root/MAIN/bin/stack", @ARGV;

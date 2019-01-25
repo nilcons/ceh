@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('git-lfs', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => '5fsf781x2vv32skwjhf7p2ndsv7bwc5a-git-lfs-2.0.2');
+ceh_nixpkgs_install('git-lfs', nixpkgs_version => 'c29d2fde74d03178ed42655de6dee389f2b7d37f', out => 'sh7y596k2c12kgri363cc07zjzn6j9yn-git-lfs-2.3.4');
 
 exec "$ceh_nix_install_root/bin/bin/git-lfs", @ARGV;

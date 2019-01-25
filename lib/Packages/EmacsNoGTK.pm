@@ -11,6 +11,6 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw($ceh_nix_install_root);
 
-ceh_nixpkgs_install("emacs25-nogtk", nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => '6wzhc29m6g379b9ckc3kzhb6igmibsay-emacs-25.2');
+ceh_nixpkgs_install("emacs25-nogtk", nixpkgs_version => 'c29d2fde74d03178ed42655de6dee389f2b7d37f', out => 'k00l02dbwfbv35wpxvs1wq2z7wl78r48-emacs-25.3');
 
 1;

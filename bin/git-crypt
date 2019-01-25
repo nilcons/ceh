@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install('git-crypt', nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'kz59hxnb8rqkhjcs2g2pwf33hh8cj287-git-crypt-0.5.0');
+ceh_nixpkgs_install('git-crypt', nixpkgs_version => 'c29d2fde74d03178ed42655de6dee389f2b7d37f', out => 'iqiaqikm50dg8955ff460iw134cgvf1j-git-crypt-0.5.0');
 
 exec "$ceh_nix_install_root/MAIN/bin/git-crypt", @ARGV;

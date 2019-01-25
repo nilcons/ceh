@@ -10,7 +10,6 @@
 #
 # Available packages can be listed  with: ceh_nixpkgs_avail
 # To install a package: ceh_nixpkgs_install zsh
-# To install a package's i686 version: ceh_nixpkgs_install zsh bit32 1
 # Installed packages can be listed  with: ls -l /opt/ceh/installed/user
 # Installed packages can be deleted with: rm /opt/ceh/installed/user/zsh
 #

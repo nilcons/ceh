@@ -109,7 +109,6 @@ sub ceh_nixpkgs_checkout($) {
 # will be written to the calling script.
 #
 # $1: package name (attribute path),
-# %bit32: build/install for i686-linux if 1 (default is to install for x86_64-linux),
 # %autoinit: autocomplete the function invocation with default values,
 #    Example: ceh_nixpkgs_install('git', AUTOINIT);
 #      AUTOINIT will be replaced with correct values for
@@ -121,22 +120,20 @@ sub ceh_nixpkgs_checkout($) {
 # %out: output path in /nix/store, excludes AUTOINIT
 # %gclink: full abspath of symlink location to protect against GC removal and facilitate caching
 #          (defaults to /opt/ceh/installed/packages/$1)
-#          a .32 suffix automatically gets appended if the bit32 parameter is on
 # %set_nix_path: export NIX_PATH environment variable (before the build phase),
 #   so that <nixpkgs> points to a checkout of %nixpkgs_version of nixpkgs
 sub ceh_nixpkgs_install($%) {
     my ($pkgattr, %opts) = @_;
     my $autoinit = $opts{autoinit};
     my $autoupgrade = 0;
-    my $nixsystem = $opts{bit32} ? "--option system i686-linux" : "--option system x86_64-linux";
+    my $nixsystem = "--option system x86_64-linux";
     my $nixpkgs_version = $opts{nixpkgs_version};
     my $out = $opts{out};
     my $old_nixpkgs_version = $opts{nixpkgs_version};
     my $old_out = $opts{out};
     my $autoinit_nixpkgs_version = 0;
     my $autoinit_out = 0;
-    my $gclink = ($opts{gclink} ? $opts{gclink} : "/opt/ceh/installed/packages/$pkgattr") .
-                 ($opts{bit32} ? ".32" : "");
+    my $gclink = ($opts{gclink} ? $opts{gclink} : "/opt/ceh/installed/packages/$pkgattr");
 
     # some sanity checks
     if (defined($opts{derivation})) {
@@ -191,13 +188,6 @@ sub ceh_nixpkgs_install($%) {
     if ($out and nix_symlinked_p($gclink, $out)) {
         $ceh_nix_install_root = $gclink;
         return $ceh_nix_install_root;
-    }
-
-    # Change personality to match what we're building for
-    if ($opts{bit32}) {
-        syscall(136, 8);
-    } else {
-        syscall(136, 0);
     }
 
     my $nixpkgsgit = ceh_nixpkgs_checkout $nixpkgs_version;
@@ -275,15 +265,15 @@ sub ceh_nixpkgs_install_essential {
 }
 
 sub ensure_base_installed {
-    ceh_nixpkgs_install_essential('nix', bit32 => 1, nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'nyf9vjh8lc3fl43byf6b86hq9bp3my9z-nix-1.11.11');
-    ceh_nixpkgs_install_essential('perl', bit32 => 1, nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'm82raw2hwbgxfxy4b6v9fckj9dxw23q4-perl-5.24.1');
+    ceh_nixpkgs_install_essential('nix', nixpkgs_version => 'c29d2fde74d03178ed42655de6dee389f2b7d37f', out => 'vdvla43ppjf6gfsi8nx1zmac7rwq72yd-nix-2.0.2');
+    ceh_nixpkgs_install_essential('perl', nixpkgs_version => 'c29d2fde74d03178ed42655de6dee389f2b7d37f', out => 'cxdmh98g0lvl1dyq304c1lq7f90dh01f-perl-5.24.3');
 }
 
 our $freshness_being_ensured;
 sub check_nix_freshness {
     return if ($freshness_being_ensured);
-    if (not nix_symlinked_p("$CEH_ESSGCLINKDIR/nix.32", "$CEH_BASELINE_NIXPATH") or
-        not nix_symlinked_p("$CEH_ESSGCLINKDIR/perl.32", "$CEH_BASELINE_PERL")) {
+    if (not nix_symlinked_p("$CEH_ESSGCLINKDIR/nix", "$CEH_BASELINE_NIXPATH") or
+        not nix_symlinked_p("$CEH_ESSGCLINKDIR/perl", "$CEH_BASELINE_PERL")) {
         debug "Nix or Perl is outdated in the essential Ceh directory, let's reinstall them!";
         debug "If this fails, please run /opt/ceh/scripts/ceh-init.sh!\n";
         local $freshness_being_ensured = 1;
@@ -299,7 +289,7 @@ my $autoroot = "/nix/var/nix/gcroots/auto/ceh";
 #    /nix/store/3xx08z1wv87hx4rh04walcvrhw0jlrf5-nix-1.11.2
 #    /nix/store/lw1g3ag6xr6mswrivr6ifj327fdmw7qr-nix-1.11.2-doc
 #    /nix/store/m5m2gwhhzbyfdlmbf84hcdmjb9n78b1j-nix-1.11.2-debug
-# Because of this, $1 is a directory, e.g. /opt/ceh/installed/essential/nix.32
+# Because of this, $1 is a directory, e.g. /opt/ceh/installed/essential/nix
 # and we create inside this directory the following symlinks:
 #    MAIN  -> /nix/store/3xx08z1wv87hx4rh04walcvrhw0jlrf5-nix-1.11.2
 #    doc   -> /nix/store/lw1g3ag6xr6mswrivr6ifj327fdmw7qr-nix-1.11.2-doc

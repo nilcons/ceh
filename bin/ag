@@ -6,6 +6,6 @@ use warnings;
 use lib "/opt/ceh/lib";
 use CehInstall;
 
-ceh_nixpkgs_install("silver-searcher", nixpkgs_version => '02a268430e13061aad441ec4a28579d46af79e33', out => 'mcvvq5xjifmc9z6bpcjaayl81l2rij0c-silver-searcher-2.0.0');
+ceh_nixpkgs_install("silver-searcher", nixpkgs_version => 'c29d2fde74d03178ed42655de6dee389f2b7d37f', out => 'irzg9321pqhgriqrl4v6rbv6cy1z9q6b-silver-searcher-2.1.0');
 
 exec "$ceh_nix_install_root/MAIN/bin/ag", @ARGV;

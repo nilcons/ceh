@@ -5,7 +5,7 @@
       patch = ''
         sed -i -e '/FL_KEYDOWN/a    if (Fl::event_key() == 65511) return 1;' vncviewer/Viewport.cxx
         sed -i -e '/FL_KEYUP/a    if (Fl::event_key() == 65511) return 1;' vncviewer/Viewport.cxx
-      '' + tigervnc.patchPhase;
+      '' + tigervnc.postPatch;
     in derivation (tigervnc.drvAttrs // { patchPhase = patch; });
   };
 }
