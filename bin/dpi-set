@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+query() {
+    echo xdpyinfo says:
+    xdpyinfo | grep dots
+    echo Xresources says:
+    xrdb -query | fgrep Xft.dpi
+}
+setdpi() {
+        xrandr --dpi $1
+        echo "Xft.dpi: $1" | xrdb -merge -
+}
+
+case "$1" in
+    "")
+        echo 'Usage: dpi-set <dpi>|query|compute'
+        query
+        ;;
+    comp*)
+        dpi=$(xrandr --verbose --query | perl -ne 'BEGIN {$n=0}  if (/^[^\s]/) { $n=0; if (/ connected.*? (\d+)x.* (\d+)mm x/) { $n=int(24.5*$1/$2 + 0.5)}}  if (/\*current/ && $n > 0) {print "$n\n"; last}')
+        if [[ -n "$dpi" ]]; then
+            echo Setting dpi to computed value: $dpi
+            setdpi $dpi
+        else
+            echo Could not determine dpi
+        fi
+        ;;
+    q*)
+        query
+        ;;
+    *)
+        echo Setting dpi to $1
+        setdpi $1
+        ;;
+esac
